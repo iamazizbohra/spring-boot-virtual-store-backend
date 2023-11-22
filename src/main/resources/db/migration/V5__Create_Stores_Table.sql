@@ -15,5 +15,5 @@ CREATE TABLE stores (
 	created_date timestamp,
 	last_modified_by varchar(50),
 	last_modified_date timestamp,
-	CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id)
+	CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );

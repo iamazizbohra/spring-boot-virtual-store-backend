@@ -13,7 +13,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.coedmaster.vstore.dto.response.ErrorResponseDto;
 import com.coedmaster.vstore.dto.response.ValidationErrorResponseDto;
+import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
 import com.coedmaster.vstore.validation.Violation;
 
@@ -22,7 +24,8 @@ import jakarta.validation.ConstraintViolationException;
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler({ UsernameAlreadyTakenException.class, EntityNotFoundException.class })
+	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistsException.class,
+			UsernameAlreadyTakenException.class, StoreCodeAlreadyTakenException.class })
 	public ResponseEntity<ErrorResponseDto> handleEntityNotFoundException(Exception ex, WebRequest request) {
 
 		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(400)

@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
 		User user = userRepository.findByMobile(mobile)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with mobile" + mobile));
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with mobile " + mobile));
 
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());

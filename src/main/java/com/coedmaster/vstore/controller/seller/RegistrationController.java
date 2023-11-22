@@ -48,7 +48,7 @@ public class RegistrationController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Registration Successful").data(userDto).path("uri=" + request.getServletPath()).build();
+				.message("Registration Successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
