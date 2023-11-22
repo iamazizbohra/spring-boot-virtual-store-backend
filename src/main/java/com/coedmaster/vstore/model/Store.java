@@ -1,7 +1,6 @@
 package com.coedmaster.vstore.model;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,25 +8,13 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.coedmaster.vstore.enums.Gender;
-import com.coedmaster.vstore.enums.UserType;
-import com.coedmaster.vstore.model.converter.GenderConverter;
-import com.coedmaster.vstore.model.converter.UserTypeConverter;
-import com.coedmaster.vstore.model.embeddable.FullName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,41 +24,39 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
+@Table(name = "stores")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class User {
+public class Store {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(updatable = false)
-	@Convert(converter = UserTypeConverter.class)
-	private UserType userType;
+	@OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
 
-	@Embedded
-	private FullName fullName;
+	private String name;
+
+	private String code;
+
+	private String logo;
 
 	private String mobile;
 
-	@JsonIgnore
-	private String password;
+	private String whatsapp;
 
 	private String email;
 
-	@Convert(converter = GenderConverter.class)
-	private Gender gender;
+	private String latitude;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private Collection<Role> roles;
+	private String longitude;
+
+	private String address;
 
 	private boolean enabled;
-
-	@OneToOne(mappedBy = "user")
-	private Store store;
 
 	@Column(updatable = false)
 	@CreatedBy
@@ -86,5 +71,4 @@ public class User {
 
 	@LastModifiedDate
 	private LocalDateTime lastModifiedDate;
-
 }
