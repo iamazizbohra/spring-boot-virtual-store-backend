@@ -1,7 +1,7 @@
 package com.coedmaster.vstore.service;
 
-import com.coedmaster.vstore.dto.request.LoginRequestDto;
+import com.coedmaster.vstore.dto.AuthenticationDto;
 
 public interface AuthenticationService {
-	String authenticate(LoginRequestDto payload);
+	String authenticate(AuthenticationDto payload);
 }

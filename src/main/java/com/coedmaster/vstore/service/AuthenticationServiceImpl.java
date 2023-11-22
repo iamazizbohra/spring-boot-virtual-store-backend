@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.dto.request.LoginRequestDto;
+import com.coedmaster.vstore.dto.AuthenticationDto;
 import com.coedmaster.vstore.security.jwt.JwtTokenProvider;
 
 @Service
@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	JwtTokenProvider tokenProvider;
 
 	@Override
-	public String authenticate(LoginRequestDto payload) {	
+	public String authenticate(AuthenticationDto payload) {	
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 

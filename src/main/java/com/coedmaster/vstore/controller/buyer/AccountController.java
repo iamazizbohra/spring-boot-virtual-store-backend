@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.controller.seller;
+package com.coedmaster.vstore.controller.buyer;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.AccountDto;
 import com.coedmaster.vstore.dto.UserDto;
-import com.coedmaster.vstore.dto.request.RegistrationRequestDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.RegistrationService;
+import com.coedmaster.vstore.service.AccountService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
-@RestController("SellerRegistrationController")
-@RequestMapping("/api/seller")
-public class RegistrationController {
+@RestController("BuyerAccountController")
+@RequestMapping("/api/buyer")
+public class AccountController {
 	@Autowired
-	private RegistrationService registrationService;
+	private AccountService accountService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -35,15 +35,14 @@ public class RegistrationController {
 	@Autowired
 	private Validator validator;
 
-	@PostMapping("/register")
-	public ResponseEntity<SuccessResponseDto> register(HttpServletRequest request,
-			@RequestBody RegistrationRequestDto payload) {
-		Set<ConstraintViolation<RegistrationRequestDto>> violations = validator.validate(payload);
+	@PostMapping("/account")
+	public ResponseEntity<SuccessResponseDto> register(HttpServletRequest request, @RequestBody AccountDto payload) {
+		Set<ConstraintViolation<AccountDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		User user = registrationService.registerSeller(payload);
+		User user = accountService.createBuyerAccount(payload);
 
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 

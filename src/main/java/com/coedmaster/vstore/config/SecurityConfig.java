@@ -25,10 +25,10 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.securityMatcher("/api/**").authorizeHttpRequests(authorize -> {
-			authorize.requestMatchers("/api/admin/register").permitAll();
-			authorize.requestMatchers("/api/buyer/register").permitAll();
-			authorize.requestMatchers("/api/seller/register").permitAll();
-			authorize.requestMatchers("/api/login").permitAll();
+			authorize.requestMatchers("/api/admin/account").permitAll();
+			authorize.requestMatchers("/api/buyer/account").permitAll();
+			authorize.requestMatchers("/api/seller/account").permitAll();
+			authorize.requestMatchers("/api/authenticate").permitAll();
 			
 			authorize.requestMatchers("/api/admin/**").hasRole("ADMIN");
 			authorize.requestMatchers("/api/buyer/**").hasRole("BUYER");

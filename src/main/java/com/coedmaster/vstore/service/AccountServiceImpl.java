@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.dto.request.RegistrationRequestDto;
+import com.coedmaster.vstore.dto.AccountDto;
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserRole;
 import com.coedmaster.vstore.enums.UserType;
@@ -20,7 +20,7 @@ import com.coedmaster.vstore.respository.RoleRepository;
 import com.coedmaster.vstore.respository.UserRepository;
 
 @Service
-public class RegistrationServiceImpl implements RegistrationService {
+public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	UserRepository userRepository;
@@ -32,27 +32,27 @@ public class RegistrationServiceImpl implements RegistrationService {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	public User registerAdmin(RegistrationRequestDto payload) {
+	public User createAdminAccount(AccountDto payload) {
 		Role role = getRoleByName(UserRole.ROLE_ADMIN.name());
 
-		return register(UserType.ADMIN, role, payload);
+		return createAccount(UserType.ADMIN, role, payload);
 	}
 
 	@Override
-	public User registerBuyer(RegistrationRequestDto payload) {
+	public User createBuyerAccount(AccountDto payload) {
 		Role role = getRoleByName(UserRole.ROLE_BUYER.name());
 
-		return register(UserType.BUYER, role, payload);
+		return createAccount(UserType.BUYER, role, payload);
 	}
 
 	@Override
-	public User registerSeller(RegistrationRequestDto payload) {
+	public User createSellerAccount(AccountDto payload) {
 		Role role = getRoleByName(UserRole.ROLE_SELLER.name());
 
-		return register(UserType.SELLER, role, payload);
+		return createAccount(UserType.SELLER, role, payload);
 	}
 
-	private User register(UserType userType, Role role, RegistrationRequestDto payload) {
+	private User createAccount(UserType userType, Role role, AccountDto payload) {
 		String mobile = payload.getMobile();
 
 		Optional<User> optionalUser = userRepository.findByMobile(mobile);

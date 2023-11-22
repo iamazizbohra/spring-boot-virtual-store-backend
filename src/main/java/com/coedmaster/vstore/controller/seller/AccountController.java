@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.controller.buyer;
+package com.coedmaster.vstore.controller.seller;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.AccountDto;
 import com.coedmaster.vstore.dto.UserDto;
-import com.coedmaster.vstore.dto.request.RegistrationRequestDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.RegistrationService;
+import com.coedmaster.vstore.service.AccountService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
-@RestController("BuyerRegistrationController")
-@RequestMapping("/api/buyer")
-public class RegistrationController {
+@RestController("SellerAccountController")
+@RequestMapping("/api/seller")
+public class AccountController {
 	@Autowired
-	private RegistrationService registrationService;
+	private AccountService accountService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -35,20 +35,19 @@ public class RegistrationController {
 	@Autowired
 	private Validator validator;
 
-	@PostMapping("/register")
-	public ResponseEntity<SuccessResponseDto> register(HttpServletRequest request,
-			@RequestBody RegistrationRequestDto payload) {
-		Set<ConstraintViolation<RegistrationRequestDto>> violations = validator.validate(payload);
+	@PostMapping("/account")
+	public ResponseEntity<SuccessResponseDto> register(HttpServletRequest request, @RequestBody AccountDto payload) {
+		Set<ConstraintViolation<AccountDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		User user = registrationService.registerBuyer(payload);
+		User user = accountService.createSellerAccount(payload);
 
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Registration Successful").data(userDto).path("uri=" + request.getServletPath()).build();
+				.message("Registration Successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
