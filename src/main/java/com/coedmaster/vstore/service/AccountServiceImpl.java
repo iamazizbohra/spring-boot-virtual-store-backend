@@ -10,11 +10,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.request.AccountRequestDto;
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserRole;
 import com.coedmaster.vstore.enums.UserType;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.exception.PasswordMismatchException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
 import com.coedmaster.vstore.model.Role;
 import com.coedmaster.vstore.model.User;
@@ -106,6 +108,22 @@ public class AccountServiceImpl implements AccountService {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
 				userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User updatePassword(UpdatePasswordDto payload) {
+		UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+
+		User user = userRepository.findByMobile(userDetails.getMobile())
+				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+		if (!passwordEncoder.matches(payload.getCurrentPassword(), user.getPassword()))
+			throw new PasswordMismatchException("Current password does not match");
+
+		user.setPassword(passwordEncoder.encode(payload.getNewPassword()));
 
 		return userRepository.save(user);
 	}

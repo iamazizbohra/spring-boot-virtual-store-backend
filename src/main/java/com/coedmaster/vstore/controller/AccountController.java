@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coedmaster.vstore.dto.JwtTokenDto;
+import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
 import com.coedmaster.vstore.dto.request.AccountRequestDto;
 import com.coedmaster.vstore.dto.response.AccountResponseDto;
@@ -122,6 +124,24 @@ public class AccountController {
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
 				.message("Account Updated Successful").data(accountResponseDto).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
+
+	@PatchMapping("/account/password")
+	public ResponseEntity<SuccessResponseDto> updatePassword(HttpServletRequest request,
+			@RequestBody UpdatePasswordDto payload) {
+		Set<ConstraintViolation<UpdatePasswordDto>> violations = validator.validate(payload);
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException("Constraint violation", violations);
+		}
+
+		User user = accountService.updatePassword(payload);
+
+		UserDto userDto = modelMapper.map(user, UserDto.class);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Password Updated Successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
