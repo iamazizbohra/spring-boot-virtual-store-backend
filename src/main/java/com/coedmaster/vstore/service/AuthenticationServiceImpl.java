@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.AuthenticationDto;
-import com.coedmaster.vstore.security.jwt.JwtTokenProvider;
+import com.coedmaster.vstore.security.provider.JwtTokenProvider;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.security.jwt;
+package com.coedmaster.vstore.security.filter;
 
 import java.io.IOException;
 
@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.coedmaster.vstore.security.provider.JwtTokenProvider;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

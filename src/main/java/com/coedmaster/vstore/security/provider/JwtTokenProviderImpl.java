@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.security.jwt;
+package com.coedmaster.vstore.security.provider;
 
 import java.util.Date;
 import java.util.UUID;

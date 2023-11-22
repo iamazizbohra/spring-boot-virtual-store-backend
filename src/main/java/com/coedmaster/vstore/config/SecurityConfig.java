@@ -12,10 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.coedmaster.vstore.security.jwt.JwtAuthenticationEntryPoint;
-import com.coedmaster.vstore.security.jwt.JwtAuthenticationFilter;
+import com.coedmaster.vstore.security.entrypoint.JwtAuthenticationEntryPoint;
+import com.coedmaster.vstore.security.filter.AccountStatusFilter;
+import com.coedmaster.vstore.security.filter.JwtAuthenticationFilter;
 import com.coedmaster.vstore.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -29,17 +31,18 @@ public class SecurityConfig {
 			authorize.requestMatchers("/api/buyer/account").permitAll();
 			authorize.requestMatchers("/api/seller/account").permitAll();
 			authorize.requestMatchers("/api/authenticate").permitAll();
-			
+
 			authorize.requestMatchers("/api/admin/**").hasRole("ADMIN");
 			authorize.requestMatchers("/api/buyer/**").hasRole("BUYER");
 			authorize.requestMatchers("/api/seller/**").hasRole("SELLER");
-			
+
 			authorize.requestMatchers("/api/employee/**").permitAll();
 			authorize.anyRequest().authenticated();
 		}).csrf((csrf) -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint()))
-				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(new AccountStatusFilter(), AnonymousAuthenticationFilter.class);
 
 		return http.build();
 	}

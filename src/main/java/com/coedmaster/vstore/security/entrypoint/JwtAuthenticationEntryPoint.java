@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.security.jwt;
+package com.coedmaster.vstore.security.entrypoint;
 
 import java.io.IOException;
 
