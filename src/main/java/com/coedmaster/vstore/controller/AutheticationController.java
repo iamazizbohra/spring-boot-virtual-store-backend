@@ -31,7 +31,7 @@ public class AutheticationController {
 	private Validator validator;
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<SuccessResponseDto> login(HttpServletRequest request, @RequestBody AuthenticationDto payload) {
+	public ResponseEntity<SuccessResponseDto> authenticate(HttpServletRequest request, @RequestBody AuthenticationDto payload) {
 		Set<ConstraintViolation<AuthenticationDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);

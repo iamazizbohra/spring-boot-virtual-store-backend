@@ -20,11 +20,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	JwtTokenProvider tokenProvider;
 
 	@Override
-	public String authenticate(AuthenticationDto payload) {	
+	public String authenticate(AuthenticationDto payload) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		return tokenProvider.generateToken(authentication);
+	}
+
+	@Override
+	public String generateToken() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		return tokenProvider.generateToken(authentication);
 	}

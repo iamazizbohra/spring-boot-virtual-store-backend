@@ -1,12 +1,14 @@
 package com.coedmaster.vstore.service;
 
-import com.coedmaster.vstore.dto.AccountDto;
+import com.coedmaster.vstore.dto.request.AccountRequestDto;
 import com.coedmaster.vstore.model.User;
 
 public interface AccountService {
-	User createAdminAccount(AccountDto payload);
+	User createAdminAccount(AccountRequestDto payload);
 	
-	User createBuyerAccount(AccountDto payload);
+	User createBuyerAccount(AccountRequestDto payload);
 	
-	User createSellerAccount(AccountDto payload);
+	User createSellerAccount(AccountRequestDto payload);
+	
+	User updateAccount(AccountRequestDto payload);
 }

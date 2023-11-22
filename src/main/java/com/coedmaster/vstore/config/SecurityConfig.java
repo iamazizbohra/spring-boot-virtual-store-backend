@@ -2,6 +2,7 @@ package com.coedmaster.vstore.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,10 +28,10 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.securityMatcher("/api/**").authorizeHttpRequests(authorize -> {
-			authorize.requestMatchers("/api/admin/account").permitAll();
-			authorize.requestMatchers("/api/buyer/account").permitAll();
-			authorize.requestMatchers("/api/seller/account").permitAll();
-			authorize.requestMatchers("/api/authenticate").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/admin/account").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/buyer/account").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/seller/account").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll();
 
 			authorize.requestMatchers("/api/admin/**").hasRole("ADMIN");
 			authorize.requestMatchers("/api/buyer/**").hasRole("BUYER");
