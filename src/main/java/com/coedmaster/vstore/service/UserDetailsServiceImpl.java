@@ -15,15 +15,12 @@ import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.model.UserDetailsImpl;
 import com.coedmaster.vstore.respository.UserRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
 
-	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
 		User user = userRepository.findByMobile(mobile)
