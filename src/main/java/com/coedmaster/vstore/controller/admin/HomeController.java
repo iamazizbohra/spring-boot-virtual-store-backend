@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.model.IUserDetails;
 
 @RestController("AdminHomeController")
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class HomeController {
 
 	@GetMapping("/home")

@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coedmaster.vstore.dto.AuthenticationDto;
@@ -22,7 +21,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
 @RestController
-@RequestMapping("/api")
 public class AutheticationController {
 	@Autowired
 	private IAuthenticationService authenticationService;

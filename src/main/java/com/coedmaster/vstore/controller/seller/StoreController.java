@@ -26,7 +26,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
 @RestController
-@RequestMapping("/api/seller")
+@RequestMapping("/seller")
 public class StoreController {
 	@Autowired
 	private ModelMapper modelMapper;

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coedmaster.vstore.dto.JwtTokenDto;
@@ -32,7 +31,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
 @RestController("AccountController")
-@RequestMapping("/api")
 public class AccountController {
 	@Autowired
 	private IAccountService accountService;

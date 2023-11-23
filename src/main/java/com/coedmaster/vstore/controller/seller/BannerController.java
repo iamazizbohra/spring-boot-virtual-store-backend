@@ -33,7 +33,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
 @RestController
-@RequestMapping("/api/seller")
+@RequestMapping("/seller")
 public class BannerController {
 	@Autowired
 	private ModelMapper modelMapper;
