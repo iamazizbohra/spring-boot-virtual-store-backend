@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,17 +30,33 @@ public class StoreServiceImpl implements StoreService {
 	private StoreRepository storeRepository;
 
 	@Override
-	public Store getStoreByCode(String code) {
-		Store store = storeRepository.findByCode(code)
-				.orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	public Store getStoreByAuthentication() {
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+
+		IUserDetails userDetails = (IUserDetails) authentication.getPrincipal();
+
+		if (ObjectUtils.isEmpty(userDetails.getId())) {
+			throw new EntityNotFoundException("User details not found");
+		}
+
+		User user = userRepository.findById(userDetails.getId())
+				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+		Store store = Optional.ofNullable(user.getStore())
+				.orElseThrow(() -> new EntityNotFoundException("Store not found of an authenticated user"));
 
 		return store;
 	}
 
 	@Override
+	public Store getStoreByCode(String code) {
+		return storeRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	}
+
+	@Override
 	public Store createStore(StoreDto payload) {
-		IUserDetails userDetails = (IUserDetails) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
+		IUserDetails userDetails = (IUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		User user = userRepository.findById(userDetails.getId())
 				.orElseThrow(() -> new UsernameNotFoundException("User principal not found"));
@@ -62,8 +80,7 @@ public class StoreServiceImpl implements StoreService {
 	public Store updateStore(Long id, StoreDto payload) {
 		Optional<Store> storeOptional = storeRepository.findByCode(payload.getCode());
 		if (!storeOptional.isEmpty()) {
-			Store store = storeOptional.get();
-			if (!store.getId().equals(id))
+			if (!storeOptional.get().getId().equals(id))
 				throw new StoreCodeAlreadyTakenException("Store code is already taken");
 		}
 

@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.controller.seller.store;
+package com.coedmaster.vstore.controller.seller;
 
 import java.time.LocalDateTime;
 import java.util.Set;

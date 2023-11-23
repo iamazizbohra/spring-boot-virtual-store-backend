@@ -49,6 +49,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@OneToOne(mappedBy = "user")
+	private Store store;
 
 	@Column(updatable = false)
 	@Convert(converter = UserTypeConverter.class)
@@ -72,9 +75,6 @@ public class User {
 	private Collection<Role> roles;
 
 	private boolean enabled;
-
-	@OneToOne(mappedBy = "user")
-	private Store store;
 
 	@Column(updatable = false)
 	@CreatedBy
