@@ -42,7 +42,7 @@ public class AutheticationController {
 		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(jws).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Login Successful").data(jwtTokenDto).path(request.getServletPath()).build();
+				.message("Authenticate successful").data(jwtTokenDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

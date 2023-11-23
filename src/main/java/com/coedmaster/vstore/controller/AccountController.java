@@ -59,7 +59,7 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account Created Successful").data(userDto).path(request.getServletPath()).build();
+				.message("Account created successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -77,7 +77,7 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account Created Successful").data(userDto).path(request.getServletPath()).build();
+				.message("Account created successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -95,7 +95,7 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account Created Successful").data(userDto).path(request.getServletPath()).build();
+				.message("Account created successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -123,7 +123,7 @@ public class AccountController {
 		AccountResponseDto accountResponseDto = AccountResponseDto.builder().user(userDto).jwt(jwtTokenDto).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account Updated Successful").data(accountResponseDto).path(request.getServletPath()).build();
+				.message("Account updated successful").data(accountResponseDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -141,7 +141,7 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Password Updated Successful").data(userDto).path(request.getServletPath()).build();
+				.message("Password updated successful").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

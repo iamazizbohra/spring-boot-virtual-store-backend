@@ -138,7 +138,7 @@ public class BannerController {
 		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner status updated successful").data(bannerResponseDto).path(request.getServletPath())
+				.message("Banner sort order updated successful").data(bannerResponseDto).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);

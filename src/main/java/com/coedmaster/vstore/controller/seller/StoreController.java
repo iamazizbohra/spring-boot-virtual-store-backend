@@ -46,7 +46,7 @@ public class StoreController {
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Store fetched Successful").data(storeDto).path(request.getServletPath()).build();
+				.message("Store fetched successful").data(storeDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -62,7 +62,7 @@ public class StoreController {
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Store Created Successful").data(storeDto).path(request.getServletPath()).build();
+				.message("Store created successful").data(storeDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -79,7 +79,7 @@ public class StoreController {
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Store Created Successful").data(storeDto).path(request.getServletPath()).build();
+				.message("Store created successful").data(storeDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
