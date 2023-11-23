@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.coedmaster.vstore.config.properties.JwtCredentials;
-import com.coedmaster.vstore.model.UserDetailsImpl;
+import com.coedmaster.vstore.model.IUserDetails;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -32,7 +32,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
 	@Override
 	public String generateToken(Authentication authentication) {
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		IUserDetails userDetails = (IUserDetails) authentication.getPrincipal();
 
 		Date currentDate = new Date();
 

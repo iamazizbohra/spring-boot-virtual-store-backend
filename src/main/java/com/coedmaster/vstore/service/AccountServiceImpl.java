@@ -18,9 +18,9 @@ import com.coedmaster.vstore.enums.UserType;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.PasswordMismatchException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
+import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.Role;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.model.UserDetailsImpl;
 import com.coedmaster.vstore.model.embeddable.FullName;
 import com.coedmaster.vstore.respository.RoleRepository;
 import com.coedmaster.vstore.respository.UserRepository;
@@ -80,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public User updateAccount(AccountRequestDto payload) {
-		UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+		IUserDetails userDetails = (IUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 
 		Optional<User> userOptional = userRepository.findByMobile(payload.getMobile());
@@ -114,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public User updatePassword(UpdatePasswordDto payload) {
-		UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+		IUserDetails userDetails = (IUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 
 		User user = userRepository.findByMobile(userDetails.getMobile())

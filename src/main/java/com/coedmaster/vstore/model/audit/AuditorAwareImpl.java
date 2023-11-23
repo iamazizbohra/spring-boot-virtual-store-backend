@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.coedmaster.vstore.model.UserDetailsImpl;
+import com.coedmaster.vstore.model.IUserDetails;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 
@@ -25,7 +25,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 		}
 
 		if (authentication instanceof UsernamePasswordAuthenticationToken) {
-			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			IUserDetails userDetails = (IUserDetails) authentication.getPrincipal();
 
 			principal = userDetails.getFirstName() + " " + userDetails.getLastName();
 		}

@@ -21,8 +21,8 @@ import com.coedmaster.vstore.dto.UserDto;
 import com.coedmaster.vstore.dto.request.AccountRequestDto;
 import com.coedmaster.vstore.dto.response.AccountResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
+import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.model.UserDetailsImpl;
 import com.coedmaster.vstore.service.AccountService;
 import com.coedmaster.vstore.service.AuthenticationService;
 
@@ -102,7 +102,7 @@ public class AccountController {
 
 	@PutMapping("/account")
 	public ResponseEntity<SuccessResponseDto> updateAccount(HttpServletRequest request,
-			@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody AccountRequestDto payload) {
+			@AuthenticationPrincipal IUserDetails userDetails, @RequestBody AccountRequestDto payload) {
 		Set<ConstraintViolation<AccountRequestDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);

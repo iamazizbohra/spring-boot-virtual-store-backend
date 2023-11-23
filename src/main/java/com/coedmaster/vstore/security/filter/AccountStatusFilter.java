@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coedmaster.vstore.exception.AccountInactiveException;
-import com.coedmaster.vstore.model.UserDetailsImpl;
+import com.coedmaster.vstore.model.IUserDetails;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +26,7 @@ public class AccountStatusFilter extends OncePerRequestFilter {
 		Authentication authentication = context.getAuthentication();
 
 		if (authentication instanceof UsernamePasswordAuthenticationToken) {
-			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			IUserDetails userDetails = (IUserDetails) authentication.getPrincipal();
 
 			if (!userDetails.isEnabled()) {
 				throw new AccountInactiveException("Account is inactive");

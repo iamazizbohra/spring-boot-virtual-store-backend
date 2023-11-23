@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.model.UserDetailsImpl;
+import com.coedmaster.vstore.model.IUserDetails;
 
 @RestController("BuyerHomeController")
 @RequestMapping("/api/buyer")
 public class HomeController {
 	
 	@GetMapping("/home")
-	public String index(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+	public String index(@AuthenticationPrincipal IUserDetails userDetails) {
 		return "Hello " + userDetails.getFirstName() + " from Buyer Home";
 	}
 }

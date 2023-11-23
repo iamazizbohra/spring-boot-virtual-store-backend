@@ -12,9 +12,9 @@ import com.coedmaster.vstore.dto.StoreDto;
 import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
+import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.model.UserDetailsImpl;
 import com.coedmaster.vstore.respository.StoreRepository;
 import com.coedmaster.vstore.respository.UserRepository;
 
@@ -37,7 +37,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public Store createStore(StoreDto payload) {
-		UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+		IUserDetails userDetails = (IUserDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 
 		User user = userRepository.findById(userDetails.getId())
