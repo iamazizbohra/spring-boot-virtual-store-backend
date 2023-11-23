@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.dto.StoreDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.StoreService;
+import com.coedmaster.vstore.service.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -35,7 +35,7 @@ public class StoreController {
 	private Validator validator;
 
 	@Autowired
-	private StoreService storeService;
+	private IStoreService storeService;
 
 	@GetMapping("/store/{code}")
 	public ResponseEntity<SuccessResponseDto> getStore(HttpServletRequest request,

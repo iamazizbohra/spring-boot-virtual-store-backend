@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.dto.AuthenticationDto;
 import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
-import com.coedmaster.vstore.service.AuthenticationService;
+import com.coedmaster.vstore.service.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -25,7 +25,7 @@ import jakarta.validation.Validator;
 @RequestMapping("/api")
 public class AutheticationController {
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
 	private Validator validator;

@@ -21,7 +21,7 @@ public class BannerService implements IBannerService {
 	private BannerRepository bannerRepository;
 
 	@Autowired
-	private StoreServiceImpl storeServiceImpl;
+	private StoreService storeServiceImpl;
 
 	@Override
 	public List<Banner> getBanners() {

@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.coedmaster.vstore.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.coedmaster.vstore.security.filter.AccountStatusFilter;
 import com.coedmaster.vstore.security.filter.JwtAuthenticationFilter;
-import com.coedmaster.vstore.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -61,11 +60,6 @@ public class SecurityConfig {
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
 		return new JwtAuthenticationFilter();
-	}
-
-	@Bean
-	UserDetailsService userDetailsService() {
-		return new UserDetailsServiceImpl();
 	}
 
 	@Bean

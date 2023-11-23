@@ -23,8 +23,8 @@ import com.coedmaster.vstore.dto.response.AccountResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.AccountService;
-import com.coedmaster.vstore.service.AuthenticationService;
+import com.coedmaster.vstore.service.IAccountService;
+import com.coedmaster.vstore.service.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -35,10 +35,10 @@ import jakarta.validation.Validator;
 @RequestMapping("/api")
 public class AccountController {
 	@Autowired
-	private AccountService accountService;
+	private IAccountService accountService;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
 	private ModelMapper modelMapper;
