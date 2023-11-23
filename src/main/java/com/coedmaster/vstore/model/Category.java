@@ -1,7 +1,6 @@
 package com.coedmaster.vstore.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,8 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,44 +25,24 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "stores")
-@AllArgsConstructor
+@Table(name = "categories")
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @Setter
+@Getter
 @Builder
-public class Store {
+public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@OneToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
-
-	@OneToMany(mappedBy = "store")
-	private List<Banner> banners;
 	
-	@OneToMany(mappedBy = "store")
-	private List<Category> categories;
+	@ManyToOne
+	@JoinColumn(name = "store_id", referencedColumnName = "id")
+	private Store store;
 
-	private String name;
+	private String title;
 
-	private String code;
-
-	private String logo;
-
-	private String mobile;
-
-	private String whatsapp;
-
-	private String email;
-
-	private String latitude;
-
-	private String longitude;
-
-	private String address;
+	private String image;
 
 	private boolean enabled;
 
