@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.AuthenticationDto;
-import com.coedmaster.vstore.security.provider.JwtTokenProvider;
+import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
 
 @Service
 public class AuthenticationService implements IAuthenticationService {
@@ -17,7 +17,7 @@ public class AuthenticationService implements IAuthenticationService {
 	AuthenticationManager authenticationManager;
 
 	@Autowired
-	JwtTokenProvider tokenProvider;
+	IJwtTokenProvider jwtTokenProvider;
 
 	@Override
 	public String authenticate(AuthenticationDto payload) {
@@ -26,14 +26,14 @@ public class AuthenticationService implements IAuthenticationService {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		return tokenProvider.generateToken(authentication);
+		return jwtTokenProvider.generateToken(authentication);
 	}
 
 	@Override
 	public String generateToken() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		return tokenProvider.generateToken(authentication);
+		return jwtTokenProvider.generateToken(authentication);
 	}
 
 }

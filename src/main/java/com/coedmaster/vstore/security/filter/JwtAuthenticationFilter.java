@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.coedmaster.vstore.security.provider.JwtTokenProvider;
+import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
 import com.coedmaster.vstore.service.IUserDetailsService;
 
 import jakarta.servlet.FilterChain;
@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtTokenProvider jwtTokenProvider;
+	private IJwtTokenProvider jwtTokenProvider;
 
 	@Autowired
 	private IUserDetailsService userDetailsService;
