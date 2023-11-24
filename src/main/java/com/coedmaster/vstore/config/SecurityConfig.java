@@ -26,17 +26,17 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.securityMatcher("/api/**").authorizeHttpRequests(authorize -> {
-			authorize.requestMatchers(HttpMethod.POST, "/api/admin/account").permitAll();
-			authorize.requestMatchers(HttpMethod.POST, "/api/buyer/account").permitAll();
-			authorize.requestMatchers(HttpMethod.POST, "/api/seller/account").permitAll();
-			authorize.requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll();
+		http.securityMatcher("/api/v1/**").authorizeHttpRequests(authorize -> {
+			authorize.requestMatchers(HttpMethod.POST, "/api/v1/admin/account").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/v1/buyer/account").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/v1/seller/account").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/api/v1/authenticate").permitAll();
 
-			authorize.requestMatchers("/api/admin/**").hasRole("ADMIN");
-			authorize.requestMatchers("/api/buyer/**").hasRole("BUYER");
-			authorize.requestMatchers("/api/seller/**").hasRole("SELLER");
+			authorize.requestMatchers("/api/v1/admin/**").hasRole("ADMIN");
+			authorize.requestMatchers("/api/v1/buyer/**").hasRole("BUYER");
+			authorize.requestMatchers("/api/v1/seller/**").hasRole("SELLER");
 
-			authorize.requestMatchers("/api/employee/**").permitAll();
+			authorize.requestMatchers("/api/v1/employee/**").permitAll();
 			authorize.anyRequest().authenticated();
 		}).csrf((csrf) -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
