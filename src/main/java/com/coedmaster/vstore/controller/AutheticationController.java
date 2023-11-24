@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.dto.AuthenticationDto;
 import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
+import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
 import com.coedmaster.vstore.service.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,9 @@ import jakarta.validation.Validator;
 public class AutheticationController {
 	@Autowired
 	private IAuthenticationService authenticationService;
+	
+	@Autowired
+	IJwtTokenProvider jwtTokenProvider;
 
 	@Autowired
 	private Validator validator;
@@ -35,12 +40,16 @@ public class AutheticationController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		String jws = authenticationService.authenticate(payload);
+		Authentication authentication = authenticationService.authenticate(payload);
+		
+		authenticationService.setAuthentication(authentication);
+		
+		String jws = jwtTokenProvider.generateToken(authentication);
 
 		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(jws).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Authenticate successful").data(jwtTokenDto).path(request.getServletPath()).build();
+				.message("Authentication successfully").data(jwtTokenDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

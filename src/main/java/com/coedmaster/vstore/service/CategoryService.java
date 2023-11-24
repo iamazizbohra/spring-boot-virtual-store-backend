@@ -19,30 +19,31 @@ public class CategoryService implements ICategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	@Autowired
-	private StoreService storeService;
+	@Override
+	public Category getCategory(Long id, Store store) {
+		return categoryRepository.findByIdAndStoreId(id, store.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Category not found"));
+	}
 
 	@Override
-	public List<Category> getCategories() {
-		Store store = getStore();
-
+	public List<Category> getCategories(Store store) {
 		return categoryRepository.findAllByStoreId(store.getId(), Sort.by(Sort.Direction.ASC, "name"));
 	}
 
 	@Override
-	public Category createCategory(CategoryRequestDto payload) {
-		Store store = getStore();
+	public Category createCategory(Store store, CategoryRequestDto payload) {
+		Category category = new Category();
+		category.setStore(store);
+		category.setName(payload.getName());
+		category.setImage(payload.getImage());
+		category.setEnabled(true);
 
-		Category banner = Category.builder().store(store).name(payload.getName()).image(payload.getImage())
-				.enabled(true).build();
-
-		return categoryRepository.save(banner);
+		return categoryRepository.save(category);
 	}
 
 	@Override
-	public Category updateCategory(Long id, CategoryRequestDto payload) {
-		Category category = getCategory(id);
-
+	public Category updateCategory(Long id, Store store, CategoryRequestDto payload) {
+		Category category = getCategory(id, store);
 		category.setName(payload.getName());
 		category.setImage(payload.getImage());
 
@@ -50,32 +51,18 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public void deleteCategory(Long id) {
-		Category category = getCategory(id);
+	public void deleteCategory(Long id, Store store) {
+		Category category = getCategory(id, store);
 
 		categoryRepository.deleteById(category.getId());
 	}
 
 	@Override
-	public Category updateCategoryStatus(Long id, UpdateStatusDto payload) {
-		Category category = getCategory(id);
-
+	public Category updateCategoryStatus(Long id, Store store, UpdateStatusDto payload) {
+		Category category = getCategory(id, store);
 		category.setEnabled(payload.isEnabled());
 
 		return categoryRepository.save(category);
-	}
-
-	private Category getCategory(Long id) {
-		Store store = getStore();
-
-		Category category = categoryRepository.findByIdAndStoreId(id, store.getId())
-				.orElseThrow(() -> new EntityNotFoundException("Category not found"));
-
-		return category;
-	}
-
-	private Store getStore() {
-		return storeService.getStoreByAuthentication();
 	}
 
 }

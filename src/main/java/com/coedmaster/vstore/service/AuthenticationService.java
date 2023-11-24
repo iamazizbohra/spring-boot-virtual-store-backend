@@ -5,13 +5,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.AuthenticationDto;
+import com.coedmaster.vstore.model.IUserDetails;
+import com.coedmaster.vstore.model.User;
+import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
 
 @Service
 public class AuthenticationService implements IAuthenticationService {
+
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -20,20 +27,32 @@ public class AuthenticationService implements IAuthenticationService {
 	IJwtTokenProvider jwtTokenProvider;
 
 	@Override
-	public String authenticate(AuthenticationDto payload) {
-		Authentication authentication = authenticationManager
+	public Authentication authenticate(AuthenticationDto payload) {
+		return authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		return jwtTokenProvider.generateToken(authentication);
 	}
 
 	@Override
-	public String generateToken() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	public Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
 
-		return jwtTokenProvider.generateToken(authentication);
+	@Override
+	public void setAuthentication(Authentication authentication) {
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
+
+	@Override
+	public IUserDetails getAuthenticatedUserDetails(Authentication authentication) {
+		return (IUserDetails) authentication.getPrincipal();
+	}
+
+	@Override
+	public User getAuthenticatedUser(Authentication authentication) {
+		IUserDetails userDetails = getAuthenticatedUserDetails(authentication);
+
+		return userRepository.findById(userDetails.getId())
+				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 
 }

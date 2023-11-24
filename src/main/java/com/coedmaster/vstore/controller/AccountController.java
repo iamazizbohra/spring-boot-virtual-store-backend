@@ -7,20 +7,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
 import com.coedmaster.vstore.dto.request.AccountRequestDto;
-import com.coedmaster.vstore.dto.response.AccountResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
-import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.service.IAccountService;
 import com.coedmaster.vstore.service.IAuthenticationService;
@@ -32,17 +29,30 @@ import jakarta.validation.Validator;
 
 @RestController("AccountController")
 public class AccountController {
-	@Autowired
-	private IAccountService accountService;
 
 	@Autowired
 	private IAuthenticationService authenticationService;
+
+	@Autowired
+	private IAccountService accountService;
 
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Autowired
 	private Validator validator;
+
+	@GetMapping("/account")
+	public ResponseEntity<SuccessResponseDto> getAccount(HttpServletRequest request) {
+		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
+
+		UserDto userDto = modelMapper.map(user, UserDto.class);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Account fetched successfully").data(userDto).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
 
 	@PostMapping("/admin/account")
 	public ResponseEntity<SuccessResponseDto> createAdminAccount(HttpServletRequest request,
@@ -57,7 +67,7 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account created successful").data(userDto).path(request.getServletPath()).build();
+				.message("Account created successfully").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -75,7 +85,7 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account created successful").data(userDto).path(request.getServletPath()).build();
+				.message("Account created successfully").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -93,35 +103,28 @@ public class AccountController {
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account created successful").data(userDto).path(request.getServletPath()).build();
+				.message("Account created successfully").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
 	@PutMapping("/account")
 	public ResponseEntity<SuccessResponseDto> updateAccount(HttpServletRequest request,
-			@AuthenticationPrincipal IUserDetails userDetails, @RequestBody AccountRequestDto payload) {
+			@RequestBody AccountRequestDto payload) {
 		Set<ConstraintViolation<AccountRequestDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		String jws = null;
-		final String oldMobile = userDetails.getMobile();
+		// TODO: issue new JWT
+		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		User user = accountService.updateAccount(payload);
+		user = accountService.updateAccount(user, payload);
+
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
-		// issue new token if mobile number is changed
-		if (!oldMobile.equals(user.getMobile())) {
-			jws = authenticationService.generateToken();
-		}
-		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(jws).build();
-
-		AccountResponseDto accountResponseDto = AccountResponseDto.builder().user(userDto).jwt(jwtTokenDto).build();
-
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Account updated successful").data(accountResponseDto).path(request.getServletPath()).build();
+				.message("Account updated successfully").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -134,12 +137,15 @@ public class AccountController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		User user = accountService.updatePassword(payload);
+		// TODO: issue new JWT
+		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
+
+		user = accountService.updatePassword(user, payload);
 
 		UserDto userDto = modelMapper.map(user, UserDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Password updated successful").data(userDto).path(request.getServletPath()).build();
+				.message("Password updated successfully").data(userDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

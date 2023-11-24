@@ -19,20 +19,19 @@ public class ProductService implements IProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
-	@Autowired
-	private StoreService storeService;
+	@Override
+	public Product getProduct(Long id, Store store) {
+		return productRepository.findByIdAndStoreId(id, store.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Product not found"));
+	}
 
 	@Override
-	public List<Product> getProducts() {
-		Store store = getStore();
-
+	public List<Product> getProducts(Store store) {
 		return productRepository.findAllByStoreId(store.getId(), Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
 	}
 
 	@Override
-	public Product createProduct(ProductRequestDto payload) {
-		Store store = getStore();
-
+	public Product createProduct(Store store, ProductRequestDto payload) {
 		Product product = new Product();
 		product.setStore(store);
 		product.setName(payload.getName());
@@ -47,11 +46,8 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product updateProduct(Long id, ProductRequestDto payload) {
-		Store store = getStore();
-
+	public Product updateProduct(Long id, Store store, ProductRequestDto payload) {
 		Product product = getProduct(id, store);
-
 		product.setName(payload.getName());
 		product.setDescription(payload.getDescription());
 		product.setImage(payload.getImage());
@@ -63,32 +59,18 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public void deleteProduct(Long id) {
-		Store store = getStore();
-
+	public void deleteProduct(Long id, Store store) {
 		Product product = getProduct(id, store);
 
 		productRepository.deleteById(product.getId());
 	}
 
 	@Override
-	public Product updateProductStatus(Long id, UpdateStatusDto payload) {
-		Store store = getStore();
-
+	public Product updateProductStatus(Long id, Store store, UpdateStatusDto payload) {
 		Product product = getProduct(id, store);
-
 		product.setEnabled(payload.isEnabled());
 
 		return productRepository.save(product);
-	}
-
-	private Product getProduct(Long id, Store store) {
-		return productRepository.findByIdAndStoreId(id, store.getId())
-				.orElseThrow(() -> new EntityNotFoundException("Product not found"));
-	}
-
-	private Store getStore() {
-		return storeService.getStoreByAuthentication();
 	}
 
 }

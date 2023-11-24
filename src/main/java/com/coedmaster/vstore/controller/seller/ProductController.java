@@ -24,6 +24,9 @@ import com.coedmaster.vstore.dto.request.ProductRequestDto;
 import com.coedmaster.vstore.dto.response.ProductResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Product;
+import com.coedmaster.vstore.model.Store;
+import com.coedmaster.vstore.service.AuthenticationService;
+import com.coedmaster.vstore.service.IStoreService;
 import com.coedmaster.vstore.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,25 +37,50 @@ import jakarta.validation.Validator;
 @RestController
 @RequestMapping("/seller")
 public class ProductController {
+
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private IStoreService storeService;
+
+	@Autowired
+	private AuthenticationService authenticationService;
+
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Autowired
 	private Validator validator;
 
-	@Autowired
-	private ProductService productService;
+	@GetMapping("/product/{id}")
+	public ResponseEntity<SuccessResponseDto> getProduct(HttpServletRequest request,
+			@PathVariable(value = "id") Long id) {
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Product product = productService.getProduct(id, store);
+
+		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Product fetched successfully").data(productResponseDto).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
 
 	@GetMapping("/product")
 	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request) {
-		List<Product> products = productService.getProducts();
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		List<ProductResponseDto> productResponseDtos = products.stream()
+		List<Product> products = productService.getProducts(store);
+
+		List<ProductResponseDto> productResponseDto = products.stream()
 				.map(e -> modelMapper.map(e, ProductResponseDto.class)).collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Products fetched successful").data(productResponseDtos).path(request.getServletPath())
-				.build();
+				.message("Products fetched successfully").data(productResponseDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -65,12 +93,15 @@ public class ProductController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Product product = productService.createProduct(payload);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Product product = productService.createProduct(store, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product created successful").data(productResponseDto).path(request.getServletPath()).build();
+				.message("Product created successfully").data(productResponseDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -83,12 +114,15 @@ public class ProductController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Product product = productService.updateProduct(id, payload);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Product product = productService.updateProduct(id, store, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product updated successful").data(productResponseDto).path(request.getServletPath()).build();
+				.message("Product updated successfully").data(productResponseDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -96,11 +130,13 @@ public class ProductController {
 	@DeleteMapping("/product/{id}")
 	public ResponseEntity<SuccessResponseDto> deleteProduct(HttpServletRequest request,
 			@PathVariable(value = "id") Long id) {
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		productService.deleteProduct(id);
+		productService.deleteProduct(id, store);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product deleted successful").data(null).path(request.getServletPath()).build();
+				.message("Product deleted successfully").data(null).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -113,12 +149,15 @@ public class ProductController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Product product = productService.updateProductStatus(id, payload);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Product product = productService.updateProductStatus(id, store, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product status updated successful").data(productResponseDto).path(request.getServletPath())
+				.message("Product status updated successfully").data(productResponseDto).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);

@@ -24,7 +24,10 @@ import com.coedmaster.vstore.dto.request.CategoryRequestDto;
 import com.coedmaster.vstore.dto.response.CategoryResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
+import com.coedmaster.vstore.model.Store;
+import com.coedmaster.vstore.service.AuthenticationService;
 import com.coedmaster.vstore.service.CategoryService;
+import com.coedmaster.vstore.service.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -34,24 +37,50 @@ import jakarta.validation.Validator;
 @RestController
 @RequestMapping("/seller")
 public class CategoryController {
+
+	@Autowired
+	private CategoryService categoryService;
+
+	@Autowired
+	private AuthenticationService authenticationService;
+
+	@Autowired
+	private IStoreService storeService;
+
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Autowired
 	private Validator validator;
+	
+	@GetMapping("/category/{id}")
+	public ResponseEntity<SuccessResponseDto> getCategory(HttpServletRequest request,
+			@PathVariable(value = "id") Long id) {
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-	@Autowired
-	private CategoryService categoryService;
+		Category category = categoryService.getCategory(id, store);
+
+		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Category fetched successfully").data(categoryResponseDto).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
 
 	@GetMapping("/category")
 	public ResponseEntity<SuccessResponseDto> getCategories(HttpServletRequest request) {
-		List<Category> categories = categoryService.getCategories();
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		List<Category> categories = categoryService.getCategories(store);
 
 		List<CategoryResponseDto> categoryResponseDtos = categories.stream()
 				.map(e -> modelMapper.map(e, CategoryResponseDto.class)).collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Categories fetched successful").data(categoryResponseDtos).path(request.getServletPath())
+				.message("Categories fetched successfully").data(categoryResponseDtos).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
@@ -65,12 +94,15 @@ public class CategoryController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Category category = categoryService.createCategory(payload);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Category category = categoryService.createCategory(store, payload);
 
 		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category created successful").data(categoryResponseDto).path(request.getServletPath())
+				.message("Category created successfully").data(categoryResponseDto).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
@@ -85,12 +117,15 @@ public class CategoryController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Category category = categoryService.updateCategory(id, payload);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Category category = categoryService.updateCategory(id, store, payload);
 
 		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category updated successful").data(categoryResponseDto).path(request.getServletPath())
+				.message("Category updated successfully").data(categoryResponseDto).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
@@ -100,10 +135,13 @@ public class CategoryController {
 	public ResponseEntity<SuccessResponseDto> deleteCategory(HttpServletRequest request,
 			@PathVariable(value = "id") Long id) {
 
-		categoryService.deleteCategory(id);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		categoryService.deleteCategory(id, store);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category deleted successful").data(null).path(request.getServletPath()).build();
+				.message("Category deleted successfully").data(null).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -116,12 +154,15 @@ public class CategoryController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Category category = categoryService.updateCategoryStatus(id, payload);
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		Category category = categoryService.updateCategoryStatus(id, store, payload);
 
 		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category status updated successful").data(categoryResponseDto).path(request.getServletPath())
+				.message("Category status updated successfully").data(categoryResponseDto).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
