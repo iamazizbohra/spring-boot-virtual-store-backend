@@ -7,7 +7,7 @@ public class CategoryResponseDto {
 
 	private Long id;
 
-	private String title;
+	private String name;
 
 	private String image;
 

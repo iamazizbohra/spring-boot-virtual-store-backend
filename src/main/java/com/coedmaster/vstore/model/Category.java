@@ -40,7 +40,7 @@ public class Category {
 	@JoinColumn(name = "store_id", referencedColumnName = "id")
 	private Store store;
 
-	private String title;
+	private String name;
 
 	private String image;
 

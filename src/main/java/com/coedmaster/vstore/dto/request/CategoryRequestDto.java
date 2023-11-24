@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class CategoryRequestDto {
 	@NotEmpty
-	private String title;
+	private String name;
 
 	private String image;
 }

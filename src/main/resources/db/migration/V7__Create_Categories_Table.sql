@@ -1,7 +1,7 @@
 CREATE TABLE categories (
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	store_id BIGINT NOT NULL,
-	title varchar(50) NOT NULL,
+	name varchar(50) NOT NULL,
 	image varchar(255),
 	enabled boolean,
 	created_by varchar(50),

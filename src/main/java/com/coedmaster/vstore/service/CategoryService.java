@@ -26,14 +26,14 @@ public class CategoryService implements ICategoryService {
 	public List<Category> getCategories() {
 		Store store = getStore();
 
-		return categoryRepository.findAllByStoreId(store.getId(), Sort.by(Sort.Direction.ASC, "title"));
+		return categoryRepository.findAllByStoreId(store.getId(), Sort.by(Sort.Direction.ASC, "name"));
 	}
 
 	@Override
 	public Category createCategory(CategoryRequestDto payload) {
 		Store store = getStore();
 
-		Category banner = Category.builder().store(store).title(payload.getTitle()).image(payload.getImage())
+		Category banner = Category.builder().store(store).name(payload.getName()).image(payload.getImage())
 				.enabled(true).build();
 
 		return categoryRepository.save(banner);
@@ -43,7 +43,7 @@ public class CategoryService implements ICategoryService {
 	public Category updateCategory(Long id, CategoryRequestDto payload) {
 		Category category = getCategory(id);
 
-		category.setTitle(payload.getTitle());
+		category.setName(payload.getName());
 		category.setImage(payload.getImage());
 
 		return categoryRepository.save(category);
@@ -69,7 +69,7 @@ public class CategoryService implements ICategoryService {
 		Store store = getStore();
 
 		Category category = categoryRepository.findByIdAndStoreId(id, store.getId())
-				.orElseThrow(() -> new EntityNotFoundException("Banner not found"));
+				.orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
 		return category;
 	}
