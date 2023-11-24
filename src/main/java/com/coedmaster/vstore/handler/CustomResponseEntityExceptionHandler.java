@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -26,12 +28,30 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
 	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistsException.class,
 			UsernameAlreadyTakenException.class, StoreCodeAlreadyTakenException.class })
-	public ResponseEntity<ErrorResponseDto> handleEntityNotFoundException(Exception ex, WebRequest request) {
+	public ResponseEntity<ErrorResponseDto> handleAllException(Exception ex, WebRequest request) {
 
 		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(400)
 				.error(HttpStatus.BAD_REQUEST).message(ex.getMessage()).path(request.getDescription(false)).build();
 
 		return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<ErrorResponseDto> handleAuthenticationException(Exception ex, WebRequest request) {
+
+		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(401)
+				.error(HttpStatus.UNAUTHORIZED).message(ex.getMessage()).path(request.getDescription(false)).build();
+
+		return new ResponseEntity<>(errorResponseDto, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<ErrorResponseDto> handleAccessDeniedExceptionException(Exception ex, WebRequest request) {
+
+		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(403)
+				.error(HttpStatus.FORBIDDEN).message(ex.getMessage()).path(request.getDescription(false)).build();
+
+		return new ResponseEntity<>(errorResponseDto, HttpStatus.FORBIDDEN);
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)

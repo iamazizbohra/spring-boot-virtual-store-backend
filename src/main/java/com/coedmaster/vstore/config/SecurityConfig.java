@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.coedmaster.vstore.handler.CustomAccessDeniedHandler;
 import com.coedmaster.vstore.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.coedmaster.vstore.security.filter.AccountStatusFilter;
 import com.coedmaster.vstore.security.filter.JwtAuthenticationFilter;
@@ -40,8 +41,10 @@ public class SecurityConfig {
 			authorize.anyRequest().authenticated();
 		}).csrf((csrf) -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint()))
-				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling(exception -> {
+					exception.accessDeniedHandler(customAccessDeniedHandler());
+					exception.authenticationEntryPoint(jwtAuthenticationEntryPoint());
+				}).addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterAfter(new AccountStatusFilter(), AnonymousAuthenticationFilter.class);
 
 		return http.build();
@@ -70,6 +73,11 @@ public class SecurityConfig {
 	@Bean
 	public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
 		return new JwtAuthenticationEntryPoint();
+	}
+
+	@Bean
+	public CustomAccessDeniedHandler customAccessDeniedHandler() {
+		return new CustomAccessDeniedHandler();
 	}
 
 }
