@@ -46,12 +46,16 @@ import lombok.Setter;
 @Setter
 @Builder
 public class User {
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private List<Role> roles;
+
+	@OneToOne(mappedBy = "user")
+	private Store store;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@OneToOne(mappedBy = "user")
-	private Store store;
 
 	@Column(updatable = false)
 	@Convert(converter = UserTypeConverter.class)
@@ -69,10 +73,6 @@ public class User {
 
 	@Convert(converter = GenderConverter.class)
 	private Gender gender;
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private List<Role> roles;
 
 	private boolean enabled;
 

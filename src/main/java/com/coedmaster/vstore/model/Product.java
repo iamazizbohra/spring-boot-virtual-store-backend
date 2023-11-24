@@ -32,13 +32,13 @@ import lombok.Setter;
 @Getter
 @Builder
 public class Product {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
 	@ManyToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "id")
 	private Store store;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private String name;
 

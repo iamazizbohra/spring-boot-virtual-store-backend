@@ -32,14 +32,14 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Role {
+	@ManyToMany(mappedBy = "roles")
+	private List<User> users;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
-
-	@ManyToMany(mappedBy = "roles")
-	private List<User> users;
 
 	@Column(updatable = false)
 	@CreatedBy
