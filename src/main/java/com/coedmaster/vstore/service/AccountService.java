@@ -71,7 +71,7 @@ public class AccountService implements IAccountService {
 
 		User user = User.builder().fullName(fullName).mobile(payload.getMobile()).userType(userType)
 				.password(passwordEncoder.encode(payload.getPassword())).email(payload.getEmail())
-				.gender(Gender.valueOf(payload.getGender())).roles(Collections.singleton(role)).enabled(true).build();
+				.gender(Gender.valueOf(payload.getGender())).roles(Collections.singletonList(role)).enabled(true).build();
 
 		User savedUser = userRepository.save(user);
 

@@ -122,7 +122,7 @@ public class UserDetails implements IUserDetails {
 
 	@Override
 	public boolean getEnabled() {
-		return this.enabled;
+		return enabled;
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class UserDetails implements IUserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return this.enabled;
+		return enabled;
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.coedmaster.vstore.model;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,7 +39,7 @@ public class Role {
 	private String name;
 
 	@ManyToMany(mappedBy = "roles")
-	private Collection<User> users;
+	private List<User> users;
 
 	@Column(updatable = false)
 	@CreatedBy
