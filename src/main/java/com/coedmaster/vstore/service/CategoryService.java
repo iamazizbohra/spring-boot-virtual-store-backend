@@ -20,7 +20,7 @@ public class CategoryService implements ICategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Autowired
-	private StoreService storeServiceImpl;
+	private StoreService storeService;
 
 	@Override
 	public List<Category> getCategories() {
@@ -75,7 +75,7 @@ public class CategoryService implements ICategoryService {
 	}
 
 	private Store getStore() {
-		return storeServiceImpl.getStoreByAuthentication();
+		return storeService.getStoreByAuthentication();
 	}
 
 }

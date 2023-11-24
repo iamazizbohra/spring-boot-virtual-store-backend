@@ -2,6 +2,7 @@ package com.coedmaster.vstore.handler;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,19 @@ import jakarta.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+	@ExceptionHandler(RuntimeException.class)
+	public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(Exception ex, WebRequest request) {
+
+		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(500)
+				.error(HttpStatus.INTERNAL_SERVER_ERROR).stackTrace(Arrays.toString(ex.getStackTrace()))
+				.message(ex.getMessage()).path(request.getDescription(false)).build();
+
+		return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistsException.class,
 			UsernameAlreadyTakenException.class, StoreCodeAlreadyTakenException.class })
-	public ResponseEntity<ErrorResponseDto> handleAllException(Exception ex, WebRequest request) {
+	public ResponseEntity<ErrorResponseDto> handleAllCustomException(Exception ex, WebRequest request) {
 
 		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(400)
 				.error(HttpStatus.BAD_REQUEST).message(ex.getMessage()).path(request.getDescription(false)).build();

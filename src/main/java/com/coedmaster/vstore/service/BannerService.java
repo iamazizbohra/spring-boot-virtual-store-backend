@@ -21,7 +21,7 @@ public class BannerService implements IBannerService {
 	private BannerRepository bannerRepository;
 
 	@Autowired
-	private StoreService storeServiceImpl;
+	private StoreService storeService;
 
 	@Override
 	public List<Banner> getBanners() {
@@ -85,7 +85,7 @@ public class BannerService implements IBannerService {
 	}
 
 	private Store getStore() {
-		return storeServiceImpl.getStoreByAuthentication();
+		return storeService.getStoreByAuthentication();
 	}
 
 }
