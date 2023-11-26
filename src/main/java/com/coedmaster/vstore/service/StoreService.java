@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +24,24 @@ public class StoreService implements IStoreService {
 	private StoreRepository storeRepository;
 
 	@Override
+	public Store getStoreById(Long storeId) {
+		return storeRepository.findById(storeId).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	}
+
+	@Override
+	public Store getStoreByCode(String code) {
+		return storeRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	}
+
+	@Override
 	public Store getStoreByUser(User user) {
 		return storeRepository.findByUserId(user.getId())
 				.orElseThrow(() -> new UsernameNotFoundException("Store not found"));
 	}
 
 	@Override
-	public Store getStoreByCode(String code) {
-		return storeRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	public Page<Store> getStores(Pageable pageable) {
+		return storeRepository.findAll(pageable);
 	}
 
 	@Override

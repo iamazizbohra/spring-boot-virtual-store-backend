@@ -8,6 +8,6 @@ import com.coedmaster.vstore.model.Store;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 	Optional<Store> findByUserId(Long userId);
-	
+
 	Optional<Store> findByCode(String code);
 }
