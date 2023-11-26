@@ -84,13 +84,20 @@ public class ProductController {
 	@GetMapping("/product")
 	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request,
 			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		PageRequest paging = PageRequest.of(pageNumber, pageSize, Sort.by("lastModifiedDate").descending());
 
-		Page<Product> productsPage = productService.getProducts(store, paging);
+		Page<Product> productsPage;
+		if (categoryId == 0) {
+			productsPage = productService.getProducts(store, paging);
+		} else {
+			Category category = categoryService.getCategory(categoryId, store);
+			productsPage = productService.getProducts(store, category, paging);
+		}
 
 		List<ProductResponseDto> productResponseDto = productsPage.getContent().stream()
 				.map(e -> modelMapper.map(e, ProductResponseDto.class)).collect(Collectors.toList());

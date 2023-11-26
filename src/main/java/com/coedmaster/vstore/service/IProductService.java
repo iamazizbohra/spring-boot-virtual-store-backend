@@ -13,6 +13,8 @@ public interface IProductService {
 	Product getProduct(Long id, Store store);
 
 	Page<Product> getProducts(Store store, Pageable pageable);
+	
+	Page<Product> getProducts(Store store, Category category, Pageable pageable);
 
 	Product createProduct(Store store, Category category, ProductRequestDto payload);
 

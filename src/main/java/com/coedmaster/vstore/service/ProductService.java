@@ -31,6 +31,11 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+	public Page<Product> getProducts(Store store, Category category, Pageable pageable) {
+		return productRepository.findAllByStoreIdAndCategoryId(store.getId(), category.getId(), pageable);
+	}
+
+	@Override
 	public Product createProduct(Store store, Category category, ProductRequestDto payload) {
 		Product product = new Product();
 		product.setStore(store);
