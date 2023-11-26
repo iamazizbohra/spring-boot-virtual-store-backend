@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.coedmaster.vstore.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-	Optional<Product> findByIdAndStoreId(Long id, Long storeId);
+	Optional<Product> findByIdAndStoreId(Long productId, Long storeId);
 
 	Page<Product> findAllByStoreId(Long storeId, Pageable pageable);
 
