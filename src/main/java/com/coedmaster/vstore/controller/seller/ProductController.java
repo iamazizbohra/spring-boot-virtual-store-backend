@@ -29,9 +29,11 @@ import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.request.ProductRequestDto;
 import com.coedmaster.vstore.dto.response.ProductResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
+import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.service.AuthenticationService;
+import com.coedmaster.vstore.service.CategoryService;
 import com.coedmaster.vstore.service.IStoreService;
 import com.coedmaster.vstore.service.ProductService;
 
@@ -46,6 +48,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private IStoreService storeService;
@@ -113,7 +118,9 @@ public class ProductController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Product product = productService.createProduct(store, payload);
+		Category category = categoryService.getCategory(payload.getCategoryId(), store);
+
+		Product product = productService.createProduct(store, category, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
@@ -135,7 +142,9 @@ public class ProductController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Product product = productService.updateProduct(id, store, payload);
+		Category category = categoryService.getCategory(payload.getCategoryId(), store);
+
+		Product product = productService.updateProduct(id, store, category, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 

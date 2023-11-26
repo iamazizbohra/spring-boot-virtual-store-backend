@@ -6,6 +6,9 @@ import lombok.Data;
 
 @Data
 public class ProductRequestDto {
+	@NotNull
+	private Long categoryId;
+
 	@NotEmpty
 	private String name;
 

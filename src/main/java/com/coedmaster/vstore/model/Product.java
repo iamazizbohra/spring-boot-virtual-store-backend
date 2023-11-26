@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,10 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "id")
 	private Store store;
+
+	@OneToOne
+	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	private Category category;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

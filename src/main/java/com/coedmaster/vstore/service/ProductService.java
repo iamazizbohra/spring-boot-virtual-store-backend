@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.request.ProductRequestDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.respository.ProductRepository;
@@ -30,9 +31,10 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product createProduct(Store store, ProductRequestDto payload) {
+	public Product createProduct(Store store, Category category, ProductRequestDto payload) {
 		Product product = new Product();
 		product.setStore(store);
+		product.setCategory(category);
 		product.setName(payload.getName());
 		product.setDescription(payload.getDescription());
 		product.setImage(payload.getImage());
@@ -45,8 +47,9 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product updateProduct(Long id, Store store, ProductRequestDto payload) {
+	public Product updateProduct(Long id, Store store, Category category, ProductRequestDto payload) {
 		Product product = getProduct(id, store);
+		product.setCategory(category);
 		product.setName(payload.getName());
 		product.setDescription(payload.getDescription());
 		product.setImage(payload.getImage());
