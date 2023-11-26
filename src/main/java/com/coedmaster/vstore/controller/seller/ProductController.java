@@ -85,11 +85,14 @@ public class ProductController {
 	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request,
 			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
 			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-			@RequestParam(value = "categoryIds") List<Long> categoryIds) {
+			@RequestParam(value = "categoryIds", defaultValue = "") List<Long> categoryIds,
+			@RequestParam(value = "sortBy", defaultValue = "lastModifiedDate") String sortBy,
+			@RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		PageRequest paging = PageRequest.of(pageNumber, pageSize, Sort.by("lastModifiedDate").descending());
+		PageRequest paging = PageRequest.of(pageNumber, pageSize,
+				Sort.by(Sort.Direction.valueOf(sortDirection), sortBy));
 
 		Page<Product> productsPage;
 		if (categoryIds.size() == 0) {
