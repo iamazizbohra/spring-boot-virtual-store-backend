@@ -21,8 +21,8 @@ public class BannerService implements IBannerService {
 	private BannerRepository bannerRepository;
 
 	@Override
-	public Banner getBanner(Long id, Store store) {
-		return bannerRepository.findByIdAndStoreId(id, store.getId())
+	public Banner getBanner(Long bannerId, Store store) {
+		return bannerRepository.findByIdAndStoreId(bannerId, store.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Banner not found"));
 	}
 
@@ -44,8 +44,8 @@ public class BannerService implements IBannerService {
 	}
 
 	@Override
-	public Banner updateBanner(Long id, Store store, BannerRequestDto payload) {
-		Banner banner = getBanner(id, store);
+	public Banner updateBanner(Long bannerId, Store store, BannerRequestDto payload) {
+		Banner banner = getBanner(bannerId, store);
 		banner.setTitle(payload.getTitle());
 		banner.setImage(payload.getImage());
 
@@ -53,23 +53,23 @@ public class BannerService implements IBannerService {
 	}
 
 	@Override
-	public void deleteBanner(Long id, Store store) {
-		Banner banner = getBanner(id, store);
+	public void deleteBanner(Long bannerId, Store store) {
+		Banner banner = getBanner(bannerId, store);
 
 		bannerRepository.deleteById(banner.getId());
 	}
 
 	@Override
-	public Banner updateBannerStatus(Long id, Store store, UpdateStatusDto payload) {
-		Banner banner = getBanner(id, store);
+	public Banner updateBannerStatus(Long bannerId, Store store, UpdateStatusDto payload) {
+		Banner banner = getBanner(bannerId, store);
 		banner.setEnabled(payload.isEnabled());
 
 		return bannerRepository.save(banner);
 	}
 
 	@Override
-	public Banner updateBannerSortOrder(Long id, Store store, UpdateSortOrderDto payload) {
-		Banner banner = getBanner(id, store);
+	public Banner updateBannerSortOrder(Long bannerId, Store store, UpdateSortOrderDto payload) {
+		Banner banner = getBanner(bannerId, store);
 		banner.setSortOrder(payload.getSortOrder());
 
 		return bannerRepository.save(banner);

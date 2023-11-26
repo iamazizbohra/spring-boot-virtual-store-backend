@@ -9,18 +9,18 @@ import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Store;
 
 public interface IBannerService {
-	Banner getBanner(Long id, Store store);
+	Banner getBanner(Long bannerId, Store store);
 
 	List<Banner> getBanners(Store store);
 
 	Banner createBanner(Store store, BannerRequestDto payload);
 
-	Banner updateBanner(Long id, Store store, BannerRequestDto payload);
+	Banner updateBanner(Long bannerId, Store store, BannerRequestDto payload);
 
-	void deleteBanner(Long id, Store store);
+	void deleteBanner(Long bannerId, Store store);
 
-	Banner updateBannerStatus(Long id, Store store, UpdateStatusDto payload);
+	Banner updateBannerStatus(Long bannerId, Store store, UpdateStatusDto payload);
 
-	Banner updateBannerSortOrder(Long id, Store store, UpdateSortOrderDto payload);
+	Banner updateBannerSortOrder(Long bannerId, Store store, UpdateSortOrderDto payload);
 
 }

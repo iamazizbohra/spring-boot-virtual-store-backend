@@ -8,17 +8,17 @@ import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
 
 public interface ICategoryService {
-	Category getCategory(Long id, Store store);
+	Category getCategory(Long categoryId, Store store);
 
 	List<Category> getCategories(Store store);
 
-	List<Category> getCategories(List<Long> ids, Store store);
+	List<Category> getCategories(List<Long> categoryIds, Store store);
 
 	Category createCategory(Store store, CategoryRequestDto payload);
 
-	Category updateCategory(Long id, Store store, CategoryRequestDto payload);
+	Category updateCategory(Long categoryId, Store store, CategoryRequestDto payload);
 
-	void deleteCategory(Long id, Store store);
+	void deleteCategory(Long categoryId, Store store);
 
-	Category updateCategoryStatus(Long id, Store store, UpdateStatusDto payload);
+	Category updateCategoryStatus(Long categoryId, Store store, UpdateStatusDto payload);
 }

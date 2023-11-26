@@ -12,7 +12,7 @@ import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
 
 public interface IProductService {
-	Product getProduct(Long id, Store store);
+	Product getProduct(Long productId, Store store);
 
 	Page<Product> getProducts(Store store, Pageable pageable);
 	
@@ -20,9 +20,9 @@ public interface IProductService {
 
 	Product createProduct(Store store, Category category, ProductRequestDto payload);
 
-	Product updateProduct(Long id, Store store, Category category, ProductRequestDto payload);
+	Product updateProduct(Long productId, Store store, Category category, ProductRequestDto payload);
 
-	void deleteProduct(Long id, Store store);
+	void deleteProduct(Long productId, Store store);
 
-	Product updateProductStatus(Long id, Store store, UpdateStatusDto payload);
+	Product updateProductStatus(Long productId, Store store, UpdateStatusDto payload);
 }

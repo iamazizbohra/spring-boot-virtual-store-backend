@@ -23,8 +23,8 @@ public class ProductService implements IProductService {
 	private ProductRepository productRepository;
 
 	@Override
-	public Product getProduct(Long id, Store store) {
-		return productRepository.findByIdAndStoreId(id, store.getId())
+	public Product getProduct(Long productId, Store store) {
+		return productRepository.findByIdAndStoreId(productId, store.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Product not found"));
 	}
 
@@ -57,8 +57,8 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product updateProduct(Long id, Store store, Category category, ProductRequestDto payload) {
-		Product product = getProduct(id, store);
+	public Product updateProduct(Long productId, Store store, Category category, ProductRequestDto payload) {
+		Product product = getProduct(productId, store);
 		product.setCategory(category);
 		product.setName(payload.getName());
 		product.setDescription(payload.getDescription());
@@ -71,15 +71,15 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public void deleteProduct(Long id, Store store) {
-		Product product = getProduct(id, store);
+	public void deleteProduct(Long productId, Store store) {
+		Product product = getProduct(productId, store);
 
 		productRepository.deleteById(product.getId());
 	}
 
 	@Override
-	public Product updateProductStatus(Long id, Store store, UpdateStatusDto payload) {
-		Product product = getProduct(id, store);
+	public Product updateProductStatus(Long productId, Store store, UpdateStatusDto payload) {
+		Product product = getProduct(productId, store);
 		product.setEnabled(payload.isEnabled());
 
 		return productRepository.save(product);

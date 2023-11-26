@@ -20,8 +20,8 @@ public class CategoryService implements ICategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Override
-	public Category getCategory(Long id, Store store) {
-		return categoryRepository.findByIdAndStoreId(id, store.getId())
+	public Category getCategory(Long categoryId, Store store) {
+		return categoryRepository.findByIdAndStoreId(categoryId, store.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Category not found"));
 	}
 
@@ -31,8 +31,8 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public List<Category> getCategories(List<Long> ids, Store store) {
-		return categoryRepository.findAllByIdInAndStoreId(ids, store.getId(), Sort.by("name"));
+	public List<Category> getCategories(List<Long> categoryIds, Store store) {
+		return categoryRepository.findAllByIdInAndStoreId(categoryIds, store.getId(), Sort.by("name"));
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public Category updateCategory(Long id, Store store, CategoryRequestDto payload) {
-		Category category = getCategory(id, store);
+	public Category updateCategory(Long categoryId, Store store, CategoryRequestDto payload) {
+		Category category = getCategory(categoryId, store);
 		category.setName(payload.getName());
 		category.setImage(payload.getImage());
 
@@ -56,15 +56,15 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public void deleteCategory(Long id, Store store) {
-		Category category = getCategory(id, store);
+	public void deleteCategory(Long categoryId, Store store) {
+		Category category = getCategory(categoryId, store);
 
 		categoryRepository.deleteById(category.getId());
 	}
 
 	@Override
-	public Category updateCategoryStatus(Long id, Store store, UpdateStatusDto payload) {
-		Category category = getCategory(id, store);
+	public Category updateCategoryStatus(Long categoryId, Store store, UpdateStatusDto payload) {
+		Category category = getCategory(categoryId, store);
 		category.setEnabled(payload.isEnabled());
 
 		return categoryRepository.save(category);
