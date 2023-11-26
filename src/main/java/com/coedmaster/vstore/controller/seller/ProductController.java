@@ -1,12 +1,17 @@
 package com.coedmaster.vstore.controller.seller;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coedmaster.vstore.dto.UpdateStatusDto;
@@ -64,23 +70,34 @@ public class ProductController {
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product fetched successfully").data(productResponseDto).path(request.getServletPath()).build();
+				.message("Product fetched successfully").data(productResponseDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/product")
-	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request) {
+	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request,
+			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		List<Product> products = productService.getProducts(store);
+		PageRequest paging = PageRequest.of(pageNumber, pageSize, Sort.by("lastModifiedDate").descending());
 
-		List<ProductResponseDto> productResponseDto = products.stream()
+		Page<Product> productsPage = productService.getProducts(store, paging);
+
+		List<ProductResponseDto> productResponseDto = productsPage.getContent().stream()
 				.map(e -> modelMapper.map(e, ProductResponseDto.class)).collect(Collectors.toList());
 
+		Map<String, Object> pageDetails = new HashMap<>();
+		pageDetails.put("products", productResponseDto);
+		pageDetails.put("currentPage", productsPage.getNumber());
+		pageDetails.put("totalItems", productsPage.getTotalElements());
+		pageDetails.put("totalPages", productsPage.getTotalPages());
+
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Products fetched successfully").data(productResponseDto).path(request.getServletPath()).build();
+				.message("Products fetched successfully").data(pageDetails).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -101,7 +118,8 @@ public class ProductController {
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product created successfully").data(productResponseDto).path(request.getServletPath()).build();
+				.message("Product created successfully").data(productResponseDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -122,7 +140,8 @@ public class ProductController {
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product updated successfully").data(productResponseDto).path(request.getServletPath()).build();
+				.message("Product updated successfully").data(productResponseDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

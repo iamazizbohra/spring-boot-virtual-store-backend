@@ -1,9 +1,8 @@
 package com.coedmaster.vstore.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.UpdateStatusDto;
@@ -26,8 +25,8 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public List<Product> getProducts(Store store) {
-		return productRepository.findAllByStoreId(store.getId(), Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
+	public Page<Product> getProducts(Store store, Pageable pageable) {
+		return productRepository.findAllByStoreId(store.getId(), pageable);
 	}
 
 	@Override

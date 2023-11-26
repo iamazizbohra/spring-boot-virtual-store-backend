@@ -1,6 +1,7 @@
 package com.coedmaster.vstore.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.request.ProductRequestDto;
@@ -10,7 +11,7 @@ import com.coedmaster.vstore.model.Store;
 public interface IProductService {
 	Product getProduct(Long id, Store store);
 
-	List<Product> getProducts(Store store);
+	Page<Product> getProducts(Store store, Pageable pageable);
 
 	Product createProduct(Store store, ProductRequestDto payload);
 
