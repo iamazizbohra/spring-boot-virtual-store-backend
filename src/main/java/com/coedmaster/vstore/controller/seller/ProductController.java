@@ -85,18 +85,18 @@ public class ProductController {
 	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request,
 			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
 			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
+			@RequestParam(value = "categoryIds") List<Long> categoryIds) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		PageRequest paging = PageRequest.of(pageNumber, pageSize, Sort.by("lastModifiedDate").descending());
 
 		Page<Product> productsPage;
-		if (categoryId == 0) {
+		if (categoryIds.size() == 0) {
 			productsPage = productService.getProducts(store, paging);
 		} else {
-			Category category = categoryService.getCategory(categoryId, store);
-			productsPage = productService.getProducts(store, category, paging);
+			List<Category> categories = categoryService.getCategories(categoryIds, store);
+			productsPage = productService.getProducts(store, categories, paging);
 		}
 
 		List<ProductResponseDto> productResponseDto = productsPage.getContent().stream()

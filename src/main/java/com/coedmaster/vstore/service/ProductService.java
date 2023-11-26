@@ -1,5 +1,8 @@
 package com.coedmaster.vstore.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +34,10 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Page<Product> getProducts(Store store, Category category, Pageable pageable) {
-		return productRepository.findAllByStoreIdAndCategoryId(store.getId(), category.getId(), pageable);
+	public Page<Product> getProducts(Store store, List<Category> categories, Pageable pageable) {
+		List<Long> categoryIds = categories.stream().map((e) -> e.getId()).collect(Collectors.toList());
+
+		return productRepository.findAllByStoreIdAndCategoryIdIn(store.getId(), categoryIds, pageable);
 	}
 
 	@Override

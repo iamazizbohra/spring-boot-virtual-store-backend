@@ -1,5 +1,7 @@
 package com.coedmaster.vstore.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +16,7 @@ public interface IProductService {
 
 	Page<Product> getProducts(Store store, Pageable pageable);
 	
-	Page<Product> getProducts(Store store, Category category, Pageable pageable);
+	Page<Product> getProducts(Store store, List<Category> categories, Pageable pageable);
 
 	Product createProduct(Store store, Category category, ProductRequestDto payload);
 

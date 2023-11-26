@@ -12,6 +12,8 @@ public interface ICategoryService {
 
 	List<Category> getCategories(Store store);
 
+	List<Category> getCategories(List<Long> ids, Store store);
+
 	Category createCategory(Store store, CategoryRequestDto payload);
 
 	Category updateCategory(Long id, Store store, CategoryRequestDto payload);
