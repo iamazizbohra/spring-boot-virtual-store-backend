@@ -19,6 +19,7 @@ import com.coedmaster.vstore.dto.response.ValidationErrorResponseDto;
 import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
+import com.coedmaster.vstore.exception.UnallowedOperationException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
 import com.coedmaster.vstore.validation.Violation;
 
@@ -26,7 +27,6 @@ import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(Exception ex, WebRequest request) {
 
@@ -38,7 +38,8 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	}
 
 	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistsException.class,
-			UsernameAlreadyTakenException.class, StoreCodeAlreadyTakenException.class })
+			UsernameAlreadyTakenException.class, StoreCodeAlreadyTakenException.class,
+			UnallowedOperationException.class })
 	public ResponseEntity<ErrorResponseDto> handleAllCustomException(Exception ex, WebRequest request) {
 
 		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(400)
