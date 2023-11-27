@@ -45,12 +45,12 @@ public class ProductController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@GetMapping("/store/{storeId}/product/{id}")
+	@GetMapping("/store/{storeId}/product/{productId}")
 	public ResponseEntity<SuccessResponseDto> getProduct(HttpServletRequest request,
-			@PathVariable(name = "storeId") Long storeId, @PathVariable(name = "id") Long id) {
+			@PathVariable(name = "storeId") Long storeId, @PathVariable(name = "productId") Long productId) {
 		Store store = storeService.getStoreById(storeId);
 
-		Product product = productService.getProduct(id, store);
+		Product product = productService.getProduct(productId, store);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 

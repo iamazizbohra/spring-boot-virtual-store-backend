@@ -54,13 +54,13 @@ public class BannerController {
 	@Autowired
 	private Validator validator;
 
-	@GetMapping("/banner/{id}")
+	@GetMapping("/banner/{bannerId}")
 	public ResponseEntity<SuccessResponseDto> getBanner(HttpServletRequest request,
-			@PathVariable(value = "id") Long id) {
+			@PathVariable(name = "bannerId") Long bannerId) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Banner banner = bannerService.getBanner(id, store);
+		Banner banner = bannerService.getBanner(bannerId, store);
 
 		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
 
@@ -108,9 +108,9 @@ public class BannerController {
 
 	}
 
-	@PutMapping("/banner/{id}")
+	@PutMapping("/banner/{bannerId}")
 	public ResponseEntity<SuccessResponseDto> updateBanner(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody BannerRequestDto payload) {
+			@PathVariable(name = "bannerId") Long bannerId, @RequestBody BannerRequestDto payload) {
 		Set<ConstraintViolation<BannerRequestDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -119,7 +119,7 @@ public class BannerController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Banner banner = bannerService.updateBanner(id, store, payload);
+		Banner banner = bannerService.updateBanner(bannerId, store, payload);
 
 		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
 
@@ -129,23 +129,9 @@ public class BannerController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/banner/{id}")
-	public ResponseEntity<SuccessResponseDto> deleteBanner(HttpServletRequest request,
-			@PathVariable(value = "id") Long id) {
-		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
-
-		bannerService.deleteBanner(id, store);
-
-		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner deleted successfully").data(null).path(request.getServletPath()).build();
-
-		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
-	}
-
-	@PatchMapping("/banner/{id}/status")
+	@PatchMapping("/banner/{bannerId}/status")
 	public ResponseEntity<SuccessResponseDto> updateBannerStatus(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody UpdateStatusDto payload) {
+			@PathVariable(name = "bannerId") Long bannerId, @RequestBody UpdateStatusDto payload) {
 		Set<ConstraintViolation<UpdateStatusDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -154,7 +140,7 @@ public class BannerController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Banner banner = bannerService.updateBannerStatus(id, store, payload);
+		Banner banner = bannerService.updateBannerStatus(bannerId, store, payload);
 
 		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
 
@@ -165,9 +151,9 @@ public class BannerController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@PatchMapping("/banner/{id}/sortorder")
+	@PatchMapping("/banner/{bannerId}/sortorder")
 	public ResponseEntity<SuccessResponseDto> updateBannerSortOrder(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody UpdateSortOrderDto payload) {
+			@PathVariable(name = "bannerId") Long bannerId, @RequestBody UpdateSortOrderDto payload) {
 		Set<ConstraintViolation<UpdateSortOrderDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -176,15 +162,28 @@ public class BannerController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Banner banner = bannerService.updateBannerSortOrder(id, store, payload);
+		Banner banner = bannerService.updateBannerSortOrder(bannerId, store, payload);
 
 		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner sort order updated successfully").data(bannerResponseDto).path(request.getServletPath())
-				.build();
+				.message("Banner sort order updated successfully").data(bannerResponseDto)
+				.path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
+	@DeleteMapping("/banner/{bannerId}")
+	public ResponseEntity<SuccessResponseDto> deleteBanner(HttpServletRequest request,
+			@PathVariable(name = "bannerId") Long bannerId) {
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		bannerService.deleteBanner(bannerId, store);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Banner deleted successfully").data(null).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
 }

@@ -46,12 +46,12 @@ public class AddressController {
 	@Autowired
 	private Validator validator;
 
-	@GetMapping("/address/{id}")
+	@GetMapping("/address/{addressId}")
 	public ResponseEntity<SuccessResponseDto> getAddress(HttpServletRequest request,
-			@PathVariable(name = "id") Long id) {
+			@PathVariable(name = "addressId") Long addressId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Address address = addressService.getAddress(id, user);
+		Address address = addressService.getAddress(addressId, user);
 
 		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
 
@@ -96,9 +96,9 @@ public class AddressController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@PutMapping("/address/{id}")
+	@PutMapping("/address/{addressId}")
 	public ResponseEntity<SuccessResponseDto> updateAddress(HttpServletRequest request,
-			@PathVariable(name = "id") Long id, @RequestBody AddressDto payload) {
+			@PathVariable(name = "addressId") Long addressId, @RequestBody AddressDto payload) {
 		Set<ConstraintViolation<AddressDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -106,7 +106,7 @@ public class AddressController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Address address = addressService.updateAddress(id, user, payload);
+		Address address = addressService.updateAddress(addressId, user, payload);
 
 		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
 
@@ -116,12 +116,12 @@ public class AddressController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@PatchMapping("/address/{id}/default")
+	@PatchMapping("/address/{addressId}/default")
 	public ResponseEntity<SuccessResponseDto> setDefaultAddress(HttpServletRequest request,
-			@PathVariable(name = "id") Long id) {
+			@PathVariable(name = "addressId") Long addressId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Address address = addressService.setDefaultAddress(id, user);
+		Address address = addressService.setDefaultAddress(addressId, user);
 
 		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
 
@@ -131,12 +131,12 @@ public class AddressController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/address/{id}")
+	@DeleteMapping("/address/{addressId}")
 	public ResponseEntity<SuccessResponseDto> deleteAddress(HttpServletRequest request,
-			@PathVariable(name = "id") Long id) {
+			@PathVariable(name = "addressId") Long addressId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		addressService.deleteAddress(id, user);
+		addressService.deleteAddress(addressId, user);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
 				.message("Address deleted successfully").data(null).path(request.getServletPath()).build();

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,9 +74,8 @@ public class StoreController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@PutMapping("/store/{id}")
-	public ResponseEntity<SuccessResponseDto> updateStore(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody StoreDto payload) {
+	@PutMapping("/store")
+	public ResponseEntity<SuccessResponseDto> updateStore(HttpServletRequest request, @RequestBody StoreDto payload) {
 		Set<ConstraintViolation<StoreDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty())
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -91,7 +89,7 @@ public class StoreController {
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Store created successfully").data(storeDto).path(request.getServletPath()).build();
+				.message("Store updated successfully").data(storeDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

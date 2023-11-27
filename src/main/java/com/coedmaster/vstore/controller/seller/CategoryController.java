@@ -52,19 +52,20 @@ public class CategoryController {
 
 	@Autowired
 	private Validator validator;
-	
-	@GetMapping("/category/{id}")
+
+	@GetMapping("/category/{categoryId}")
 	public ResponseEntity<SuccessResponseDto> getCategory(HttpServletRequest request,
-			@PathVariable(value = "id") Long id) {
+			@PathVariable(name = "categoryId") Long categoryId) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Category category = categoryService.getCategory(id, store);
+		Category category = categoryService.getCategory(categoryId, store);
 
 		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category fetched successfully").data(categoryResponseDto).path(request.getServletPath()).build();
+				.message("Category fetched successfully").data(categoryResponseDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -109,9 +110,9 @@ public class CategoryController {
 
 	}
 
-	@PutMapping("/category/{id}")
+	@PutMapping("/category/{categoryId}")
 	public ResponseEntity<SuccessResponseDto> updateCategory(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody CategoryRequestDto payload) {
+			@PathVariable(name = "categoryId") Long categoryId, @RequestBody CategoryRequestDto payload) {
 		Set<ConstraintViolation<CategoryRequestDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -120,7 +121,7 @@ public class CategoryController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Category category = categoryService.updateCategory(id, store, payload);
+		Category category = categoryService.updateCategory(categoryId, store, payload);
 
 		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
 
@@ -131,24 +132,9 @@ public class CategoryController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/category/{id}")
-	public ResponseEntity<SuccessResponseDto> deleteCategory(HttpServletRequest request,
-			@PathVariable(value = "id") Long id) {
-
-		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
-
-		categoryService.deleteCategory(id, store);
-
-		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category deleted successfully").data(null).path(request.getServletPath()).build();
-
-		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
-	}
-
-	@PatchMapping("/category/{id}/status")
+	@PatchMapping("/category/{categoryId}/status")
 	public ResponseEntity<SuccessResponseDto> updateCategoryStatus(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody UpdateStatusDto payload) {
+			@PathVariable(name = "categoryId") Long categoryId, @RequestBody UpdateStatusDto payload) {
 		Set<ConstraintViolation<UpdateStatusDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -157,15 +143,29 @@ public class CategoryController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Category category = categoryService.updateCategoryStatus(id, store, payload);
+		Category category = categoryService.updateCategoryStatus(categoryId, store, payload);
 
 		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category status updated successfully").data(categoryResponseDto).path(request.getServletPath())
-				.build();
+				.message("Category status updated successfully").data(categoryResponseDto)
+				.path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
+	@DeleteMapping("/category/{categoryId}")
+	public ResponseEntity<SuccessResponseDto> deleteCategory(HttpServletRequest request,
+			@PathVariable(name = "categoryId") Long categoryId) {
+
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		categoryService.deleteCategory(categoryId, store);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Category deleted successfully").data(null).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
 }

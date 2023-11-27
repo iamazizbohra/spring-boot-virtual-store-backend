@@ -64,13 +64,13 @@ public class ProductController {
 	@Autowired
 	private Validator validator;
 
-	@GetMapping("/product/{id}")
+	@GetMapping("/product/{productId}")
 	public ResponseEntity<SuccessResponseDto> getProduct(HttpServletRequest request,
-			@PathVariable(value = "id") Long id) {
+			@PathVariable(name = "productId") Long productId) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Product product = productService.getProduct(id, store);
+		Product product = productService.getProduct(productId, store);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
@@ -83,11 +83,11 @@ public class ProductController {
 
 	@GetMapping("/product")
 	public ResponseEntity<SuccessResponseDto> getProducts(HttpServletRequest request,
-			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-			@RequestParam(value = "categoryIds", defaultValue = "") List<Long> categoryIds,
-			@RequestParam(value = "sortBy", defaultValue = "lastModifiedDate") String sortBy,
-			@RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection) {
+			@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+			@RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+			@RequestParam(name = "categoryIds", defaultValue = "") List<Long> categoryIds,
+			@RequestParam(name = "sortBy", defaultValue = "lastModifiedDate") String sortBy,
+			@RequestParam(name = "sortDirection", defaultValue = "DESC") String sortDirection) {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
@@ -141,9 +141,9 @@ public class ProductController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@PutMapping("/product/{id}")
+	@PutMapping("/product/{productId}")
 	public ResponseEntity<SuccessResponseDto> updateProduct(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody ProductRequestDto payload) {
+			@PathVariable(name = "productId") Long productId, @RequestBody ProductRequestDto payload) {
 		Set<ConstraintViolation<ProductRequestDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -154,7 +154,7 @@ public class ProductController {
 
 		Category category = categoryService.getCategory(payload.getCategoryId(), store);
 
-		Product product = productService.updateProduct(id, store, category, payload);
+		Product product = productService.updateProduct(productId, store, category, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
@@ -165,23 +165,9 @@ public class ProductController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/product/{id}")
-	public ResponseEntity<SuccessResponseDto> deleteProduct(HttpServletRequest request,
-			@PathVariable(value = "id") Long id) {
-		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
-
-		productService.deleteProduct(id, store);
-
-		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product deleted successfully").data(null).path(request.getServletPath()).build();
-
-		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
-	}
-
-	@PatchMapping("/product/{id}/status")
+	@PatchMapping("/product/{productId}/status")
 	public ResponseEntity<SuccessResponseDto> updateProductStatus(HttpServletRequest request,
-			@PathVariable(value = "id") Long id, @RequestBody UpdateStatusDto payload) {
+			@PathVariable(name = "productId") Long productId, @RequestBody UpdateStatusDto payload) {
 		Set<ConstraintViolation<UpdateStatusDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
@@ -190,7 +176,7 @@ public class ProductController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Product product = productService.updateProductStatus(id, store, payload);
+		Product product = productService.updateProductStatus(productId, store, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
@@ -201,4 +187,17 @@ public class ProductController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
+	@DeleteMapping("/product/{productId}")
+	public ResponseEntity<SuccessResponseDto> deleteProduct(HttpServletRequest request,
+			@PathVariable(name = "productId") Long productId) {
+		Store store = storeService
+				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+
+		productService.deleteProduct(productId, store);
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Product deleted successfully").data(null).path(request.getServletPath()).build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
 }

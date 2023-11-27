@@ -36,9 +36,9 @@ public class StoreController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@GetMapping("/store/{id}")
+	@GetMapping("/store/{storeId}")
 	public ResponseEntity<SuccessResponseDto> getStoreById(HttpServletRequest request,
-			@PathVariable(name = "id") Long storeId) {
+			@PathVariable(name = "storeId") Long storeId) {
 		Store store = storeService.getStoreById(storeId);
 
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
@@ -72,7 +72,7 @@ public class StoreController {
 
 		List<StoreDto> storeDto = storePage.getContent().stream().map(e -> modelMapper.map(e, StoreDto.class))
 				.collect(Collectors.toList());
-		
+
 		Map<String, Object> pageDetails = new HashMap<>();
 		pageDetails.put("products", storeDto);
 		pageDetails.put("currentPage", storePage.getNumber());
@@ -80,7 +80,7 @@ public class StoreController {
 		pageDetails.put("totalPages", storePage.getTotalPages());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Store fetched successfully").data(pageDetails).path(request.getServletPath()).build();
+				.message("Stores fetched successfully").data(pageDetails).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
