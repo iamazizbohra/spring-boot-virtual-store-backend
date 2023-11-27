@@ -33,13 +33,13 @@ import lombok.Setter;
 @Builder
 public class Banner {
 
-	@ManyToOne
-	@JoinColumn(name = "store_id", referencedColumnName = "id")
-	private Store store;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "store_id", referencedColumnName = "id")
+	private Store store;
 
 	private String title;
 

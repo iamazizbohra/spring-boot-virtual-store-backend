@@ -35,10 +35,6 @@ import lombok.Setter;
 @Builder
 public class Store {
 
-	@OneToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
-
 	@OneToMany(mappedBy = "store")
 	private List<Banner> banners;
 
@@ -51,6 +47,10 @@ public class Store {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
 
 	private String name;
 

@@ -35,16 +35,16 @@ import lombok.Setter;
 @Builder
 public class Category {
 
-	@ManyToOne
-	@JoinColumn(name = "store_id", referencedColumnName = "id")
-	private Store store;
-
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "store_id", referencedColumnName = "id")
+	private Store store;
 
 	private String name;
 
