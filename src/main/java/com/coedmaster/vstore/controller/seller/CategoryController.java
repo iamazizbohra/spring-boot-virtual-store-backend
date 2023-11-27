@@ -34,7 +34,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 
-@RestController
+@RestController("SellerCategoryController")
 @RequestMapping("/seller")
 public class CategoryController {
 
