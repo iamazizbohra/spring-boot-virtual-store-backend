@@ -13,14 +13,3 @@ CREATE TABLE users (
 	last_modified_by varchar(50),
 	last_modified_date timestamp
 );
-
-CREATE TABLE employees (
-	id BIGINT primary key GENERATED ALWAYS AS IDENTITY,
-	first_name varchar(50) NOT NULL,
-	last_name varchar(50) NOT NULL,
-	email varchar(50),
-	created_by varchar(50),
-	created_date timestamp,
-	last_modified_by varchar(50),
-	last_modified_date timestamp
-);
