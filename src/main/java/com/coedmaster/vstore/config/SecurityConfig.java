@@ -32,6 +32,8 @@ public class SecurityConfig {
 			authorize.requestMatchers(HttpMethod.POST, "/buyer/account").permitAll();
 			authorize.requestMatchers(HttpMethod.POST, "/seller/account").permitAll();
 			authorize.requestMatchers(HttpMethod.POST, "/authenticate").permitAll();
+
+			authorize.requestMatchers("/buyer/store/*/cart/**").authenticated();
 			authorize.requestMatchers("/buyer/store/**").permitAll();
 
 			authorize.requestMatchers("/admin/**").hasRole("ADMIN");
