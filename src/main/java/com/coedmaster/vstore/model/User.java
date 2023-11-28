@@ -15,6 +15,7 @@ import com.coedmaster.vstore.model.converter.GenderConverter;
 import com.coedmaster.vstore.model.converter.UserTypeConverter;
 import com.coedmaster.vstore.model.embeddable.FullName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -55,6 +56,7 @@ public class User {
 	private Store store;
 
 	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
 	private List<Address> addresses;
 
 	@Id

@@ -14,6 +14,4 @@ public interface ICartItemService {
 	CartItem createCartItem(Cart cart, Product product, Integer quantity);
 
 	CartItem updateCartItemQuantity(Cart cart, Product product, Integer quantity);
-
-	void deleteCartItem(Cart cart, Product product);
 }

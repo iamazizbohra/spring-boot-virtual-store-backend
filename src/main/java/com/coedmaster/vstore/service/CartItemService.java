@@ -56,13 +56,4 @@ public class CartItemService implements ICartItemService {
 
 	}
 
-	@Override
-	public void deleteCartItem(Cart cart, Product product) {
-		Optional<CartItem> cartItemOptional = getCartItem(cart, product);
-
-		if (!cartItemOptional.isEmpty()) {
-			cartItemRepository.deleteById(cartItemOptional.get().getId());
-		}
-	}
-
 }
