@@ -24,20 +24,21 @@ import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.CategoryService;
-import com.coedmaster.vstore.service.IStoreService;
-import com.coedmaster.vstore.service.ProductService;
+import com.coedmaster.vstore.service.contract.ICategoryService;
+import com.coedmaster.vstore.service.contract.IProductService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController("BuyerProductController")
 @RequestMapping("/buyer")
 public class ProductController {
+	
 	@Autowired
-	private ProductService productService;
+	private IProductService productService;
 
 	@Autowired
-	private CategoryService categoryService;
+	private ICategoryService categoryService;
 
 	@Autowired
 	private IStoreService storeService;
@@ -55,8 +56,7 @@ public class ProductController {
 		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product fetched successfully").data(productDto).path(request.getServletPath())
-				.build();
+				.message("Product fetched successfully").data(productDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -82,8 +82,8 @@ public class ProductController {
 			productsPage = productService.getProducts(store, categories, paging);
 		}
 
-		List<ProductDto> productDtos = productsPage.getContent().stream()
-				.map(e -> modelMapper.map(e, ProductDto.class)).collect(Collectors.toList());
+		List<ProductDto> productDtos = productsPage.getContent().stream().map(e -> modelMapper.map(e, ProductDto.class))
+				.collect(Collectors.toList());
 
 		Map<String, Object> pageDetails = new HashMap<>();
 		pageDetails.put("products", productDtos);

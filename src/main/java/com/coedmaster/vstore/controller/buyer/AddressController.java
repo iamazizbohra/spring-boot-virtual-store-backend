@@ -23,8 +23,8 @@ import com.coedmaster.vstore.dto.AddressDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Address;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.AddressService;
-import com.coedmaster.vstore.service.AuthenticationService;
+import com.coedmaster.vstore.service.contract.IAddressService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -34,11 +34,12 @@ import jakarta.validation.Validator;
 @RestController
 @RequestMapping("/buyer")
 public class AddressController {
-	@Autowired
-	private AddressService addressService;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IAuthenticationService authenticationService;
+
+	@Autowired
+	private IAddressService addressService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -121,7 +122,7 @@ public class AddressController {
 			@PathVariable(name = "addressId") Long addressId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Address address = addressService.setDefaultAddress(addressId, user);
+		Address address = addressService.updateDefaultAddress(addressId, user);
 
 		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
 

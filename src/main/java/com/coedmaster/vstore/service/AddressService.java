@@ -11,6 +11,7 @@ import com.coedmaster.vstore.exception.UnallowedOperationException;
 import com.coedmaster.vstore.model.Address;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.AddressRepository;
+import com.coedmaster.vstore.service.contract.IAddressService;
 
 @Service
 public class AddressService implements IAddressService {
@@ -69,7 +70,7 @@ public class AddressService implements IAddressService {
 	}
 
 	@Override
-	public Address setDefaultAddress(Long addressId, User user) {
+	public Address updateDefaultAddress(Long addressId, User user) {
 		List<Address> addresses = getAddresses(user);
 		addresses.stream().forEach((address) -> {
 			address.setDefault(false);

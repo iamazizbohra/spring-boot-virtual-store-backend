@@ -17,16 +17,17 @@ import com.coedmaster.vstore.dto.BannerDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.BannerService;
-import com.coedmaster.vstore.service.IStoreService;
+import com.coedmaster.vstore.service.contract.IBannerService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController("BuyerBannerController")
 @RequestMapping("/buyer")
 public class BannerController {
+
 	@Autowired
-	private BannerService bannerService;
+	private IBannerService bannerService;
 
 	@Autowired
 	private IStoreService storeService;
@@ -41,8 +42,8 @@ public class BannerController {
 
 		List<Banner> banners = bannerService.getBanners(store);
 
-		List<BannerDto> bannerDtos = banners.stream()
-				.map(e -> modelMapper.map(e, BannerDto.class)).collect(Collectors.toList());
+		List<BannerDto> bannerDtos = banners.stream().map(e -> modelMapper.map(e, BannerDto.class))
+				.collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
 				.message("Banners fetched successfully").data(bannerDtos).path(request.getServletPath()).build();

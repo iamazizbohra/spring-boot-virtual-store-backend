@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.model.UserDetails;
 import com.coedmaster.vstore.respository.UserRepository;
+import com.coedmaster.vstore.service.contract.IUserDetailsService;
 
 @Service
 public class UserDetailsService implements IUserDetailsService {

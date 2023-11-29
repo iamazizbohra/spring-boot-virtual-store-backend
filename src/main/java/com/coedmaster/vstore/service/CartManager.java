@@ -16,6 +16,7 @@ import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.CartItemRepository;
 import com.coedmaster.vstore.respository.CartRepository;
+import com.coedmaster.vstore.service.contract.ICartService;
 
 @Service
 public class CartManager implements ICartService {

@@ -33,9 +33,9 @@ import com.coedmaster.vstore.model.Order;
 import com.coedmaster.vstore.model.OrderItem;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.AuthenticationService;
-import com.coedmaster.vstore.service.OrderManager;
-import com.coedmaster.vstore.service.StoreService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.IOrderService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -47,13 +47,13 @@ import jakarta.validation.Validator;
 public class OrderController {
 
 	@Autowired
-	private StoreService storeService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private OrderManager orderManager;
+	private IStoreService storeService;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IOrderService orderManager;
 
 	@Autowired
 	private Validator validator;

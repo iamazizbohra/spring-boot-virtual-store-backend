@@ -33,11 +33,11 @@ import com.coedmaster.vstore.model.CartTotalSummary;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.AddressService;
-import com.coedmaster.vstore.service.AuthenticationService;
-import com.coedmaster.vstore.service.CartManager;
-import com.coedmaster.vstore.service.ProductService;
-import com.coedmaster.vstore.service.StoreService;
+import com.coedmaster.vstore.service.contract.IAddressService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.ICartService;
+import com.coedmaster.vstore.service.contract.IProductService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -49,19 +49,19 @@ import jakarta.validation.Validator;
 public class CartController {
 
 	@Autowired
-	private CartManager cartManager;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private StoreService storeService;
+	private ICartService cartManager;
 
 	@Autowired
-	private ProductService productService;
+	private IStoreService storeService;
 
 	@Autowired
-	private AddressService addressService;
+	private IProductService productService;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IAddressService addressService;
 
 	@Autowired
 	private ModelMapper modelMapper;

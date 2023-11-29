@@ -19,7 +19,7 @@ import com.coedmaster.vstore.handler.CustomAccessDeniedHandler;
 import com.coedmaster.vstore.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.coedmaster.vstore.security.filter.AccountStatusFilter;
 import com.coedmaster.vstore.security.filter.JwtAuthenticationFilter;
-import com.coedmaster.vstore.service.IUserDetailsService;
+import com.coedmaster.vstore.service.contract.IUserDetailsService;
 
 @Configuration
 @EnableWebSecurity

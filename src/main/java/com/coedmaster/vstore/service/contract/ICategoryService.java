@@ -1,9 +1,8 @@
-package com.coedmaster.vstore.service;
+package com.coedmaster.vstore.service.contract;
 
 import java.util.List;
 
 import com.coedmaster.vstore.dto.CategoryDto;
-import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
 
@@ -18,7 +17,7 @@ public interface ICategoryService {
 
 	Category updateCategory(Long categoryId, Store store, CategoryDto payload);
 
-	void deleteCategory(Long categoryId, Store store);
+	Category updateCategoryStatus(Long categoryId, Store store, boolean status);
 
-	Category updateCategoryStatus(Long categoryId, Store store, UpdateStatusDto payload);
+	void deleteCategory(Long categoryId, Store store);
 }

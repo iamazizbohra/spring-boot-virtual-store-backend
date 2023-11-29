@@ -17,16 +17,17 @@ import com.coedmaster.vstore.dto.CategoryDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.CategoryService;
-import com.coedmaster.vstore.service.IStoreService;
+import com.coedmaster.vstore.service.contract.ICategoryService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController("BuyerCategoryController")
 @RequestMapping("/buyer")
 public class CategoryController {
+
 	@Autowired
-	private CategoryService categoryService;
+	private ICategoryService categoryService;
 
 	@Autowired
 	private IStoreService storeService;
@@ -41,12 +42,11 @@ public class CategoryController {
 
 		List<Category> categories = categoryService.getCategories(store);
 
-		List<CategoryDto> categoryDtos = categories.stream()
-				.map(e -> modelMapper.map(e, CategoryDto.class)).collect(Collectors.toList());
+		List<CategoryDto> categoryDtos = categories.stream().map(e -> modelMapper.map(e, CategoryDto.class))
+				.collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Categories fetched successfully").data(categoryDtos).path(request.getServletPath())
-				.build();
+				.message("Categories fetched successfully").data(categoryDtos).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

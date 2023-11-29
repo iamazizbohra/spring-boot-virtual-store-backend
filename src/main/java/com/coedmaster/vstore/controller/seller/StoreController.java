@@ -18,8 +18,8 @@ import com.coedmaster.vstore.dto.StoreDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.IAuthenticationService;
-import com.coedmaster.vstore.service.IStoreService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -31,10 +31,10 @@ import jakarta.validation.Validator;
 public class StoreController {
 
 	@Autowired
-	private IStoreService storeService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private IAuthenticationService authenticationService;
+	private IStoreService storeService;
 
 	@Autowired
 	private ModelMapper modelMapper;

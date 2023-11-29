@@ -6,7 +6,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.StoreDto;
@@ -16,6 +15,7 @@ import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.StoreRepository;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 @Service
 public class StoreService implements IStoreService {
@@ -36,7 +36,7 @@ public class StoreService implements IStoreService {
 	@Override
 	public Store getStoreByUser(User user) {
 		return storeRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new UsernameNotFoundException("Store not found"));
+				.orElseThrow(() -> new EntityNotFoundException("Store not found"));
 	}
 
 	@Override

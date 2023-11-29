@@ -7,11 +7,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.CategoryDto;
-import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.respository.CategoryRepository;
+import com.coedmaster.vstore.service.contract.ICategoryService;
 
 @Service
 public class CategoryService implements ICategoryService {
@@ -56,18 +56,18 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
+	public Category updateCategoryStatus(Long categoryId, Store store, boolean status) {
+		Category category = getCategory(categoryId, store);
+		category.setEnabled(status);
+
+		return categoryRepository.save(category);
+	}
+
+	@Override
 	public void deleteCategory(Long categoryId, Store store) {
 		Category category = getCategory(categoryId, store);
 
 		categoryRepository.deleteById(category.getId());
-	}
-
-	@Override
-	public Category updateCategoryStatus(Long categoryId, Store store, UpdateStatusDto payload) {
-		Category category = getCategory(categoryId, store);
-		category.setEnabled(payload.isEnabled());
-
-		return categoryRepository.save(category);
 	}
 
 }

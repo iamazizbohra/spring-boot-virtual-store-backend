@@ -5,14 +5,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.dto.AuthenticateDto;
+import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
 
 @Service
 public class AuthenticationService implements IAuthenticationService {
@@ -52,7 +53,7 @@ public class AuthenticationService implements IAuthenticationService {
 		IUserDetails userDetails = getAuthenticatedUserDetails(authentication);
 
 		return userRepository.findById(userDetails.getId())
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+				.orElseThrow(() -> new EntityNotFoundException("User not found"));
 	}
 
 }

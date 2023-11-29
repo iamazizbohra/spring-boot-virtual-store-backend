@@ -23,13 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.dto.StoreDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.IStoreService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController("BuyerStoreController")
 @RequestMapping("/buyer")
 public class StoreController {
+	
 	@Autowired
 	private IStoreService storeService;
 

@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.service;
+package com.coedmaster.vstore.service.contract;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface IAddressService {
 
 	Address updateAddress(Long addressId, User user, AddressDto payload);
 
-	Address setDefaultAddress(Long addressId, User user);
+	Address updateDefaultAddress(Long addressId, User user);
 
 	void deleteAddress(Long addressId, User user);
 }

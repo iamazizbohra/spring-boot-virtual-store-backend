@@ -25,6 +25,8 @@ import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.OrderItemRepository;
 import com.coedmaster.vstore.respository.OrderRepository;
+import com.coedmaster.vstore.service.contract.ICartService;
+import com.coedmaster.vstore.service.contract.IOrderService;
 
 import jakarta.transaction.Transactional;
 

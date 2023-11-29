@@ -31,10 +31,10 @@ import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.AuthenticationService;
-import com.coedmaster.vstore.service.CategoryService;
-import com.coedmaster.vstore.service.IStoreService;
-import com.coedmaster.vstore.service.ProductService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.ICategoryService;
+import com.coedmaster.vstore.service.contract.IProductService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -46,16 +46,16 @@ import jakarta.validation.Validator;
 public class ProductController {
 
 	@Autowired
-	private ProductService productService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private CategoryService categoryService;
+	private IProductService productService;
+
+	@Autowired
+	private ICategoryService categoryService;
 
 	@Autowired
 	private IStoreService storeService;
-
-	@Autowired
-	private AuthenticationService authenticationService;
 
 	@Autowired
 	private ModelMapper modelMapper;

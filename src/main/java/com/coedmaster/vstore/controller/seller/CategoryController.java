@@ -24,9 +24,9 @@ import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.AuthenticationService;
-import com.coedmaster.vstore.service.CategoryService;
-import com.coedmaster.vstore.service.IStoreService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.ICategoryService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -38,10 +38,10 @@ import jakarta.validation.Validator;
 public class CategoryController {
 
 	@Autowired
-	private CategoryService categoryService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private ICategoryService categoryService;
 
 	@Autowired
 	private IStoreService storeService;
@@ -137,7 +137,7 @@ public class CategoryController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Category category = categoryService.updateCategoryStatus(categoryId, store, payload);
+		Category category = categoryService.updateCategoryStatus(categoryId, store, payload.isEnabled());
 
 		CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
 

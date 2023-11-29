@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.service;
+package com.coedmaster.vstore.service.contract;
 
 import com.coedmaster.vstore.dto.CreateOrUpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;

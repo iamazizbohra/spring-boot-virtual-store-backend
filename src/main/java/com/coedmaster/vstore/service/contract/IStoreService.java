@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.service;
+package com.coedmaster.vstore.service.contract;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

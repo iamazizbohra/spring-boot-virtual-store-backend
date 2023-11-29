@@ -19,8 +19,8 @@ import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.service.IAccountService;
-import com.coedmaster.vstore.service.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.IAccountService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;

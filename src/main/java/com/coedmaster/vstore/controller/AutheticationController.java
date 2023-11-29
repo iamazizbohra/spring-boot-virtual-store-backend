@@ -15,7 +15,7 @@ import com.coedmaster.vstore.dto.AuthenticateDto;
 import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
-import com.coedmaster.vstore.service.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;

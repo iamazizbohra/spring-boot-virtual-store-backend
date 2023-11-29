@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
-import com.coedmaster.vstore.service.IUserDetailsService;
+import com.coedmaster.vstore.service.contract.IUserDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

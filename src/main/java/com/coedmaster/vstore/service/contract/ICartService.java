@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.service;
+package com.coedmaster.vstore.service.contract;
 
 import java.util.List;
 import java.util.Optional;

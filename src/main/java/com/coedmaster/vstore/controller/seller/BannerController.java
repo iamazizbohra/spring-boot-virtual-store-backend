@@ -25,9 +25,9 @@ import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.service.AuthenticationService;
-import com.coedmaster.vstore.service.BannerService;
-import com.coedmaster.vstore.service.IStoreService;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
+import com.coedmaster.vstore.service.contract.IBannerService;
+import com.coedmaster.vstore.service.contract.IStoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -39,10 +39,10 @@ import jakarta.validation.Validator;
 public class BannerController {
 
 	@Autowired
-	private BannerService bannerService;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private IBannerService bannerService;
 
 	@Autowired
 	private IStoreService storeService;
@@ -138,7 +138,7 @@ public class BannerController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Banner banner = bannerService.updateBannerStatus(bannerId, store, payload);
+		Banner banner = bannerService.updateBannerStatus(bannerId, store, payload.isEnabled());
 
 		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
@@ -159,7 +159,7 @@ public class BannerController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Banner banner = bannerService.updateBannerSortOrder(bannerId, store, payload);
+		Banner banner = bannerService.updateBannerSortOrder(bannerId, store, payload.getSortOrder());
 
 		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
