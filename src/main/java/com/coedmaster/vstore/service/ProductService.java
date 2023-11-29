@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.request.ProductRequestDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Category;
@@ -21,6 +20,9 @@ public class ProductService implements IProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Override
 	public Product getProduct(Long productId, Store store) {
@@ -41,7 +43,9 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product createProduct(Store store, Category category, ProductRequestDto payload) {
+	public Product createProduct(Store store, ProductRequestDto payload) {
+		Category category = categoryService.getCategory(payload.getCategoryId(), store);
+		
 		Product product = new Product();
 		product.setStore(store);
 		product.setCategory(category);
@@ -57,7 +61,9 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product updateProduct(Long productId, Store store, Category category, ProductRequestDto payload) {
+	public Product updateProduct(Long productId, Store store, ProductRequestDto payload) {
+		Category category = categoryService.getCategory(payload.getCategoryId(), store);
+		
 		Product product = getProduct(productId, store);
 		product.setCategory(category);
 		product.setName(payload.getName());
@@ -71,18 +77,26 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+	public Product updateProductStatus(Long productId, Store store, Boolean status) {
+		Product product = getProduct(productId, store);
+		product.setEnabled(status);
+
+		return productRepository.save(product);
+	}
+
+	@Override
+	public Product updateProductQuantity(Long productId, Store store, Integer quantity) {
+		Product product = getProduct(productId, store);
+		product.setQuantity(quantity);
+
+		return productRepository.save(product);
+	}
+
+	@Override
 	public void deleteProduct(Long productId, Store store) {
 		Product product = getProduct(productId, store);
 
 		productRepository.deleteById(product.getId());
-	}
-
-	@Override
-	public Product updateProductStatus(Long productId, Store store, UpdateStatusDto payload) {
-		Product product = getProduct(productId, store);
-		product.setEnabled(payload.isEnabled());
-
-		return productRepository.save(product);
 	}
 
 }

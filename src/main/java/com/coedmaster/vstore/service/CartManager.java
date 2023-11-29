@@ -10,6 +10,7 @@ import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Address;
 import com.coedmaster.vstore.model.Cart;
 import com.coedmaster.vstore.model.CartItem;
+import com.coedmaster.vstore.model.CartTotalSummary;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
@@ -28,6 +29,11 @@ public class CartManager implements ICartService {
 	@Override
 	public Optional<Cart> getCart(User user, Store store) {
 		return cartRepository.findByUserIdAndStoreId(user.getId(), store.getId());
+	}
+
+	@Override
+	public List<CartItem> getCartItems(Cart cart) {
+		return cartItemRepository.findAllByCartId(cart.getId());
 	}
 
 	@Override
@@ -90,7 +96,7 @@ public class CartManager implements ICartService {
 			deleteCartItem(cartItem);
 		}
 
-		List<CartItem> cartItems = cart.getCartItems();
+		List<CartItem> cartItems = getCartItems(cart);
 		if (cartItems.size() == 0) {
 			deleteCart(cart);
 		}
@@ -105,10 +111,11 @@ public class CartManager implements ICartService {
 	}
 
 	@Override
-	public Integer calculateSubTotal(Cart cart) {
-		List<CartItem> cartItems = cart.getCartItems();
+	public CartTotalSummary getCartTotalSummary(Cart cart) {
+		List<CartItem> cartItems = getCartItems(cart);
 
 		Integer subTotal = 0;
+		Integer shippingCharges = 0;
 
 		for (CartItem cartItem : cartItems) {
 			Integer price = cartItem.getPrice();
@@ -117,7 +124,13 @@ public class CartManager implements ICartService {
 			subTotal += price * quantity;
 		}
 
-		return subTotal;
+		return CartTotalSummary.builder().subTotal(subTotal).shippingCharges(shippingCharges)
+				.total(subTotal + shippingCharges).build();
+	}
+
+	@Override
+	public void deleteCart(Cart cart) {
+		cartRepository.deleteById(cart.getId());
 	}
 
 	private Optional<Cart> getCart(User user) {
@@ -130,10 +143,6 @@ public class CartManager implements ICartService {
 		cart.setStore(store);
 
 		return cartRepository.save(cart);
-	}
-
-	private void deleteCart(Cart cart) {
-		cartRepository.deleteById(cart.getId());
 	}
 
 	private Optional<CartItem> getCartItem(Long cartItemId, Cart cart) {
@@ -167,5 +176,4 @@ public class CartManager implements ICartService {
 	private void deleteCartItem(CartItem cartItem) {
 		cartItemRepository.deleteById(cartItem.getId());
 	}
-
 }

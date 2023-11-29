@@ -29,6 +29,7 @@ import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Address;
 import com.coedmaster.vstore.model.Cart;
 import com.coedmaster.vstore.model.CartItem;
+import com.coedmaster.vstore.model.CartTotalSummary;
 import com.coedmaster.vstore.model.Product;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.model.User;
@@ -77,13 +78,11 @@ public class CartController {
 
 		Cart cart = cartManager.getCart(user, store).orElseThrow(() -> new EntityNotFoundException("Cart not found"));
 
-		List<CartItem> cartItems = cart.getCartItems();
+		List<CartItem> cartItems = cartManager.getCartItems(cart);
 
 		Address shippingAddress = cart.getShippingAddress();
 
-		Integer subTotal = cartManager.calculateSubTotal(cart);
-		Integer shippingCharges = 0;
-		Integer total = subTotal + shippingCharges;
+		CartTotalSummary cartTotalSummary = cartManager.getCartTotalSummary(cart);
 
 		List<CartItemResponseDto> cartItemResponseDtos = cartItems.stream()
 				.map(e -> modelMapper.map(e, CartItemResponseDto.class)).collect(Collectors.toList());
@@ -92,9 +91,9 @@ public class CartController {
 				? modelMapper.map(shippingAddress, AddressDto.class)
 				: null;
 
-		CartResponseDto cartResponseDto = CartResponseDto.builder().cartId(cart.getId()).subTotal(subTotal)
-				.shippingCharges(shippingCharges).total(total).cartItems(cartItemResponseDtos)
-				.shippingAddress(addressDto).build();
+		CartResponseDto cartResponseDto = CartResponseDto.builder().cartId(cart.getId()).storeId(store.getId())
+				.subTotal(cartTotalSummary.getSubTotal()).shippingCharges(cartTotalSummary.getShippingCharges())
+				.total(cartTotalSummary.getTotal()).cartItems(cartItemResponseDtos).shippingAddress(addressDto).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
 				.message("Cart fetched successfully").data(cartResponseDto).path(request.getServletPath()).build();

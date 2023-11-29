@@ -12,6 +12,8 @@ import lombok.Data;
 public class CartResponseDto {
 	private Long cartId;
 
+	private Long storeId;
+
 	private List<CartItemResponseDto> cartItems;
 
 	private Integer subTotal;

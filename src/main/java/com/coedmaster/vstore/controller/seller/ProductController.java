@@ -128,9 +128,7 @@ public class ProductController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Category category = categoryService.getCategory(payload.getCategoryId(), store);
-
-		Product product = productService.createProduct(store, category, payload);
+		Product product = productService.createProduct(store, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
@@ -152,9 +150,7 @@ public class ProductController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Category category = categoryService.getCategory(payload.getCategoryId(), store);
-
-		Product product = productService.updateProduct(productId, store, category, payload);
+		Product product = productService.updateProduct(productId, store, payload);
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 
@@ -176,7 +172,7 @@ public class ProductController {
 		Store store = storeService
 				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		Product product = productService.updateProductStatus(productId, store, payload);
+		Product product = productService.updateProductStatus(productId, store, payload.isEnabled());
 
 		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
 

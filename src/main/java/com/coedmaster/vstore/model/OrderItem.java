@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -25,28 +26,36 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "carts")
+@Table(name = "order_items")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @Builder
-public class Cart {
+public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
+	@ManyToOne
+	@JoinColumn(name = "order_id", referencedColumnName = "id")
+	private Order order;
 
 	@OneToOne
-	@JoinColumn(name = "store_id", referencedColumnName = "id")
-	private Store store;
+	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	private Category category;
 
 	@OneToOne
-	@JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
-	private Address shippingAddress;
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	private Product product;
+
+	private String name;
+
+	private String image;
+
+	private Integer price;
+
+	private Integer quantity;
 
 	@Column(updatable = false)
 	@CreatedBy

@@ -8,14 +8,18 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.coedmaster.vstore.enums.OrderStatus;
+import com.coedmaster.vstore.model.converter.OrderStatusConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,28 +29,51 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "carts")
+@Table(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @Builder
-public class Cart {
+public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "id")
 	private Store store;
 
-	@OneToOne
-	@JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
-	private Address shippingAddress;
+	private String name;
+
+	private String mobile;
+
+	private String email;
+
+	private String state;
+
+	private String city;
+
+	private String pincode;
+
+	private String line1;
+
+	private String line2;
+
+	private String landmark;
+
+	private Integer subTotal;
+
+	private Integer shippingCharges;
+
+	private Integer total;
+
+	@Convert(converter = OrderStatusConverter.class)
+	private OrderStatus status;
 
 	@Column(updatable = false)
 	@CreatedBy
