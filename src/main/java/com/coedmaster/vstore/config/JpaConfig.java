@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import com.coedmaster.vstore.model.audit.AuditorAwareImpl;
+import com.coedmaster.vstore.domain.audit.AuditorAwareImpl;
 
 @Configuration
 @EnableJpaAuditing

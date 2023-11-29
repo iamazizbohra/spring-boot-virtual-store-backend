@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model.audit;
+package com.coedmaster.vstore.domain.audit;
 
 import java.util.Optional;
 
@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.coedmaster.vstore.model.IUserDetails;
+import com.coedmaster.vstore.domain.IUserDetails;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 

@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.coedmaster.vstore.domain.Category;
+import com.coedmaster.vstore.domain.Product;
+import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.dto.ProductDto;
-import com.coedmaster.vstore.model.Category;
-import com.coedmaster.vstore.model.Product;
-import com.coedmaster.vstore.model.Store;
 
 public interface IProductService {
 	Product getProduct(Long productId, Store store);

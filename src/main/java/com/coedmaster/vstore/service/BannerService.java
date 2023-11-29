@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.domain.Banner;
+import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.dto.BannerDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
-import com.coedmaster.vstore.model.Banner;
-import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.respository.BannerRepository;
 import com.coedmaster.vstore.service.contract.IBannerService;
 

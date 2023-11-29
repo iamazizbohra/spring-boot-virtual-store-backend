@@ -8,12 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.domain.Store;
+import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.StoreDto;
 import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
-import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.StoreRepository;
 import com.coedmaster.vstore.service.contract.IStoreService;
 

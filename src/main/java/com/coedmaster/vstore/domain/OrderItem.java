@@ -1,7 +1,6 @@
-package com.coedmaster.vstore.model;
+package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,30 +26,36 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "categories")
-@NoArgsConstructor
+@Table(name = "order_items")
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
+@Setter
 @Builder
-public class Category {
-
-	@OneToMany(mappedBy = "category")
-	private List<Product> products;
-
+public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "store_id", referencedColumnName = "id")
-	private Store store;
+	@JoinColumn(name = "order_id", referencedColumnName = "id")
+	private Order order;
+
+	@OneToOne
+	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	private Category category;
+
+	@OneToOne
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	private Product product;
 
 	private String name;
 
 	private String image;
 
-	private boolean enabled;
+	private Integer price;
+
+	private Integer quantity;
 
 	@Column(updatable = false)
 	@CreatedBy

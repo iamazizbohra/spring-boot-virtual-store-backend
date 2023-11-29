@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.coedmaster.vstore.config.properties.JwtCredentials;
-import com.coedmaster.vstore.model.IUserDetails;
+import com.coedmaster.vstore.domain.IUserDetails;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

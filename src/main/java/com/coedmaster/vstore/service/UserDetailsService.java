@@ -9,8 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.model.User;
-import com.coedmaster.vstore.model.UserDetails;
+import com.coedmaster.vstore.domain.User;
+import com.coedmaster.vstore.domain.UserDetails;
 import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.service.contract.IUserDetailsService;
 

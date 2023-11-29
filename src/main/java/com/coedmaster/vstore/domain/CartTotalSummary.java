@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model;
+package com.coedmaster.vstore.domain;
 
 import lombok.Builder;
 import lombok.Data;

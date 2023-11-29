@@ -3,13 +3,13 @@ package com.coedmaster.vstore.service.contract;
 import java.util.List;
 import java.util.Optional;
 
-import com.coedmaster.vstore.model.Address;
-import com.coedmaster.vstore.model.Cart;
-import com.coedmaster.vstore.model.CartItem;
-import com.coedmaster.vstore.model.CartTotalSummary;
-import com.coedmaster.vstore.model.Product;
-import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.model.User;
+import com.coedmaster.vstore.domain.Address;
+import com.coedmaster.vstore.domain.Cart;
+import com.coedmaster.vstore.domain.CartItem;
+import com.coedmaster.vstore.domain.CartTotalSummary;
+import com.coedmaster.vstore.domain.Product;
+import com.coedmaster.vstore.domain.Store;
+import com.coedmaster.vstore.domain.User;
 
 public interface ICartService {
 	Optional<Cart> getCart(User user, Store store);

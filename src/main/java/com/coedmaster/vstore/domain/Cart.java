@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model;
+package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,34 +25,28 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "cart_items")
+@Table(name = "carts")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Builder
-public class CartItem {
+public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "cart_id", referencedColumnName = "id")
-	private Cart cart;
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
 
 	@OneToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
-	private Product product;
+	@JoinColumn(name = "store_id", referencedColumnName = "id")
+	private Store store;
 
-	private String name;
-
-	private String image;
-
-	private Integer price;
-
-	private Integer oldPrice;
-
-	private Integer quantity;
+	@OneToOne
+	@JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
+	private Address shippingAddress;
 
 	@Column(updatable = false)
 	@CreatedBy

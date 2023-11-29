@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.domain.Address;
+import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AddressDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.UnallowedOperationException;
-import com.coedmaster.vstore.model.Address;
-import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.AddressRepository;
 import com.coedmaster.vstore.service.contract.IAddressService;
 

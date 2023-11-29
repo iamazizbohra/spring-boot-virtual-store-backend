@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.coedmaster.vstore.model.Banner;
+import com.coedmaster.vstore.domain.Banner;
 
 public interface BannerRepository extends JpaRepository<Banner, Long> {
 	Optional<Banner> findByIdAndStoreId(Long bannerId, Long storeId);

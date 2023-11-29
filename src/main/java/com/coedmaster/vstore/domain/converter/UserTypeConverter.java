@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model.converter;
+package com.coedmaster.vstore.domain.converter;
 
 import java.util.stream.Stream;
 

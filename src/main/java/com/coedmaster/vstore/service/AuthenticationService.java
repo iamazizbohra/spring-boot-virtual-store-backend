@@ -7,10 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.domain.IUserDetails;
+import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AuthenticateDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
-import com.coedmaster.vstore.model.IUserDetails;
-import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;

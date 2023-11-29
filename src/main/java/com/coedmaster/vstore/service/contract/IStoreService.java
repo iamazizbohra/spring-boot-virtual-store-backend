@@ -3,9 +3,9 @@ package com.coedmaster.vstore.service.contract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.coedmaster.vstore.domain.Store;
+import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.StoreDto;
-import com.coedmaster.vstore.model.Store;
-import com.coedmaster.vstore.model.User;
 
 public interface IStoreService {
 	Store getStoreById(Long storeId);

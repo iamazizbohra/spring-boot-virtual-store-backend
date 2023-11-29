@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.CreateOrUpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
-import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.service.contract.IAccountService;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;
 

@@ -1,6 +1,7 @@
-package com.coedmaster.vstore.model;
+package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -25,13 +27,23 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "carts")
+@Table(name = "stores")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @Builder
-public class Cart {
+public class Store {
+
+	@OneToMany(mappedBy = "store")
+	private List<Banner> banners;
+
+	@OneToMany(mappedBy = "store")
+	private List<Category> categories;
+
+	@OneToMany(mappedBy = "store")
+	private List<Product> products;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -40,13 +52,25 @@ public class Cart {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
-	@OneToOne
-	@JoinColumn(name = "store_id", referencedColumnName = "id")
-	private Store store;
+	private String name;
 
-	@OneToOne
-	@JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
-	private Address shippingAddress;
+	private String code;
+
+	private String logo;
+
+	private String mobile;
+
+	private String whatsapp;
+
+	private String email;
+
+	private String latitude;
+
+	private String longitude;
+
+	private String address;
+
+	private boolean enabled;
 
 	@Column(updatable = false)
 	@CreatedBy

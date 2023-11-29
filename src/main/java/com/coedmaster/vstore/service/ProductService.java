@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.domain.Category;
+import com.coedmaster.vstore.domain.Product;
+import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.dto.ProductDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
-import com.coedmaster.vstore.model.Category;
-import com.coedmaster.vstore.model.Product;
-import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.respository.ProductRepository;
 import com.coedmaster.vstore.service.contract.IProductService;
 

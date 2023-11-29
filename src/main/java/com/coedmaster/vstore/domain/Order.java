@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model;
+package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,11 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.coedmaster.vstore.domain.converter.OrderStatusConverter;
+import com.coedmaster.vstore.enums.OrderStatus;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +20,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,36 +29,51 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "order_items")
+@Table(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class OrderItem {
+public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "order_id", referencedColumnName = "id")
-	private Order order;
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
 
-	@OneToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
-	private Category category;
-
-	@OneToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
-	private Product product;
+	@ManyToOne
+	@JoinColumn(name = "store_id", referencedColumnName = "id")
+	private Store store;
 
 	private String name;
 
-	private String image;
+	private String mobile;
 
-	private Integer price;
+	private String email;
 
-	private Integer quantity;
+	private String state;
+
+	private String city;
+
+	private String pincode;
+
+	private String line1;
+
+	private String line2;
+
+	private String landmark;
+
+	private Integer subTotal;
+
+	private Integer shippingCharges;
+
+	private Integer total;
+
+	@Convert(converter = OrderStatusConverter.class)
+	private OrderStatus status;
 
 	@Column(updatable = false)
 	@CreatedBy

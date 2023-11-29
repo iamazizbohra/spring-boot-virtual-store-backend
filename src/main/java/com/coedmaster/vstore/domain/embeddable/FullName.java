@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model.embeddable;
+package com.coedmaster.vstore.domain.embeddable;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

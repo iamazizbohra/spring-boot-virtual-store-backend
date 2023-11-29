@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.model;
+package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,14 +9,26 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.coedmaster.vstore.domain.converter.GenderConverter;
+import com.coedmaster.vstore.domain.converter.UserTypeConverter;
+import com.coedmaster.vstore.domain.embeddable.FullName;
+import com.coedmaster.vstore.enums.Gender;
+import com.coedmaster.vstore.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,48 +39,40 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "stores")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Store {
+public class User {
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private List<Role> roles;
 
-	@OneToMany(mappedBy = "store")
-	private List<Banner> banners;
-
-	@OneToMany(mappedBy = "store")
-	private List<Category> categories;
-
-	@OneToMany(mappedBy = "store")
-	private List<Product> products;
+	@OneToOne(mappedBy = "user")
+	private Store store;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
+	@Column(updatable = false)
+	@Convert(converter = UserTypeConverter.class)
+	private UserType userType;
 
-	private String name;
-
-	private String code;
-
-	private String logo;
+	@Embedded
+	private FullName fullName;
 
 	private String mobile;
 
-	private String whatsapp;
+	@JsonIgnore
+	private String password;
 
 	private String email;
 
-	private String latitude;
-
-	private String longitude;
-
-	private String address;
+	@Convert(converter = GenderConverter.class)
+	private Gender gender;
 
 	private boolean enabled;
 
@@ -85,4 +89,5 @@ public class Store {
 
 	@LastModifiedDate
 	private LocalDateTime lastModifiedDate;
+
 }
