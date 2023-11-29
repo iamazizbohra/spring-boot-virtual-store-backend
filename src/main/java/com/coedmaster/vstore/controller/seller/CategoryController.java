@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.CategoryDto;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
-import com.coedmaster.vstore.dto.request.CategoryRequestDto;
-import com.coedmaster.vstore.dto.response.CategoryResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
@@ -61,11 +60,10 @@ public class CategoryController {
 
 		Category category = categoryService.getCategory(categoryId, store);
 
-		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
+		CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category fetched successfully").data(categoryResponseDto).path(request.getServletPath())
-				.build();
+				.message("Category fetched successfully").data(categoryDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -77,20 +75,19 @@ public class CategoryController {
 
 		List<Category> categories = categoryService.getCategories(store);
 
-		List<CategoryResponseDto> categoryResponseDtos = categories.stream()
-				.map(e -> modelMapper.map(e, CategoryResponseDto.class)).collect(Collectors.toList());
+		List<CategoryDto> categoryDtos = categories.stream().map(e -> modelMapper.map(e, CategoryDto.class))
+				.collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Categories fetched successfully").data(categoryResponseDtos).path(request.getServletPath())
-				.build();
+				.message("Categories fetched successfully").data(categoryDtos).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
 	@PostMapping("/category")
 	public ResponseEntity<SuccessResponseDto> createCategory(HttpServletRequest request,
-			@RequestBody CategoryRequestDto payload) {
-		Set<ConstraintViolation<CategoryRequestDto>> violations = validator.validate(payload);
+			@RequestBody CategoryDto payload) {
+		Set<ConstraintViolation<CategoryDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -100,20 +97,18 @@ public class CategoryController {
 
 		Category category = categoryService.createCategory(store, payload);
 
-		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
+		CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category created successfully").data(categoryResponseDto).path(request.getServletPath())
-				.build();
+				.message("Category created successfully").data(categoryDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
-
 	}
 
 	@PutMapping("/category/{categoryId}")
 	public ResponseEntity<SuccessResponseDto> updateCategory(HttpServletRequest request,
-			@PathVariable(name = "categoryId") Long categoryId, @RequestBody CategoryRequestDto payload) {
-		Set<ConstraintViolation<CategoryRequestDto>> violations = validator.validate(payload);
+			@PathVariable(name = "categoryId") Long categoryId, @RequestBody CategoryDto payload) {
+		Set<ConstraintViolation<CategoryDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -123,11 +118,10 @@ public class CategoryController {
 
 		Category category = categoryService.updateCategory(categoryId, store, payload);
 
-		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
+		CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category updated successfully").data(categoryResponseDto).path(request.getServletPath())
-				.build();
+				.message("Category updated successfully").data(categoryDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -145,11 +139,11 @@ public class CategoryController {
 
 		Category category = categoryService.updateCategoryStatus(categoryId, store, payload);
 
-		CategoryResponseDto categoryResponseDto = modelMapper.map(category, CategoryResponseDto.class);
+		CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Category status updated successfully").data(categoryResponseDto)
-				.path(request.getServletPath()).build();
+				.message("Category status updated successfully").data(categoryDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

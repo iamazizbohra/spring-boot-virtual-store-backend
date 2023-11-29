@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.dto.AuthenticationDto;
+import com.coedmaster.vstore.dto.AuthenticateDto;
 import com.coedmaster.vstore.model.IUserDetails;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.UserRepository;
@@ -27,7 +27,7 @@ public class AuthenticationService implements IAuthenticationService {
 	IJwtTokenProvider jwtTokenProvider;
 
 	@Override
-	public Authentication authenticate(AuthenticationDto payload) {
+	public Authentication authenticate(AuthenticateDto payload) {
 		return authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 	}

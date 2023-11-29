@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.dto.AuthenticationDto;
+import com.coedmaster.vstore.dto.AuthenticateDto;
 import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
@@ -34,8 +34,8 @@ public class AutheticationController {
 	private Validator validator;
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<SuccessResponseDto> authenticate(HttpServletRequest request, @RequestBody AuthenticationDto payload) {
-		Set<ConstraintViolation<AuthenticationDto>> violations = validator.validate(payload);
+	public ResponseEntity<SuccessResponseDto> authenticate(HttpServletRequest request, @RequestBody AuthenticateDto payload) {
+		Set<ConstraintViolation<AuthenticateDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}

@@ -1,20 +1,18 @@
-package com.coedmaster.vstore.dto.response;
+package com.coedmaster.vstore.dto;
 
 import java.util.List;
-
-import com.coedmaster.vstore.dto.AddressDto;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class CartResponseDto {
-	private Long cartId;
+public class CartDto {
+	private Long id;
 
 	private Long storeId;
 
-	private List<CartItemResponseDto> cartItems;
+	private List<CartItemDto> cartItems;
 
 	private Integer subTotal;
 

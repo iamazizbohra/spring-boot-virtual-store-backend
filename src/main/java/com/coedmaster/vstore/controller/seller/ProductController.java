@@ -25,9 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.ProductDto;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
-import com.coedmaster.vstore.dto.request.ProductRequestDto;
-import com.coedmaster.vstore.dto.response.ProductResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Product;
@@ -72,11 +71,10 @@ public class ProductController {
 
 		Product product = productService.getProduct(productId, store);
 
-		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product fetched successfully").data(productResponseDto).path(request.getServletPath())
-				.build();
+				.message("Product fetched successfully").data(productDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -102,11 +100,11 @@ public class ProductController {
 			productsPage = productService.getProducts(store, categories, paging);
 		}
 
-		List<ProductResponseDto> productResponseDto = productsPage.getContent().stream()
-				.map(e -> modelMapper.map(e, ProductResponseDto.class)).collect(Collectors.toList());
+		List<ProductDto> productDtos = productsPage.getContent().stream().map(e -> modelMapper.map(e, ProductDto.class))
+				.collect(Collectors.toList());
 
 		Map<String, Object> pageDetails = new HashMap<>();
-		pageDetails.put("products", productResponseDto);
+		pageDetails.put("products", productDtos);
 		pageDetails.put("currentPage", productsPage.getNumber());
 		pageDetails.put("totalItems", productsPage.getTotalElements());
 		pageDetails.put("totalPages", productsPage.getTotalPages());
@@ -119,8 +117,8 @@ public class ProductController {
 
 	@PostMapping("/product")
 	public ResponseEntity<SuccessResponseDto> createProduct(HttpServletRequest request,
-			@RequestBody ProductRequestDto payload) {
-		Set<ConstraintViolation<ProductRequestDto>> violations = validator.validate(payload);
+			@RequestBody ProductDto payload) {
+		Set<ConstraintViolation<ProductDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -130,19 +128,18 @@ public class ProductController {
 
 		Product product = productService.createProduct(store, payload);
 
-		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product created successfully").data(productResponseDto).path(request.getServletPath())
-				.build();
+				.message("Product created successfully").data(productDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
 	@PutMapping("/product/{productId}")
 	public ResponseEntity<SuccessResponseDto> updateProduct(HttpServletRequest request,
-			@PathVariable(name = "productId") Long productId, @RequestBody ProductRequestDto payload) {
-		Set<ConstraintViolation<ProductRequestDto>> violations = validator.validate(payload);
+			@PathVariable(name = "productId") Long productId, @RequestBody ProductDto payload) {
+		Set<ConstraintViolation<ProductDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -152,11 +149,10 @@ public class ProductController {
 
 		Product product = productService.updateProduct(productId, store, payload);
 
-		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product updated successfully").data(productResponseDto).path(request.getServletPath())
-				.build();
+				.message("Product updated successfully").data(productDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -174,11 +170,10 @@ public class ProductController {
 
 		Product product = productService.updateProductStatus(productId, store, payload.isEnabled());
 
-		ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Product status updated successfully").data(productResponseDto).path(request.getServletPath())
-				.build();
+				.message("Product status updated successfully").data(productDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

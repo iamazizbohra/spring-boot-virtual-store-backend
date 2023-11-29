@@ -1,9 +1,9 @@
-package com.coedmaster.vstore.dto.response;
+package com.coedmaster.vstore.dto;
 
 import lombok.Data;
 
 @Data
-public class CartItemResponseDto {
+public class CartItemDto {
 	private Long id;
 
 	private Long cartId;

@@ -1,10 +1,10 @@
-package com.coedmaster.vstore.dto.request;
+package com.coedmaster.vstore.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class AccountRequestDto {
+public class CreateOrUpdateAccountDto {
 	@NotEmpty
 	private String firstName;
 

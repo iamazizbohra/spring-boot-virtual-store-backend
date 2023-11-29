@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.dto.response.CategoryResponseDto;
+import com.coedmaster.vstore.dto.CategoryDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
@@ -41,11 +41,11 @@ public class CategoryController {
 
 		List<Category> categories = categoryService.getCategories(store);
 
-		List<CategoryResponseDto> categoryResponseDtos = categories.stream()
-				.map(e -> modelMapper.map(e, CategoryResponseDto.class)).collect(Collectors.toList());
+		List<CategoryDto> categoryDtos = categories.stream()
+				.map(e -> modelMapper.map(e, CategoryDto.class)).collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Categories fetched successfully").data(categoryResponseDtos).path(request.getServletPath())
+				.message("Categories fetched successfully").data(categoryDtos).path(request.getServletPath())
 				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);

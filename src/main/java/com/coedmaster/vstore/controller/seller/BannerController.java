@@ -19,10 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.BannerDto;
 import com.coedmaster.vstore.dto.UpdateSortOrderDto;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
-import com.coedmaster.vstore.dto.request.BannerRequestDto;
-import com.coedmaster.vstore.dto.response.BannerResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Store;
@@ -62,10 +61,10 @@ public class BannerController {
 
 		Banner banner = bannerService.getBanner(bannerId, store);
 
-		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
+		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner fetched successfully").data(bannerResponseDto).path(request.getServletPath()).build();
+				.message("Banner fetched successfully").data(bannerDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -77,19 +76,18 @@ public class BannerController {
 
 		List<Banner> banners = bannerService.getBanners(store);
 
-		List<BannerResponseDto> bannerResponseDto = banners.stream()
-				.map(e -> modelMapper.map(e, BannerResponseDto.class)).collect(Collectors.toList());
+		List<BannerDto> bannerDtos = banners.stream().map(e -> modelMapper.map(e, BannerDto.class))
+				.collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banners fetched successfully").data(bannerResponseDto).path(request.getServletPath()).build();
+				.message("Banners fetched successfully").data(bannerDtos).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
 	@PostMapping("/banner")
-	public ResponseEntity<SuccessResponseDto> createBanner(HttpServletRequest request,
-			@RequestBody BannerRequestDto payload) {
-		Set<ConstraintViolation<BannerRequestDto>> violations = validator.validate(payload);
+	public ResponseEntity<SuccessResponseDto> createBanner(HttpServletRequest request, @RequestBody BannerDto payload) {
+		Set<ConstraintViolation<BannerDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -99,10 +97,10 @@ public class BannerController {
 
 		Banner banner = bannerService.createBanner(store, payload);
 
-		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
+		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner created successfully").data(bannerResponseDto).path(request.getServletPath()).build();
+				.message("Banner created successfully").data(bannerDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 
@@ -110,8 +108,8 @@ public class BannerController {
 
 	@PutMapping("/banner/{bannerId}")
 	public ResponseEntity<SuccessResponseDto> updateBanner(HttpServletRequest request,
-			@PathVariable(name = "bannerId") Long bannerId, @RequestBody BannerRequestDto payload) {
-		Set<ConstraintViolation<BannerRequestDto>> violations = validator.validate(payload);
+			@PathVariable(name = "bannerId") Long bannerId, @RequestBody BannerDto payload) {
+		Set<ConstraintViolation<BannerDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -121,10 +119,10 @@ public class BannerController {
 
 		Banner banner = bannerService.updateBanner(bannerId, store, payload);
 
-		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
+		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner updated successfully").data(bannerResponseDto).path(request.getServletPath()).build();
+				.message("Banner updated successfully").data(bannerDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -142,11 +140,10 @@ public class BannerController {
 
 		Banner banner = bannerService.updateBannerStatus(bannerId, store, payload);
 
-		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
+		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner status updated successfully").data(bannerResponseDto).path(request.getServletPath())
-				.build();
+				.message("Banner status updated successfully").data(bannerDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -164,11 +161,11 @@ public class BannerController {
 
 		Banner banner = bannerService.updateBannerSortOrder(bannerId, store, payload);
 
-		BannerResponseDto bannerResponseDto = modelMapper.map(banner, BannerResponseDto.class);
+		BannerDto bannerDto = modelMapper.map(banner, BannerDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banner sort order updated successfully").data(bannerResponseDto)
-				.path(request.getServletPath()).build();
+				.message("Banner sort order updated successfully").data(bannerDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

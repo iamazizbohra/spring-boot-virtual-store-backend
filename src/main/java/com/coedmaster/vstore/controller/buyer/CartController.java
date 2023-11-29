@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.AddCartItemDto;
 import com.coedmaster.vstore.dto.AddressDto;
+import com.coedmaster.vstore.dto.CartDto;
+import com.coedmaster.vstore.dto.CartItemDto;
 import com.coedmaster.vstore.dto.UpdateCartShippingAddressDto;
-import com.coedmaster.vstore.dto.request.CartItemRequestDto;
-import com.coedmaster.vstore.dto.response.CartItemResponseDto;
-import com.coedmaster.vstore.dto.response.CartResponseDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Address;
@@ -84,27 +84,27 @@ public class CartController {
 
 		CartTotalSummary cartTotalSummary = cartManager.getCartTotalSummary(cart);
 
-		List<CartItemResponseDto> cartItemResponseDtos = cartItems.stream()
-				.map(e -> modelMapper.map(e, CartItemResponseDto.class)).collect(Collectors.toList());
+		List<CartItemDto> cartItemDtos = cartItems.stream().map(e -> modelMapper.map(e, CartItemDto.class))
+				.collect(Collectors.toList());
 
 		AddressDto addressDto = ObjectUtils.isNotEmpty(shippingAddress)
 				? modelMapper.map(shippingAddress, AddressDto.class)
 				: null;
 
-		CartResponseDto cartResponseDto = CartResponseDto.builder().cartId(cart.getId()).storeId(store.getId())
+		CartDto cartDto = CartDto.builder().id(cart.getId()).storeId(store.getId())
 				.subTotal(cartTotalSummary.getSubTotal()).shippingCharges(cartTotalSummary.getShippingCharges())
-				.total(cartTotalSummary.getTotal()).cartItems(cartItemResponseDtos).shippingAddress(addressDto).build();
+				.total(cartTotalSummary.getTotal()).cartItems(cartItemDtos).shippingAddress(addressDto).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Cart fetched successfully").data(cartResponseDto).path(request.getServletPath()).build();
+				.message("Cart fetched successfully").data(cartDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	};
 
 	@PostMapping("/store/{storeId}/cart/item")
 	public ResponseEntity<SuccessResponseDto> addCartItem(HttpServletRequest request,
-			@PathVariable(name = "storeId") Long storeId, @RequestBody CartItemRequestDto payload) {
-		Set<ConstraintViolation<CartItemRequestDto>> violations = validator.validate(payload);
+			@PathVariable(name = "storeId") Long storeId, @RequestBody AddCartItemDto payload) {
+		Set<ConstraintViolation<AddCartItemDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -117,10 +117,10 @@ public class CartController {
 
 		CartItem cartItem = cartManager.addCartItem(user, store, product, payload.getQuantity());
 
-		CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
+		CartItemDto cartItemDto = modelMapper.map(cartItem, CartItemDto.class);
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Item added successfully").data(cartItemResponseDto).path(request.getServletPath()).build();
+				.message("Item added successfully").data(cartItemDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.dto.CreateOrUpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
-import com.coedmaster.vstore.dto.request.AccountRequestDto;
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserRole;
 import com.coedmaster.vstore.enums.UserType;
@@ -34,7 +34,7 @@ public class AccountService implements IAccountService {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	public User createAdminAccount(AccountRequestDto payload) {
+	public User createAdminAccount(CreateOrUpdateAccountDto payload) {
 		Role role = roleRepository.findByName(UserRole.ROLE_ADMIN.name())
 				.orElseThrow(() -> new EntityNotFoundException("Role not found"));
 
@@ -42,7 +42,7 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public User createBuyerAccount(AccountRequestDto payload) {
+	public User createBuyerAccount(CreateOrUpdateAccountDto payload) {
 		Role role = roleRepository.findByName(UserRole.ROLE_BUYER.name())
 				.orElseThrow(() -> new EntityNotFoundException("Role not found"));
 
@@ -50,14 +50,14 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public User createSellerAccount(AccountRequestDto payload) {
+	public User createSellerAccount(CreateOrUpdateAccountDto payload) {
 		Role role = roleRepository.findByName(UserRole.ROLE_SELLER.name())
 				.orElseThrow(() -> new EntityNotFoundException("Role not found"));
 
 		return createAccount(UserType.SELLER, role, payload);
 	}
 
-	private User createAccount(UserType userType, Role role, AccountRequestDto payload) {
+	private User createAccount(UserType userType, Role role, CreateOrUpdateAccountDto payload) {
 		if (!isMobileNoAvailable(payload.getMobile())) {
 			throw new UsernameAlreadyTakenException("Mobile no is already taken");
 		}
@@ -80,7 +80,7 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public User updateAccount(User user, AccountRequestDto payload) {
+	public User updateAccount(User user, CreateOrUpdateAccountDto payload) {
 		if (!isMobileNoAvailableFor(payload.getMobile(), user)) {
 			throw new UsernameAlreadyTakenException("Mobile no is already taken");
 		}

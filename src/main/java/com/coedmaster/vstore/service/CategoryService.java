@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.dto.CategoryDto;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
-import com.coedmaster.vstore.dto.request.CategoryRequestDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
@@ -36,7 +36,7 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public Category createCategory(Store store, CategoryRequestDto payload) {
+	public Category createCategory(Store store, CategoryDto payload) {
 		Category category = new Category();
 		category.setStore(store);
 		category.setName(payload.getName());
@@ -47,7 +47,7 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public Category updateCategory(Long categoryId, Store store, CategoryRequestDto payload) {
+	public Category updateCategory(Long categoryId, Store store, CategoryDto payload) {
 		Category category = getCategory(categoryId, store);
 		category.setName(payload.getName());
 		category.setImage(payload.getImage());

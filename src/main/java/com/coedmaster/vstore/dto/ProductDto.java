@@ -1,11 +1,13 @@
-package com.coedmaster.vstore.dto.request;
+package com.coedmaster.vstore.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ProductRequestDto {
+public class ProductDto {
+	private Long id;
+
 	@NotNull
 	private Long categoryId;
 
@@ -24,4 +26,5 @@ public class ProductRequestDto {
 	@NotNull
 	private Integer quantity;
 
+	private boolean enabled;
 }

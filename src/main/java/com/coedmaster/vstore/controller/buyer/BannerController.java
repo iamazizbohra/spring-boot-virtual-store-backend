@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.dto.response.BannerResponseDto;
+import com.coedmaster.vstore.dto.BannerDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Store;
@@ -41,11 +41,11 @@ public class BannerController {
 
 		List<Banner> banners = bannerService.getBanners(store);
 
-		List<BannerResponseDto> bannerResponseDto = banners.stream()
-				.map(e -> modelMapper.map(e, BannerResponseDto.class)).collect(Collectors.toList());
+		List<BannerDto> bannerDtos = banners.stream()
+				.map(e -> modelMapper.map(e, BannerDto.class)).collect(Collectors.toList());
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Banners fetched successfully").data(bannerResponseDto).path(request.getServletPath()).build();
+				.message("Banners fetched successfully").data(bannerDtos).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

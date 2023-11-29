@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.dto.CreateOrUpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
-import com.coedmaster.vstore.dto.request.AccountRequestDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.service.IAccountService;
@@ -56,8 +56,8 @@ public class AccountController {
 
 	@PostMapping("/admin/account")
 	public ResponseEntity<SuccessResponseDto> createAdminAccount(HttpServletRequest request,
-			@RequestBody AccountRequestDto payload) {
-		Set<ConstraintViolation<AccountRequestDto>> violations = validator.validate(payload);
+			@RequestBody CreateOrUpdateAccountDto payload) {
+		Set<ConstraintViolation<CreateOrUpdateAccountDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -74,8 +74,8 @@ public class AccountController {
 
 	@PostMapping("/buyer/account")
 	public ResponseEntity<SuccessResponseDto> createBuyerAccount(HttpServletRequest request,
-			@RequestBody AccountRequestDto payload) {
-		Set<ConstraintViolation<AccountRequestDto>> violations = validator.validate(payload);
+			@RequestBody CreateOrUpdateAccountDto payload) {
+		Set<ConstraintViolation<CreateOrUpdateAccountDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -92,8 +92,8 @@ public class AccountController {
 
 	@PostMapping("/seller/account")
 	public ResponseEntity<SuccessResponseDto> createSellerAccount(HttpServletRequest request,
-			@RequestBody AccountRequestDto payload) {
-		Set<ConstraintViolation<AccountRequestDto>> violations = validator.validate(payload);
+			@RequestBody CreateOrUpdateAccountDto payload) {
+		Set<ConstraintViolation<CreateOrUpdateAccountDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
@@ -110,8 +110,8 @@ public class AccountController {
 
 	@PutMapping("/account")
 	public ResponseEntity<SuccessResponseDto> updateAccount(HttpServletRequest request,
-			@RequestBody AccountRequestDto payload) {
-		Set<ConstraintViolation<AccountRequestDto>> violations = validator.validate(payload);
+			@RequestBody CreateOrUpdateAccountDto payload) {
+		Set<ConstraintViolation<CreateOrUpdateAccountDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}

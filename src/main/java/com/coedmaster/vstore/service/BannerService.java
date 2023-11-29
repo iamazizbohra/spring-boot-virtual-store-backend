@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.dto.BannerDto;
 import com.coedmaster.vstore.dto.UpdateSortOrderDto;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
-import com.coedmaster.vstore.dto.request.BannerRequestDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Store;
@@ -32,7 +32,7 @@ public class BannerService implements IBannerService {
 	}
 
 	@Override
-	public Banner createBanner(Store store, BannerRequestDto payload) {
+	public Banner createBanner(Store store, BannerDto payload) {
 		Banner banner = new Banner();
 		banner.setStore(store);
 		banner.setTitle(payload.getTitle());
@@ -44,7 +44,7 @@ public class BannerService implements IBannerService {
 	}
 
 	@Override
-	public Banner updateBanner(Long bannerId, Store store, BannerRequestDto payload) {
+	public Banner updateBanner(Long bannerId, Store store, BannerDto payload) {
 		Banner banner = getBanner(bannerId, store);
 		banner.setTitle(payload.getTitle());
 		banner.setImage(payload.getImage());

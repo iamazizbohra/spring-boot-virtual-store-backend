@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.dto.request.ProductRequestDto;
+import com.coedmaster.vstore.dto.ProductDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Product;
@@ -43,7 +43,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product createProduct(Store store, ProductRequestDto payload) {
+	public Product createProduct(Store store, ProductDto payload) {
 		Category category = categoryService.getCategory(payload.getCategoryId(), store);
 		
 		Product product = new Product();
@@ -61,7 +61,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public Product updateProduct(Long productId, Store store, ProductRequestDto payload) {
+	public Product updateProduct(Long productId, Store store, ProductDto payload) {
 		Category category = categoryService.getCategory(payload.getCategoryId(), store);
 		
 		Product product = getProduct(productId, store);
