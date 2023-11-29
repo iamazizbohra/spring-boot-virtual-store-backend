@@ -60,24 +60,25 @@ public class OrderController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@PostMapping("/order")
-	public ResponseEntity<SuccessResponseDto> createOrder(HttpServletRequest request,
-			@RequestBody CreateOrderDto payload) {
-		Set<ConstraintViolation<CreateOrderDto>> violations = validator.validate(payload);
-		if (!violations.isEmpty()) {
-			throw new ConstraintViolationException("Constraint violation", violations);
-		}
-
+	@GetMapping("/order/{orderId}")
+	public ResponseEntity<SuccessResponseDto> getOrder(HttpServletRequest request,
+			@PathVariable(name = "orderId") Long orderId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(payload.getStoreId());
-
-		Order order = orderManager.createOrder(user, store);
+		Order order = orderManager.getOrder(orderId, user);
 
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 
+		List<OrderItem> orderItems = orderManager.getOrderItems(order);
+
+		List<OrderItemDto> orderItemDtos = orderItems.stream().map(e -> modelMapper.map(e, OrderItemDto.class))
+				.collect(Collectors.toList());
+
+		OrderDetailsDto orderDetailsDto = OrderDetailsDto.builder().order(orderDto).orderItems(orderItemDtos).build();
+
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Order created successfully").data(orderDto).path(request.getServletPath()).build();
+				.message("Order details fetched successfully").data(orderDetailsDto).path(request.getServletPath())
+				.build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -108,25 +109,24 @@ public class OrderController {
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
 
-	@GetMapping("/order/{orderId}")
-	public ResponseEntity<SuccessResponseDto> getOrder(HttpServletRequest request,
-			@PathVariable(name = "orderId") Long orderId) {
+	@PostMapping("/order")
+	public ResponseEntity<SuccessResponseDto> createOrder(HttpServletRequest request,
+			@RequestBody CreateOrderDto payload) {
+		Set<ConstraintViolation<CreateOrderDto>> violations = validator.validate(payload);
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException("Constraint violation", violations);
+		}
+
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Order order = orderManager.getOrder(orderId, user);
+		Store store = storeService.getStoreById(payload.getStoreId());
+
+		Order order = orderManager.createOrder(user, store);
 
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 
-		List<OrderItem> orderItems = orderManager.getOrderItems(order);
-
-		List<OrderItemDto> orderItemDtos = orderItems.stream().map(e -> modelMapper.map(e, OrderItemDto.class))
-				.collect(Collectors.toList());
-
-		OrderDetailsDto orderDetailsDto = OrderDetailsDto.builder().order(orderDto).orderItems(orderItemDtos).build();
-
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Order details fetched successfully").data(orderDetailsDto).path(request.getServletPath())
-				.build();
+				.message("Order created successfully").data(orderDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

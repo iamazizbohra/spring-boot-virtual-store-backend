@@ -61,34 +61,6 @@ public class OrderController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@GetMapping("/order")
-	public ResponseEntity<SuccessResponseDto> getOrders(HttpServletRequest request,
-			@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-			@RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
-		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
-
-		Store store = storeService.getStoreByUser(user);
-
-		Pageable pageable = PageRequest.of(pageNumber, pageSize,
-				Sort.by(Sort.Direction.valueOf("DESC"), "createdDate"));
-
-		Page<Order> orderPage = orderManager.getOrders(store, pageable);
-
-		List<OrderDto> ordoDtos = orderPage.getContent().stream().map(e -> modelMapper.map(e, OrderDto.class))
-				.collect(Collectors.toList());
-
-		Map<String, Object> pageDetails = new HashMap<>();
-		pageDetails.put("orders", ordoDtos);
-		pageDetails.put("currentPage", orderPage.getNumber());
-		pageDetails.put("totalItems", orderPage.getTotalElements());
-		pageDetails.put("totalPages", orderPage.getTotalPages());
-
-		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Orders fetched successfully").data(pageDetails).path(request.getServletPath()).build();
-
-		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
-	}
-
 	@GetMapping("/order/{orderId}")
 	public ResponseEntity<SuccessResponseDto> getOrder(HttpServletRequest request,
 			@PathVariable(name = "orderId") Long orderId) {
@@ -110,6 +82,35 @@ public class OrderController {
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
 				.message("Order details fetched successfully").data(orderDetailsDto).path(request.getServletPath())
 				.build();
+
+		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
+	}
+
+	@GetMapping("/order")
+	public ResponseEntity<SuccessResponseDto> getOrders(HttpServletRequest request,
+			@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+			@RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+			@RequestParam(name = "status", defaultValue = "") String status) {
+		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
+
+		Store store = storeService.getStoreByUser(user);
+
+		Pageable pageable = PageRequest.of(pageNumber, pageSize,
+				Sort.by(Sort.Direction.valueOf("DESC"), "createdDate"));
+
+		Page<Order> orderPage = orderManager.getOrders(store, pageable);
+
+		List<OrderDto> ordoDtos = orderPage.getContent().stream().map(e -> modelMapper.map(e, OrderDto.class))
+				.collect(Collectors.toList());
+
+		Map<String, Object> pageDetails = new HashMap<>();
+		pageDetails.put("orders", ordoDtos);
+		pageDetails.put("currentPage", orderPage.getNumber());
+		pageDetails.put("totalItems", orderPage.getTotalElements());
+		pageDetails.put("totalPages", orderPage.getTotalPages());
+
+		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
+				.message("Orders fetched successfully").data(pageDetails).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
