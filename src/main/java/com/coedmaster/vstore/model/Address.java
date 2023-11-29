@@ -8,8 +8,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -40,7 +38,6 @@ public class Address {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	@JsonBackReference
 	private User user;
 
 	private String title;

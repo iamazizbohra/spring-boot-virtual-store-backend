@@ -25,6 +25,9 @@ public class CartManager implements ICartService {
 
 	@Autowired
 	private CartItemRepository cartItemRepository;
+	
+	@Autowired
+	private AddressService addressService;
 
 	@Override
 	public Optional<Cart> getCart(User user, Store store) {
@@ -46,7 +49,7 @@ public class CartManager implements ICartService {
 		if (cartOptional.isEmpty()) {
 			cart = createCart(user, store);
 
-			Optional<Address> defaultAddressOptional = user.getAddresses().stream().filter(e -> e.isDefault())
+			Optional<Address> defaultAddressOptional = addressService.getAddresses(user).stream().filter(e -> e.isDefault())
 					.findAny();
 
 			if (!defaultAddressOptional.isEmpty()) {

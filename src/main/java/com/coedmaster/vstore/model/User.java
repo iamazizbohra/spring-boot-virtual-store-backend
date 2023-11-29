@@ -15,7 +15,6 @@ import com.coedmaster.vstore.model.converter.GenderConverter;
 import com.coedmaster.vstore.model.converter.UserTypeConverter;
 import com.coedmaster.vstore.model.embeddable.FullName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,7 +29,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -54,10 +52,6 @@ public class User {
 
 	@OneToOne(mappedBy = "user")
 	private Store store;
-
-	@OneToMany(mappedBy = "user")
-	@JsonManagedReference
-	private List<Address> addresses;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
