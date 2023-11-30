@@ -13,5 +13,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 	List<Category> findAllByStoreId(Long storeId, Sort sort);
 
+	List<Category> findAllByStoreIdAndEnabled(Long storeId, Boolean enabled, Sort sort);
+
 	List<Category> findAllByIdInAndStoreId(List<Long> categoryIds, Long storeId, Sort sort);
+
+	List<Category> findAllByIdInAndStoreIdAndEnabled(List<Long> categoryIds, Long storeId, Boolean enabled, Sort sort);
 }

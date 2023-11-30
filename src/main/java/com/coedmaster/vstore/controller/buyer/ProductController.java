@@ -33,7 +33,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController("BuyerProductController")
 @RequestMapping("/buyer")
 public class ProductController {
-	
+
 	@Autowired
 	private IProductService productService;
 
@@ -78,7 +78,7 @@ public class ProductController {
 		if (categoryIds.size() == 0) {
 			productsPage = productService.getProducts(store, paging);
 		} else {
-			List<Category> categories = categoryService.getCategories(categoryIds, store);
+			List<Category> categories = categoryService.getCategories(categoryIds, store, true);
 			productsPage = productService.getProducts(store, categories, paging);
 		}
 

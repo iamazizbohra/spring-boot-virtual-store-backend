@@ -40,7 +40,7 @@ public class CategoryController {
 			@PathVariable(name = "storeId") Long storeId) {
 		Store store = storeService.getStore(storeId);
 
-		List<Category> categories = categoryService.getCategories(store);
+		List<Category> categories = categoryService.getCategories(store, true);
 
 		List<CategoryDto> categoryDtos = categories.stream().map(e -> modelMapper.map(e, CategoryDto.class))
 				.collect(Collectors.toList());

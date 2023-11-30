@@ -31,8 +31,19 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
+	public List<Category> getCategories(Store store, boolean enabled) {
+		return categoryRepository.findAllByStoreIdAndEnabled(store.getId(), enabled, Sort.by("name"));
+	}
+
+	@Override
 	public List<Category> getCategories(List<Long> categoryIds, Store store) {
 		return categoryRepository.findAllByIdInAndStoreId(categoryIds, store.getId(), Sort.by("name"));
+	}
+
+	@Override
+	public List<Category> getCategories(List<Long> categoryIds, Store store, boolean enabled) {
+		return categoryRepository.findAllByIdInAndStoreIdAndEnabled(categoryIds, store.getId(), enabled,
+				Sort.by("name"));
 	}
 
 	@Override
