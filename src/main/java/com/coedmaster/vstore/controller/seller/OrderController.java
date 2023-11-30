@@ -98,7 +98,7 @@ public class OrderController {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize,
 				Sort.by(Sort.Direction.valueOf("DESC"), "createdDate"));
 
-		Page<Order> orderPage = orderManager.getOrders(store, pageable);
+		Page<Order> orderPage = orderManager.getOrders(store, status, pageable);
 
 		List<OrderDto> ordoDtos = orderPage.getContent().stream().map(e -> modelMapper.map(e, OrderDto.class))
 				.collect(Collectors.toList());

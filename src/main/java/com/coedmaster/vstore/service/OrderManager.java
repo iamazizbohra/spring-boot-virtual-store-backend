@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.domain.Address;
@@ -19,6 +20,7 @@ import com.coedmaster.vstore.domain.OrderItem;
 import com.coedmaster.vstore.domain.Product;
 import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.domain.User;
+import com.coedmaster.vstore.domain.specification.OrderSpecs;
 import com.coedmaster.vstore.enums.OrderStatus;
 import com.coedmaster.vstore.enums.UserType;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
@@ -65,6 +67,19 @@ public class OrderManager implements IOrderService {
 	@Override
 	public Page<Order> getOrders(Store store, Pageable pageable) {
 		return orderRepository.findAllByStoreId(store.getId(), pageable);
+	}
+
+	@Override
+	public Page<Order> getOrders(Store store, String status, Pageable pageable) {
+		Specification<Order> specs = Specification.where(null);
+
+		specs = specs.and(OrderSpecs.hasStoreId(store.getId()));
+
+		if (ObjectUtils.isNotEmpty(status)) {
+			specs = specs.and(OrderSpecs.hasStatus(OrderStatus.valueOf(status)));
+		}
+
+		return orderRepository.findAll(specs, pageable);
 	}
 
 	@Override

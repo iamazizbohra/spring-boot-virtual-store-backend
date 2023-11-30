@@ -20,6 +20,8 @@ public interface IOrderService {
 
 	Page<Order> getOrders(Store store, Pageable pageable);
 
+	Page<Order> getOrders(Store store, String status, Pageable pageable);
+
 	List<OrderItem> getOrderItems(Order order);
 
 	Order createOrder(User user, Store store);
