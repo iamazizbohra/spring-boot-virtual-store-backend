@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController("BuyerStoreController")
 @RequestMapping("/buyer")
 public class StoreController {
-	
+
 	@Autowired
 	private IStoreService storeService;
 
@@ -40,7 +40,7 @@ public class StoreController {
 	@GetMapping("/store/{storeId}")
 	public ResponseEntity<SuccessResponseDto> getStoreById(HttpServletRequest request,
 			@PathVariable(name = "storeId") Long storeId) {
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId, true);
 
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
@@ -53,7 +53,7 @@ public class StoreController {
 	@GetMapping("/store/code/{code}")
 	public ResponseEntity<SuccessResponseDto> getStoreByCode(HttpServletRequest request,
 			@PathVariable(name = "code") String code) {
-		Store store = storeService.getStoreByCode(code);
+		Store store = storeService.getStore(code, true);
 
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
@@ -69,7 +69,7 @@ public class StoreController {
 			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name"));
 
-		Page<Store> storePage = storeService.getStores(pageable);
+		Page<Store> storePage = storeService.getStores(true, pageable);
 
 		List<StoreDto> storeDto = storePage.getContent().stream().map(e -> modelMapper.map(e, StoreDto.class))
 				.collect(Collectors.toList());

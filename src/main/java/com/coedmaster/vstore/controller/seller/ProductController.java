@@ -67,7 +67,7 @@ public class ProductController {
 	public ResponseEntity<SuccessResponseDto> getProduct(HttpServletRequest request,
 			@PathVariable(name = "productId") Long productId) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Product product = productService.getProduct(productId, store);
 
@@ -87,7 +87,7 @@ public class ProductController {
 			@RequestParam(name = "sortBy", defaultValue = "lastModifiedDate") String sortBy,
 			@RequestParam(name = "sortDirection", defaultValue = "DESC") String sortDirection) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		PageRequest paging = PageRequest.of(pageNumber, pageSize,
 				Sort.by(Sort.Direction.valueOf(sortDirection), sortBy));
@@ -124,7 +124,7 @@ public class ProductController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Product product = productService.createProduct(store, payload);
 
@@ -145,7 +145,7 @@ public class ProductController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Product product = productService.updateProduct(productId, store, payload);
 
@@ -166,7 +166,7 @@ public class ProductController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Product product = productService.updateProductStatus(productId, store, payload.isEnabled());
 
@@ -182,7 +182,7 @@ public class ProductController {
 	public ResponseEntity<SuccessResponseDto> deleteProduct(HttpServletRequest request,
 			@PathVariable(name = "productId") Long productId) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		productService.deleteProduct(productId, store);
 

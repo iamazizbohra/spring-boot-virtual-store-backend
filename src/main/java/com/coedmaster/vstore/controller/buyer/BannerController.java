@@ -38,7 +38,7 @@ public class BannerController {
 	@GetMapping("/store/{storeId}/banner")
 	public ResponseEntity<SuccessResponseDto> getBanners(HttpServletRequest request,
 			@PathVariable(name = "storeId") Long storeId) {
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		List<Banner> banners = bannerService.getBanners(store);
 

@@ -46,7 +46,7 @@ public class StoreController {
 	public ResponseEntity<SuccessResponseDto> getStore(HttpServletRequest request) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreByUser(user);
+		Store store = storeService.getStore(user);
 
 		StoreDto storeDto = modelMapper.map(store, StoreDto.class);
 
@@ -82,7 +82,7 @@ public class StoreController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreByUser(user);
+		Store store = storeService.getStore(user);
 
 		store = storeService.updateStore(store, payload);
 

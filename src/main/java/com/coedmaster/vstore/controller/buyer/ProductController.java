@@ -49,7 +49,7 @@ public class ProductController {
 	@GetMapping("/store/{storeId}/product/{productId}")
 	public ResponseEntity<SuccessResponseDto> getProduct(HttpServletRequest request,
 			@PathVariable(name = "storeId") Long storeId, @PathVariable(name = "productId") Long productId) {
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		Product product = productService.getProduct(productId, store);
 
@@ -69,7 +69,7 @@ public class ProductController {
 			@RequestParam(value = "categoryIds", defaultValue = "") List<Long> categoryIds,
 			@RequestParam(value = "sortBy", defaultValue = "lastModifiedDate") String sortBy,
 			@RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection) {
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		PageRequest paging = PageRequest.of(pageNumber, pageSize,
 				Sort.by(Sort.Direction.valueOf(sortDirection), sortBy));

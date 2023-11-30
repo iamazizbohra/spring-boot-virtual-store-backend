@@ -57,7 +57,7 @@ public class BannerController {
 	public ResponseEntity<SuccessResponseDto> getBanner(HttpServletRequest request,
 			@PathVariable(name = "bannerId") Long bannerId) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Banner banner = bannerService.getBanner(bannerId, store);
 
@@ -72,7 +72,7 @@ public class BannerController {
 	@GetMapping("/banner")
 	public ResponseEntity<SuccessResponseDto> getBanners(HttpServletRequest request) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		List<Banner> banners = bannerService.getBanners(store);
 
@@ -93,7 +93,7 @@ public class BannerController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Banner banner = bannerService.createBanner(store, payload);
 
@@ -115,7 +115,7 @@ public class BannerController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Banner banner = bannerService.updateBanner(bannerId, store, payload);
 
@@ -136,7 +136,7 @@ public class BannerController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Banner banner = bannerService.updateBannerStatus(bannerId, store, payload.isEnabled());
 
@@ -157,7 +157,7 @@ public class BannerController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Banner banner = bannerService.updateBannerSortOrder(bannerId, store, payload.getSortOrder());
 
@@ -174,7 +174,7 @@ public class BannerController {
 	public ResponseEntity<SuccessResponseDto> deleteBanner(HttpServletRequest request,
 			@PathVariable(name = "bannerId") Long bannerId) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		bannerService.deleteBanner(bannerId, store);
 

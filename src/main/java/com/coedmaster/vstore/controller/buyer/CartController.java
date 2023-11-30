@@ -74,7 +74,7 @@ public class CartController {
 			@PathVariable(name = "storeId") Long storeId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		Cart cart = cartManager.getCart(user, store).orElseThrow(() -> new EntityNotFoundException("Cart not found"));
 
@@ -111,7 +111,7 @@ public class CartController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		Product product = productService.getProduct(payload.getProductId(), store);
 
@@ -130,7 +130,7 @@ public class CartController {
 			@PathVariable(name = "storeId") Long storeId, @PathVariable(name = "cartItemId") Long cartItemId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		cartManager.removeCartItem(cartItemId, user, store);
 
@@ -150,7 +150,7 @@ public class CartController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		Address address = addressService.createAddress(user, payload);
 
@@ -172,7 +172,7 @@ public class CartController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		Address address = addressService.getAddress(payload.getId(), user);
 

@@ -6,10 +6,12 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.domain.User;
+import com.coedmaster.vstore.domain.specification.StoreSpecs;
 import com.coedmaster.vstore.dto.StoreDto;
 import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
@@ -24,24 +26,46 @@ public class StoreService implements IStoreService {
 	private StoreRepository storeRepository;
 
 	@Override
-	public Store getStoreById(Long storeId) {
+	public Store getStore(Long storeId) {
 		return storeRepository.findById(storeId).orElseThrow(() -> new EntityNotFoundException("Store not found"));
 	}
 
 	@Override
-	public Store getStoreByCode(String code) {
-		return storeRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	public Store getStore(Long storeId, boolean enabled) {
+		Specification<Store> specs = Specification.where(StoreSpecs.hasStoreId(storeId))
+				.and(StoreSpecs.isEnabled(enabled));
+
+		return storeRepository.findOne(specs).orElseThrow(() -> new EntityNotFoundException("Store not found"));
 	}
 
 	@Override
-	public Store getStoreByUser(User user) {
+	public Store getStore(User user) {
 		return storeRepository.findByUserId(user.getId())
 				.orElseThrow(() -> new EntityNotFoundException("Store not found"));
 	}
 
 	@Override
+	public Store getStore(String code) {
+		return storeRepository.findByCode(code).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	}
+
+	@Override
+	public Store getStore(String code, boolean enabled) {
+		Specification<Store> specs = Specification.where(StoreSpecs.hasCode(code)).and(StoreSpecs.isEnabled(enabled));
+
+		return storeRepository.findOne(specs).orElseThrow(() -> new EntityNotFoundException("Store not found"));
+	}
+
+	@Override
 	public Page<Store> getStores(Pageable pageable) {
 		return storeRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<Store> getStores(boolean enabled, Pageable pageable) {
+		Specification<Store> specs = Specification.where(StoreSpecs.isEnabled(enabled));
+
+		return storeRepository.findAll(specs, pageable);
 	}
 
 	@Override

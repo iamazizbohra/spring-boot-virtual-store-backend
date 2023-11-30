@@ -66,7 +66,7 @@ public class OrderController {
 			@PathVariable(name = "orderId") Long orderId) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreByUser(user);
+		Store store = storeService.getStore(user);
 
 		Order order = orderManager.getOrder(orderId, store);
 
@@ -93,7 +93,7 @@ public class OrderController {
 			@RequestParam(name = "status", defaultValue = "") String status) {
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreByUser(user);
+		Store store = storeService.getStore(user);
 
 		Pageable pageable = PageRequest.of(pageNumber, pageSize,
 				Sort.by(Sort.Direction.valueOf("DESC"), "createdDate"));
@@ -125,7 +125,7 @@ public class OrderController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreByUser(user);
+		Store store = storeService.getStore(user);
 
 		Order order = orderManager.getOrder(orderId, store);
 

@@ -56,7 +56,7 @@ public class CategoryController {
 	public ResponseEntity<SuccessResponseDto> getCategory(HttpServletRequest request,
 			@PathVariable(name = "categoryId") Long categoryId) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Category category = categoryService.getCategory(categoryId, store);
 
@@ -71,7 +71,7 @@ public class CategoryController {
 	@GetMapping("/category")
 	public ResponseEntity<SuccessResponseDto> getCategories(HttpServletRequest request) {
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		List<Category> categories = categoryService.getCategories(store);
 
@@ -93,7 +93,7 @@ public class CategoryController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Category category = categoryService.createCategory(store, payload);
 
@@ -114,7 +114,7 @@ public class CategoryController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Category category = categoryService.updateCategory(categoryId, store, payload);
 
@@ -135,7 +135,7 @@ public class CategoryController {
 		}
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		Category category = categoryService.updateCategoryStatus(categoryId, store, payload.isEnabled());
 
@@ -153,7 +153,7 @@ public class CategoryController {
 			@PathVariable(name = "categoryId") Long categoryId) {
 
 		Store store = storeService
-				.getStoreByUser(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
+				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
 		categoryService.deleteCategory(categoryId, store);
 

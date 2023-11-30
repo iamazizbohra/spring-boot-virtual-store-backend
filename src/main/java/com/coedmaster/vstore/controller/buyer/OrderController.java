@@ -119,7 +119,7 @@ public class OrderController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		Store store = storeService.getStoreById(payload.getStoreId());
+		Store store = storeService.getStore(payload.getStoreId());
 
 		Order order = orderManager.createOrder(user, store);
 

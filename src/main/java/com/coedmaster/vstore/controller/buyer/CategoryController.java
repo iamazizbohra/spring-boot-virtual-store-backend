@@ -38,7 +38,7 @@ public class CategoryController {
 	@GetMapping("/store/{storeId}/category")
 	public ResponseEntity<SuccessResponseDto> getCategories(HttpServletRequest request,
 			@PathVariable(name = "storeId") Long storeId) {
-		Store store = storeService.getStoreById(storeId);
+		Store store = storeService.getStore(storeId);
 
 		List<Category> categories = categoryService.getCategories(store);
 

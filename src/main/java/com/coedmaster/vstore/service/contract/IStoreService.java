@@ -8,13 +8,19 @@ import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.StoreDto;
 
 public interface IStoreService {
-	Store getStoreById(Long storeId);
+	Store getStore(Long storeId);
 
-	Store getStoreByCode(String code);
+	Store getStore(Long storeId, boolean enabled);
 
-	Store getStoreByUser(User user);
+	Store getStore(User user);
+
+	Store getStore(String code);
+
+	Store getStore(String code, boolean enabled);
 
 	Page<Store> getStores(Pageable pageable);
+
+	Page<Store> getStores(boolean enabled, Pageable pageable);
 
 	Store createStore(User user, StoreDto payload);
 
