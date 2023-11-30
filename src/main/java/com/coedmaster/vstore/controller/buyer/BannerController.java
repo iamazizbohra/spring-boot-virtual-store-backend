@@ -40,7 +40,7 @@ public class BannerController {
 			@PathVariable(name = "storeId") Long storeId) {
 		Store store = storeService.getStore(storeId);
 
-		List<Banner> banners = bannerService.getBanners(store);
+		List<Banner> banners = bannerService.getBanners(store, true);
 
 		List<BannerDto> bannerDtos = banners.stream().map(e -> modelMapper.map(e, BannerDto.class))
 				.collect(Collectors.toList());

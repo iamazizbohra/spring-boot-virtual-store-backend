@@ -11,6 +11,8 @@ public interface IBannerService {
 
 	List<Banner> getBanners(Store store);
 
+	List<Banner> getBanners(Store store, boolean enabled);
+
 	Banner createBanner(Store store, BannerDto payload);
 
 	Banner updateBanner(Long bannerId, Store store, BannerDto payload);

@@ -31,6 +31,12 @@ public class BannerService implements IBannerService {
 	}
 
 	@Override
+	public List<Banner> getBanners(Store store, boolean enabled) {
+		return bannerRepository.findAllByStoreIdAndEnabled(store.getId(), enabled,
+				Sort.by(Sort.Direction.DESC, "sortOrder"));
+	}
+
+	@Override
 	public Banner createBanner(Store store, BannerDto payload) {
 		Banner banner = new Banner();
 		banner.setStore(store);
