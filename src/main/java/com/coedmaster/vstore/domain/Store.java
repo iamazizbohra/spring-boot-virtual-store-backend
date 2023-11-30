@@ -1,7 +1,6 @@
 package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -34,15 +32,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Store {
-
-	@OneToMany(mappedBy = "store")
-	private List<Banner> banners;
-
-	@OneToMany(mappedBy = "store")
-	private List<Category> categories;
-
-	@OneToMany(mappedBy = "store")
-	private List<Product> products;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
