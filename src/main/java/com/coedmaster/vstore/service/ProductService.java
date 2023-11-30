@@ -32,8 +32,19 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+	public Product getProduct(Long productId, Store store, boolean enabled) {
+		return productRepository.findByIdAndStoreIdAndEnabled(productId, store.getId(), enabled)
+				.orElseThrow(() -> new EntityNotFoundException("Product not found"));
+	}
+
+	@Override
 	public Page<Product> getProducts(Store store, Pageable pageable) {
 		return productRepository.findAllByStoreId(store.getId(), pageable);
+	}
+
+	@Override
+	public Page<Product> getProducts(Store store, boolean enabled, Pageable pageable) {
+		return productRepository.findAllByStoreIdAndEnabled(store.getId(), enabled, pageable);
 	}
 
 	@Override
@@ -44,9 +55,17 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+	public Page<Product> getProducts(Store store, List<Category> categories, boolean enabled, Pageable pageable) {
+		List<Long> categoryIds = categories.stream().map((e) -> e.getId()).collect(Collectors.toList());
+
+		return productRepository.findAllByStoreIdAndCategoryIdInAndEnabled(store.getId(), categoryIds, enabled,
+				pageable);
+	}
+
+	@Override
 	public Product createProduct(Store store, ProductDto payload) {
 		Category category = categoryService.getCategory(payload.getCategoryId(), store);
-		
+
 		Product product = new Product();
 		product.setStore(store);
 		product.setCategory(category);
@@ -64,7 +83,7 @@ public class ProductService implements IProductService {
 	@Override
 	public Product updateProduct(Long productId, Store store, ProductDto payload) {
 		Category category = categoryService.getCategory(payload.getCategoryId(), store);
-		
+
 		Product product = getProduct(productId, store);
 		product.setCategory(category);
 		product.setName(payload.getName());

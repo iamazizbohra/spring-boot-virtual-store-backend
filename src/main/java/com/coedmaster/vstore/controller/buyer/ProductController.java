@@ -51,7 +51,7 @@ public class ProductController {
 			@PathVariable(name = "storeId") Long storeId, @PathVariable(name = "productId") Long productId) {
 		Store store = storeService.getStore(storeId);
 
-		Product product = productService.getProduct(productId, store);
+		Product product = productService.getProduct(productId, store, true);
 
 		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 
@@ -76,10 +76,10 @@ public class ProductController {
 
 		Page<Product> productsPage;
 		if (categoryIds.size() == 0) {
-			productsPage = productService.getProducts(store, paging);
+			productsPage = productService.getProducts(store, true, paging);
 		} else {
 			List<Category> categories = categoryService.getCategories(categoryIds, store, true);
-			productsPage = productService.getProducts(store, categories, paging);
+			productsPage = productService.getProducts(store, categories, true, paging);
 		}
 
 		List<ProductDto> productDtos = productsPage.getContent().stream().map(e -> modelMapper.map(e, ProductDto.class))

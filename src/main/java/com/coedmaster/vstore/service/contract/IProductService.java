@@ -13,9 +13,15 @@ import com.coedmaster.vstore.dto.ProductDto;
 public interface IProductService {
 	Product getProduct(Long productId, Store store);
 
+	Product getProduct(Long productId, Store store, boolean enabled);
+
 	Page<Product> getProducts(Store store, Pageable pageable);
 
+	Page<Product> getProducts(Store store, boolean enabled, Pageable pageable);
+
 	Page<Product> getProducts(Store store, List<Category> categories, Pageable pageable);
+
+	Page<Product> getProducts(Store store, List<Category> categories, boolean enabled, Pageable pageable);
 
 	Product createProduct(Store store, ProductDto payload);
 
