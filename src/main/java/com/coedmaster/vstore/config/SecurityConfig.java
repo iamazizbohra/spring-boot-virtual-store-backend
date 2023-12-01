@@ -48,7 +48,7 @@ public class SecurityConfig {
 					exception.accessDeniedHandler(customAccessDeniedHandler());
 					exception.authenticationEntryPoint(jwtAuthenticationEntryPoint());
 				}).addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterAfter(new AccountStatusFilter(), AnonymousAuthenticationFilter.class);
+				.addFilterAfter(accountStatusFilter(), AnonymousAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -66,6 +66,11 @@ public class SecurityConfig {
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
 		return new JwtAuthenticationFilter();
+	}
+
+	@Bean
+	public AccountStatusFilter accountStatusFilter() {
+		return new AccountStatusFilter();
 	}
 
 	@Bean
