@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.domain;
+package com.coedmaster.vstore.domain.contract;
 
 import java.util.Collection;
 

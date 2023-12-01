@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.coedmaster.vstore.domain.IUserDetails;
+import com.coedmaster.vstore.domain.contract.IUserDetails;
 import com.coedmaster.vstore.exception.AccountInactiveException;
 
 import jakarta.servlet.FilterChain;

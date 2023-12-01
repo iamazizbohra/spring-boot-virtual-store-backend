@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.coedmaster.vstore.domain.IUserDetails;
+import com.coedmaster.vstore.domain.contract.IUserDetails;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 

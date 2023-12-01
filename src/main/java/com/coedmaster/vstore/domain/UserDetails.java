@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.coedmaster.vstore.domain.contract.IUserDetails;
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
