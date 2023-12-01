@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class CreateOrUpdateAccountDto {
+public class CreateAccountDto {
 	@NotEmpty
 	private String firstName;
 

@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 import com.coedmaster.vstore.domain.contract.AbstractTextMessage;
 
-public class MobileNumberVerificationMessage extends AbstractTextMessage {
+public class MobileVerificationMessage extends AbstractTextMessage {
 
 	private String mobile;
 	private String otp;

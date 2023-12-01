@@ -1,17 +1,18 @@
 package com.coedmaster.vstore.service.contract;
 
 import com.coedmaster.vstore.domain.User;
-import com.coedmaster.vstore.dto.CreateOrUpdateAccountDto;
+import com.coedmaster.vstore.dto.CreateAccountDto;
+import com.coedmaster.vstore.dto.UpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
 
 public interface IAccountService {	
-	User createAdminAccount(CreateOrUpdateAccountDto payload);
+	User createAdminAccount(CreateAccountDto payload);
 
-	User createBuyerAccount(CreateOrUpdateAccountDto payload);
+	User createBuyerAccount(CreateAccountDto payload);
 
-	User createSellerAccount(CreateOrUpdateAccountDto payload);
+	User createSellerAccount(CreateAccountDto payload);
 
-	User updateAccount(User user, CreateOrUpdateAccountDto payload);
+	User updateAccount(User user, UpdateAccountDto payload);
 
 	User updatePassword(User user, UpdatePasswordDto payload);
 

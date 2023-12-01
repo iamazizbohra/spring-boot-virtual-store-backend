@@ -6,19 +6,19 @@ import org.jobrunr.jobs.context.JobDashboardProgressBar;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.domain.contract.AbstractTextMessage;
-import com.coedmaster.vstore.domain.message.MobileNumberVerificationMessage;
+import com.coedmaster.vstore.domain.message.MobileVerificationMessage;
 import com.coedmaster.vstore.service.contract.ISmsService;
 
 @Service
 public class SmsService implements ISmsService {
 
 	@Override
-	@Job(name = "Mobile Number Verification Message")
-	public void sendMobileNumberVerificationMessage(JobContext jobContext, String mobile, String otp) {
+	@Job(name = "Mobile Verification Message")
+	public void sendMobileVerificationMessage(JobContext jobContext, String mobile, String otp) {
 		JobDashboardProgressBar progressBar = jobContext.progressBar(6);
 
 		jobContext.logger().info("Creating message");
-		var message = new MobileNumberVerificationMessage();
+		var message = new MobileVerificationMessage();
 		progressBar.increaseByOne();
 
 		jobContext.logger().info("Setting mobile number to: " + mobile);
