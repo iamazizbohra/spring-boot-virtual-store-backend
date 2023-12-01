@@ -1,5 +1,8 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE users (
 	id BIGINT primary key GENERATED ALWAYS AS IDENTITY,
+	uuid uuid UNIQUE NOT NULL,
 	user_type varchar(50) NOT NULL,
 	first_name varchar(50) NOT NULL,
 	last_name varchar(50) NOT NULL,

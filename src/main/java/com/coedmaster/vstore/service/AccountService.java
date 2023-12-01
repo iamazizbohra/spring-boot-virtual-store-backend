@@ -2,6 +2,7 @@ package com.coedmaster.vstore.service;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -90,6 +91,7 @@ public class AccountService implements IAccountService {
 		fullName.setLastName(payload.getLastName());
 
 		User user = new User();
+		user.setUuid(UUID.randomUUID());
 		user.setUserType(userType);
 		user.setFullName(fullName);
 		user.setMobile(payload.getMobile());

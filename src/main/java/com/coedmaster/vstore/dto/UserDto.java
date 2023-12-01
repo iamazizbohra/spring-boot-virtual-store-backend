@@ -1,10 +1,14 @@
 package com.coedmaster.vstore.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
 public class UserDto {
 	private Long id;
+	
+	private UUID uuid;
 
 	private String firstName;
 

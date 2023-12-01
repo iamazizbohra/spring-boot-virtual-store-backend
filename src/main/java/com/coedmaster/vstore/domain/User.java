@@ -2,6 +2,7 @@ package com.coedmaster.vstore.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -56,6 +57,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(updatable = false)
+	private UUID uuid;
 
 	@Column(updatable = false)
 	@Convert(converter = UserTypeConverter.class)
