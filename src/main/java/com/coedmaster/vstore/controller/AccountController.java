@@ -117,7 +117,6 @@ public class AccountController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		// TODO: issue new JWT
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
 		user = accountService.updateAccount(user, payload);
@@ -138,7 +137,6 @@ public class AccountController {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		// TODO: issue new JWT
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
 		user = accountService.updatePassword(user, payload);
