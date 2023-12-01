@@ -1,15 +1,15 @@
-package com.coedmaster.vstore.domain;
+package com.coedmaster.vstore.domain.message;
 
 import java.text.MessageFormat;
 
 import com.coedmaster.vstore.domain.contract.AbstractTextMessage;
 
-public class RegistrationOtpMessage extends AbstractTextMessage {
+public class PasswordResetMessage extends AbstractTextMessage {
 
 	private String mobile;
 	private String otp;
 	private final String text = """
-			Dear user, your OTP for registration is {0}. Use this OTP to verify your mobile number.
+			Dear user, your OTP is {0}. Use this OTP to reset your password.
 			""";
 
 	public String getMobile() {

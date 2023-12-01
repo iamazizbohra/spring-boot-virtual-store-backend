@@ -5,8 +5,8 @@ import org.jobrunr.jobs.context.JobContext;
 import org.jobrunr.jobs.context.JobDashboardProgressBar;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.domain.RegistrationOtpMessage;
 import com.coedmaster.vstore.domain.contract.AbstractTextMessage;
+import com.coedmaster.vstore.domain.message.MobileNumberVerificationMessage;
 import com.coedmaster.vstore.service.contract.ISmsService;
 
 @Service
@@ -18,7 +18,7 @@ public class SmsService implements ISmsService {
 		JobDashboardProgressBar progressBar = jobContext.progressBar(6);
 
 		jobContext.logger().info("Creating message");
-		var message = new RegistrationOtpMessage();
+		var message = new MobileNumberVerificationMessage();
 		progressBar.increaseByOne();
 
 		jobContext.logger().info("Setting mobile number to: " + mobile);
@@ -32,9 +32,10 @@ public class SmsService implements ISmsService {
 		jobContext.logger().info("Message created successfully");
 		progressBar.increaseByOne();
 
-		jobContext.logger().info("Sending message");
+		jobContext.logger().info("Sending message: ");
 		progressBar.increaseByOne();
 		sendMessage(message);
+		jobContext.logger().info(message.getText());
 		jobContext.logger().info("Message sent successfully");
 		progressBar.increaseByOne();
 	}
