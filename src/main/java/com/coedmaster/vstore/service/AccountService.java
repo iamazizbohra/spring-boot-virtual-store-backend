@@ -1,9 +1,16 @@
 package com.coedmaster.vstore.service;
 
+import java.text.MessageFormat;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Optional;
 
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jobrunr.jobs.context.JobContext;
+import org.jobrunr.scheduling.BackgroundJob;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +23,16 @@ import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserRole;
 import com.coedmaster.vstore.enums.UserType;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.exception.InvalidMobileVerificationCodeException;
+import com.coedmaster.vstore.exception.MobileVerificationCodeNotFoundException;
 import com.coedmaster.vstore.exception.PasswordMismatchException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
 import com.coedmaster.vstore.respository.RoleRepository;
 import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.service.contract.IAccountService;
+import com.coedmaster.vstore.service.contract.IOtpService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AccountService implements IAccountService {
@@ -33,6 +45,14 @@ public class AccountService implements IAccountService {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private IOtpService otpService;
+
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
+
+	private final int EXPIRE_IN_SECONDS = 180;
 
 	@Override
 	public User createAdminAccount(CreateOrUpdateAccountDto payload) {
@@ -58,9 +78,32 @@ public class AccountService implements IAccountService {
 		return createAccount(UserType.SELLER, role, payload);
 	}
 
+	@Transactional
 	private User createAccount(UserType userType, Role role, CreateOrUpdateAccountDto payload) {
 		if (!isMobileNoAvailable(payload.getMobile())) {
 			throw new UsernameAlreadyTakenException("Mobile no is already taken");
+		}
+
+		if (ObjectUtils.isEmpty(payload.getVerificationCode())) {
+			String verificationCode = otpService.generateRandomPassword(4);
+
+			String key = MessageFormat.format("user:mvc:{0}", payload.getMobile());
+			redisTemplate.opsForValue().append(key, verificationCode);
+			redisTemplate.expire(key, Duration.ofSeconds(EXPIRE_IN_SECONDS));
+
+			BackgroundJob.<SmsService>enqueue(
+					x -> x.sendMobileNumberVerificationMessage(JobContext.Null, payload.getMobile(), verificationCode));
+
+			throw new MobileVerificationCodeNotFoundException("Mobile verification code not found");
+		}
+
+		if (ObjectUtils.isNotEmpty(payload.getVerificationCode())) {
+			String verificationCode = payload.getVerificationCode();
+
+			String key = MessageFormat.format("user:mvc:{0}", payload.getMobile());
+			if (!StringUtils.equals(verificationCode, redisTemplate.opsForValue().get(key))) {
+				throw new InvalidMobileVerificationCodeException("Invalid mobile verification code");
+			}
 		}
 
 		FullName fullName = new FullName();

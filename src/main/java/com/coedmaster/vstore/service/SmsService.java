@@ -13,8 +13,8 @@ import com.coedmaster.vstore.service.contract.ISmsService;
 public class SmsService implements ISmsService {
 
 	@Override
-	@Job(name = "Registration OTP Message Job")
-	public void sendRegistrationOtpMessage(JobContext jobContext, String mobile, String otp) {
+	@Job(name = "Mobile Number Verification Message")
+	public void sendMobileNumberVerificationMessage(JobContext jobContext, String mobile, String otp) {
 		JobDashboardProgressBar progressBar = jobContext.progressBar(6);
 
 		jobContext.logger().info("Creating message");
