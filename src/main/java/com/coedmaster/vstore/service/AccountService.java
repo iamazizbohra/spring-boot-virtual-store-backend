@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.coedmaster.vstore.domain.AuthAccessToken;
 import com.coedmaster.vstore.domain.Role;
 import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.domain.embeddable.FullName;
@@ -41,6 +42,9 @@ public class AccountService implements IAccountService {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AuthenticationService authenticationService;
 
 	@Autowired
 	private MobileVerificationService mobileVerificationService;
@@ -138,13 +142,19 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public User updatePassword(User user, UpdatePasswordDto payload) {
+	@Transactional
+	public AuthAccessToken updatePassword(User user, UpdatePasswordDto payload) {
 		if (!passwordEncoder.matches(payload.getCurrentPassword(), user.getPassword()))
 			throw new PasswordMismatchException("Current password does not match");
 
 		user.setPassword(passwordEncoder.encode(payload.getNewPassword()));
+		userRepository.save(user);
 
-		return userRepository.save(user);
+		authenticationService.deleteAllTokens(user);
+
+		AuthAccessToken authAccessToken = authenticationService.generateToken(user);
+
+		return authAccessToken;
 	}
 
 	@Override

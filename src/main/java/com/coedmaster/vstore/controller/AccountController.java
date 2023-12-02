@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.domain.AuthAccessToken;
 import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.CreateAccountDto;
+import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.UpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
@@ -139,12 +141,12 @@ public class AccountController {
 
 		User user = authenticationService.getAuthenticatedUser(authenticationService.getAuthentication());
 
-		user = accountService.updatePassword(user, payload);
+		AuthAccessToken authAccessToken = accountService.updatePassword(user, payload);
 
-		UserDto userDto = modelMapper.map(user, UserDto.class);
+		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(authAccessToken.getToken()).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Password updated successfully").data(userDto).path(request.getServletPath()).build();
+				.message("Password updated successfully").data(jwtTokenDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

@@ -3,6 +3,7 @@ package com.coedmaster.vstore.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -131,6 +132,15 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void deleteAllTokens(User user) {
+		List<AuthAccessToken> authAccessTokens = authAccessTokenRepository.findAllByUserId(user.getId());
+
+		for (AuthAccessToken authAccessToken : authAccessTokens) {
+			authAccessTokenRepository.deleteById(authAccessToken.getId());
+		}
 	}
 
 	private SecretKey key() {

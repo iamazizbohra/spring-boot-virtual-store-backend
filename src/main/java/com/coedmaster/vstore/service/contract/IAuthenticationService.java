@@ -24,4 +24,6 @@ public interface IAuthenticationService {
 
 	boolean isTokenExists(String token);
 
+	void deleteAllTokens(User user);
+
 }
