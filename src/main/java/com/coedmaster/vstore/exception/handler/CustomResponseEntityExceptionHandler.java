@@ -22,6 +22,7 @@ import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.InvalidAccessTokenException;
 import com.coedmaster.vstore.exception.InvalidMobileVerificationCodeException;
 import com.coedmaster.vstore.exception.MobileVerificationCodeNotFoundException;
+import com.coedmaster.vstore.exception.PasswordMismatchException;
 import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
 import com.coedmaster.vstore.exception.UnallowedOperationException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
@@ -45,7 +46,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistsException.class,
 			UsernameAlreadyTakenException.class, StoreCodeAlreadyTakenException.class,
 			UnallowedOperationException.class, MobileVerificationCodeNotFoundException.class,
-			InvalidMobileVerificationCodeException.class })
+			InvalidMobileVerificationCodeException.class, PasswordMismatchException.class })
 	public ResponseEntity<ErrorResponseDto> handleAllCustomException(Exception ex, WebRequest request) {
 
 		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(400)
