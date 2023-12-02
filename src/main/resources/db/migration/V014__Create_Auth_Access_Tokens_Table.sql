@@ -3,6 +3,7 @@ CREATE TABLE auth_access_tokens (
 	user_id BIGINT NOT NULL,
 	name varchar(50) NOT NULL,
 	token varchar NOT NULL,
+	expires_at timestamp NOT NULL,
 	created_by varchar(50),
 	created_date timestamp,
 	last_modified_by varchar(50),

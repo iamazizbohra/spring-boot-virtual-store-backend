@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.coedmaster.vstore.domain.AuthAccessToken;
 
 public interface AuthAccessTokenRepository extends JpaRepository<AuthAccessToken, Long> {
-	List<AuthAccessToken> findByUserId(Long userId);
+	List<AuthAccessToken> findAllByUserId(Long userId);
 
 	Optional<AuthAccessToken> findByToken(String token);
 }

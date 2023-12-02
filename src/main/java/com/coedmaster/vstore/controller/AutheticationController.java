@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coedmaster.vstore.domain.AuthAccessToken;
+import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AuthenticateDto;
 import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
-import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,29 +25,29 @@ import jakarta.validation.Validator;
 
 @RestController
 public class AutheticationController {
+
 	@Autowired
 	private IAuthenticationService authenticationService;
-	
-	@Autowired
-	IJwtTokenProvider jwtTokenProvider;
 
 	@Autowired
 	private Validator validator;
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<SuccessResponseDto> authenticate(HttpServletRequest request, @RequestBody AuthenticateDto payload) {
+	public ResponseEntity<SuccessResponseDto> authenticate(HttpServletRequest request,
+			@RequestBody AuthenticateDto payload) {
 		Set<ConstraintViolation<AuthenticateDto>> violations = validator.validate(payload);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException("Constraint violation", violations);
 		}
 
-		Authentication authentication = authenticationService.authenticate(payload);
-		
-		authenticationService.setAuthentication(authentication);
-		
-		String jws = jwtTokenProvider.generateToken(authentication);
+		Authentication authentication = authenticationService.authenticate(payload.getUsername(),
+				payload.getPassword());
 
-		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(jws).build();
+		User user = authenticationService.getAuthenticatedUser(authentication);
+
+		AuthAccessToken authAccessToken = authenticationService.generateToken(user);
+
+		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(authAccessToken.getToken()).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
 				.message("Authenticate successfully").data(jwtTokenDto).path(request.getServletPath()).build();

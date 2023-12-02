@@ -10,7 +10,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.coedmaster.vstore.security.provider.IJwtTokenProvider;
+import com.coedmaster.vstore.exception.InvalidAccessTokenException;
+import com.coedmaster.vstore.service.contract.IAuthenticationService;
 import com.coedmaster.vstore.service.contract.IUserDetailsService;
 
 import jakarta.servlet.FilterChain;
@@ -21,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private IJwtTokenProvider jwtTokenProvider;
+	private IAuthenticationService authenticationService;
 
 	@Autowired
 	private IUserDetailsService userDetailsService;
@@ -31,10 +32,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		String jws = getJwsFromRequest(request);
 
-		if (StringUtils.hasText(jws) && jwtTokenProvider.validateToken(jws)) {
-			String mobile = jwtTokenProvider.getUsername(jws);
+		if (StringUtils.hasText(jws)) {
+			if (!authenticationService.validateToken(jws)) {
+				throw new InvalidAccessTokenException("Invalid access token");
+			}
 
-			UserDetails userDetails = userDetailsService.loadUserByUsername(mobile);
+			if (!authenticationService.isTokenExists(jws)) {
+				throw new InvalidAccessTokenException("Invalid access token");
+			}
+
+			String uuid = authenticationService.getSubjectFromToken(jws);
+
+			UserDetails userDetails = userDetailsService.loadUserByUuid(uuid);
 
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
 					null, userDetails.getAuthorities());

@@ -44,6 +44,8 @@ public class AuthAccessToken {
 	private String name;
 
 	private String token;
+	
+	private LocalDateTime expiresAt;
 
 	@Column(updatable = false)
 	@CreatedBy

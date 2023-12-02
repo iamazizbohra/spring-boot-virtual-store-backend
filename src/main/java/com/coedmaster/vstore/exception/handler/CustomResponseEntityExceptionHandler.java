@@ -19,6 +19,7 @@ import com.coedmaster.vstore.dto.response.ValidationErrorResponseDto;
 import com.coedmaster.vstore.exception.AccountInactiveException;
 import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.exception.InvalidAccessTokenException;
 import com.coedmaster.vstore.exception.InvalidMobileVerificationCodeException;
 import com.coedmaster.vstore.exception.MobileVerificationCodeNotFoundException;
 import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
@@ -71,7 +72,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return new ResponseEntity<>(errorResponseDto, HttpStatus.FORBIDDEN);
 	}
 
-	@ExceptionHandler(AccountInactiveException.class)
+	@ExceptionHandler({ AccountInactiveException.class, InvalidAccessTokenException.class })
 	public ResponseEntity<ErrorResponseDto> handleAccountInactiveExceptionException(Exception ex, WebRequest request) {
 
 		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(401)
