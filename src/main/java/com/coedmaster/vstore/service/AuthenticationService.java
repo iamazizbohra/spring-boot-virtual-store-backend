@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.config.properties.JwtCredentials;
@@ -39,13 +40,16 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationService implements IAuthenticationService {
 
 	@Autowired
-	private IUserService userService;
-
-	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
+	private IUserService userService;
+
+	@Autowired
 	private AuthAccessTokenRepository authAccessTokenRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private JwtCredentials jwtCredentials;
@@ -78,6 +82,11 @@ public class AuthenticationService implements IAuthenticationService {
 		IUserDetails userDetails = getAuthenticatedUserDetails(authentication);
 
 		return userService.getUser(userDetails.getId());
+	}
+
+	@Override
+	public boolean verifyPassword(User user, String password) {
+		return passwordEncoder.matches(password, user.getPassword());
 	}
 
 	@Override

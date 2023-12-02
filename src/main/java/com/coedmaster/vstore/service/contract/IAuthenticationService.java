@@ -16,6 +16,8 @@ public interface IAuthenticationService {
 
 	User getAuthenticatedUser(Authentication authentication);
 
+	boolean verifyPassword(User user, String password);
+
 	AuthAccessToken generateToken(User user);
 
 	String getSubjectFromToken(String token);

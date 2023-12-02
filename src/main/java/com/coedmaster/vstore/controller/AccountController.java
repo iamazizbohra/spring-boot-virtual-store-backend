@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.domain.AuthAccessToken;
 import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.CreateAccountDto;
-import com.coedmaster.vstore.dto.JwtTokenDto;
+import com.coedmaster.vstore.dto.AccessTokenDto;
 import com.coedmaster.vstore.dto.UpdateAccountDto;
 import com.coedmaster.vstore.dto.UpdatePasswordDto;
 import com.coedmaster.vstore.dto.UserDto;
@@ -143,10 +143,10 @@ public class AccountController {
 
 		AuthAccessToken authAccessToken = accountService.updatePassword(user, payload);
 
-		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(authAccessToken.getToken()).build();
+		AccessTokenDto accessTokenDto = AccessTokenDto.builder().token(authAccessToken.getToken()).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Password updated successfully").data(jwtTokenDto).path(request.getServletPath()).build();
+				.message("Password updated successfully").data(accessTokenDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}

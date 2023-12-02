@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coedmaster.vstore.domain.AuthAccessToken;
 import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AuthenticateDto;
+import com.coedmaster.vstore.dto.AccessTokenDto;
 import com.coedmaster.vstore.dto.ResetPasswordDto;
-import com.coedmaster.vstore.dto.JwtTokenDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.exception.InvalidMobileVerificationCodeException;
 import com.coedmaster.vstore.exception.MobileVerificationCodeNotFoundException;
-import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.service.MobileVerificationService;
 import com.coedmaster.vstore.service.UserService;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;
@@ -44,12 +42,6 @@ public class AutheticationController {
 	private MobileVerificationService mobileVerificationService;
 
 	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
-	PasswordEncoder passwordEncoder;
-
-	@Autowired
 	private Validator validator;
 
 	@PostMapping("/authenticate")
@@ -67,10 +59,10 @@ public class AutheticationController {
 
 		AuthAccessToken authAccessToken = authenticationService.generateToken(user);
 
-		JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(authAccessToken.getToken()).build();
+		AccessTokenDto accessTokenDto = AccessTokenDto.builder().token(authAccessToken.getToken()).build();
 
 		SuccessResponseDto successResponseDto = SuccessResponseDto.builder().timestamp(LocalDateTime.now()).status(200)
-				.message("Authenticate successfully").data(jwtTokenDto).path(request.getServletPath()).build();
+				.message("Authenticate successfully").data(accessTokenDto).path(request.getServletPath()).build();
 
 		return new ResponseEntity<SuccessResponseDto>(successResponseDto, HttpStatus.OK);
 	}
@@ -96,8 +88,7 @@ public class AutheticationController {
 			throw new InvalidMobileVerificationCodeException("Invalid mobile verification code");
 		}
 
-		user.setPassword(passwordEncoder.encode(payload.getPassword()));
-		userRepository.save(user);
+		userService.updateUserPassword(user, payload.getPassword());
 
 		authenticationService.deleteAllTokens(user);
 

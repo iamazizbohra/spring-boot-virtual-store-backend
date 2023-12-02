@@ -16,8 +16,4 @@ public interface IAccountService {
 	User updateAccount(User user, UpdateAccountDto payload);
 
 	AuthAccessToken updatePassword(User user, UpdatePasswordDto payload);
-
-	boolean isMobileNoAvailable(String mobile);
-
-	boolean isMobileNoAvailableFor(String mobile, User user);
 }

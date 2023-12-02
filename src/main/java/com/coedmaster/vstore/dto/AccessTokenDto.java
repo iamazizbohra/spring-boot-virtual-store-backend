@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class JwtTokenDto {
+public class AccessTokenDto {
 	@Builder.Default
-	private String tokenType = "Bearer";
+	private String type = "Bearer";
 
-	private String accessToken;
+	private String token;
 }
