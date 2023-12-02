@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.coedmaster.vstore.dto.response.ErrorResponseDto;
 import com.coedmaster.vstore.dto.response.ValidationErrorResponseDto;
+import com.coedmaster.vstore.exception.AccountInactiveException;
 import com.coedmaster.vstore.exception.EntityAlreadyExistsException;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.InvalidMobileVerificationCodeException;
@@ -29,6 +30,7 @@ import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(Exception ex, WebRequest request) {
 
@@ -67,6 +69,15 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 				.error(HttpStatus.FORBIDDEN).message(ex.getMessage()).path(request.getDescription(false)).build();
 
 		return new ResponseEntity<>(errorResponseDto, HttpStatus.FORBIDDEN);
+	}
+
+	@ExceptionHandler(AccountInactiveException.class)
+	public ResponseEntity<ErrorResponseDto> handleAccountInactiveExceptionException(Exception ex, WebRequest request) {
+
+		ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().timestamp(LocalDateTime.now()).status(401)
+				.error(HttpStatus.UNAUTHORIZED).message(ex.getMessage()).path(request.getDescription(false)).build();
+
+		return new ResponseEntity<>(errorResponseDto, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)

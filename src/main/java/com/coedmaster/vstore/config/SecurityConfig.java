@@ -14,8 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.coedmaster.vstore.exception.handler.CustomAccessDeniedHandler;
+import com.coedmaster.vstore.exception.handler.FilterChainExceptionHandler;
 import com.coedmaster.vstore.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.coedmaster.vstore.security.filter.AccountStatusFilter;
 import com.coedmaster.vstore.security.filter.JwtAuthenticationFilter;
@@ -48,7 +50,8 @@ public class SecurityConfig {
 					exception.accessDeniedHandler(customAccessDeniedHandler());
 					exception.authenticationEntryPoint(jwtAuthenticationEntryPoint());
 				}).addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterAfter(accountStatusFilter(), AnonymousAuthenticationFilter.class);
+				.addFilterAfter(accountStatusFilter(), AnonymousAuthenticationFilter.class)
+				.addFilterBefore(filterChainExceptionHandler(), LogoutFilter.class);
 
 		return http.build();
 	}
@@ -74,6 +77,16 @@ public class SecurityConfig {
 	}
 
 	@Bean
+	public CustomAccessDeniedHandler customAccessDeniedHandler() {
+		return new CustomAccessDeniedHandler();
+	}
+
+	@Bean
+	public FilterChainExceptionHandler filterChainExceptionHandler() {
+		return new FilterChainExceptionHandler();
+	}
+
+	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
@@ -81,11 +94,6 @@ public class SecurityConfig {
 	@Bean
 	public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
 		return new JwtAuthenticationEntryPoint();
-	}
-
-	@Bean
-	public CustomAccessDeniedHandler customAccessDeniedHandler() {
-		return new CustomAccessDeniedHandler();
 	}
 
 }
