@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class FullName {
+	
 	private String firstName;
 
 	private String lastName;

@@ -9,11 +9,9 @@ import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@Builder
 @EqualsAndHashCode
 @ToString
 public class UserDetails implements IUserDetails {

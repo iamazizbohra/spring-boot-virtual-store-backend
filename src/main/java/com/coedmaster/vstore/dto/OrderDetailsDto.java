@@ -8,7 +8,9 @@ import lombok.Data;
 @Data
 @Builder
 public class OrderDetailsDto {
+	
 	private OrderDto order;
 
 	private List<OrderItemDto> orderItems;
+	
 }

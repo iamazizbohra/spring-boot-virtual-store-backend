@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class UpdateCartShippingAddressDto {
+	
 	@NotNull
 	private Long id;
+	
 }

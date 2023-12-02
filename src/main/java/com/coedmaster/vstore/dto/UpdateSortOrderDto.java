@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class UpdateSortOrderDto {
+	
 	@NotNull
 	private Short sortOrder;
+	
 }

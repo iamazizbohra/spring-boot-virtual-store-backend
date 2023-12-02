@@ -8,4 +8,5 @@ import lombok.Setter;
 public class UpdateAccountDto extends UpdateUserDto {
 	
 	private String verificationCode;
+	
 }

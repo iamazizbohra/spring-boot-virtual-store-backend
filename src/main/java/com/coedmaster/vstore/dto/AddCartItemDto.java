@@ -6,10 +6,12 @@ import lombok.Data;
 
 @Data
 public class AddCartItemDto {
+	
 	@NotNull
 	private Long productId;
 
 	@NotNull
 	@Min(value = 1)
 	private Integer quantity;
+	
 }

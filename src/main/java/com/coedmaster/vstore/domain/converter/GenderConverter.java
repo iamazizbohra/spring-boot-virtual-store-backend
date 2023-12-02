@@ -25,7 +25,6 @@ public class GenderConverter implements AttributeConverter<Gender, String> {
 
 		return Stream.of(Gender.values()).filter(e -> e.name().equals(dbData)).findFirst()
 				.orElseThrow(IllegalArgumentException::new);
-
 	}
 
 }

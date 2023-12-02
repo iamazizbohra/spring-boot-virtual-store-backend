@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class UserDto {
+	
 	private Long id;
 	
 	private UUID uuid;
@@ -19,4 +20,5 @@ public class UserDto {
 	private String email;
 
 	private String gender;
+	
 }

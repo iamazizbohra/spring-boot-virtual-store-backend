@@ -42,11 +42,18 @@ public class UserDetailsService implements IUserDetailsService {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 
-		UserDetails userDetails = UserDetails.builder().id(user.getId()).userType(user.getUserType())
-				.firstName(user.getFullName().getFirstName()).lastName(user.getFullName().getLastName())
-				.mobile(user.getMobile()).password(user.getPassword()).email(user.getEmail()).gender(user.getGender())
-				.enabled(user.isEnabled()).authorities(authorities).build();
-		
+		UserDetails userDetails = new UserDetails();
+		userDetails.setId(user.getId());
+		userDetails.setUserType(user.getUserType());
+		userDetails.setFirstName(user.getFullName().getFirstName());
+		userDetails.setLastName(user.getFullName().getLastName());
+		userDetails.setMobile(user.getMobile());
+		userDetails.setPassword(user.getPassword());
+		userDetails.setEmail(user.getEmail());
+		userDetails.setGender(user.getGender());
+		userDetails.setEnabled(user.isEnabled());
+		userDetails.setAuthorities(authorities);
+
 		return userDetails;
 	}
 

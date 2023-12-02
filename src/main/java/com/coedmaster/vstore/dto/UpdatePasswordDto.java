@@ -7,9 +7,11 @@ import lombok.Data;
 @Data
 @Builder
 public class UpdatePasswordDto {
+	
 	@NotEmpty
 	String currentPassword;
 
 	@NotEmpty
 	String newPassword;
+	
 }

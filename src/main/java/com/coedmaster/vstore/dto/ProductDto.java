@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class ProductDto {
+	
 	private Long id;
 
 	@NotNull
@@ -27,4 +28,5 @@ public class ProductDto {
 	private Integer quantity;
 
 	private boolean enabled;
+	
 }

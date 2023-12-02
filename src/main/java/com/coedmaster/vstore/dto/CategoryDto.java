@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class CategoryDto {
+	
 	private Long id;
 
 	@NotEmpty
@@ -13,4 +14,5 @@ public class CategoryDto {
 	private String image;
 
 	private boolean enabled;
+	
 }

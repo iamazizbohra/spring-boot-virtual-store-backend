@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.validation;
+package com.coedmaster.vstore.domain.validation;
 
 import lombok.Builder;
 import lombok.Data;

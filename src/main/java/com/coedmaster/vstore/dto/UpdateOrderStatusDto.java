@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class UpdateOrderStatusDto {
+	
 	@NotEmpty
 	private String status;
+	
 }

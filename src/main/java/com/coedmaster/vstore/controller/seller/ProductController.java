@@ -49,13 +49,13 @@ public class ProductController {
 	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private IProductService productService;
+	private IStoreService storeService;
 
 	@Autowired
 	private ICategoryService categoryService;
 
 	@Autowired
-	private IStoreService storeService;
+	private IProductService productService;
 
 	@Autowired
 	private ModelMapper modelMapper;

@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class StoreDto {
+	
 	private Long id;
 
 	@NotEmpty
@@ -29,4 +30,5 @@ public class StoreDto {
 
 	@NotEmpty
 	private String address;
+	
 }

@@ -35,13 +35,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ProductController {
 
 	@Autowired
-	private IProductService productService;
-
-	@Autowired
 	private ICategoryService categoryService;
 
 	@Autowired
 	private IStoreService storeService;
+
+	@Autowired
+	private IProductService productService;
 
 	@Autowired
 	private ModelMapper modelMapper;

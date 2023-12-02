@@ -33,6 +33,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class CartItem {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

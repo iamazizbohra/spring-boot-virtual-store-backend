@@ -27,10 +27,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CategoryController {
 
 	@Autowired
-	private ICategoryService categoryService;
+	private IStoreService storeService;
 
 	@Autowired
-	private IStoreService storeService;
+	private ICategoryService categoryService;
 
 	@Autowired
 	private ModelMapper modelMapper;

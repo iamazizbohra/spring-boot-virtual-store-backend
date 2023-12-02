@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class ResetPasswordDto {
+	
 	@NotEmpty
 	@Size(min = 10, max = 10)
 	private String mobile;
@@ -15,4 +16,5 @@ public class ResetPasswordDto {
 	@NotEmpty
 	@Size(min = 8, max = 64)
 	private String password;
+	
 }

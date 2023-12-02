@@ -10,6 +10,7 @@ import com.coedmaster.vstore.domain.audit.AuditorAwareImpl;
 @Configuration
 @EnableJpaAuditing
 public class JpaConfig {
+	
 	@Bean
 	public AuditorAware<String> auditorProvider() {
 		return new AuditorAwareImpl();

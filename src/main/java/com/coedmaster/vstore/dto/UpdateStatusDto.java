@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class UpdateStatusDto {
+	
 	@NotNull
 	private boolean enabled;
+	
 }

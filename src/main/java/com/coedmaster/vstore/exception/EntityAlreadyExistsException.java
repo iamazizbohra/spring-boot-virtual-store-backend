@@ -1,6 +1,7 @@
 package com.coedmaster.vstore.exception;
 
 public class EntityAlreadyExistsException extends RuntimeException {
+	
 	private static final long serialVersionUID = 8330733810001340543L;
 
 	public EntityAlreadyExistsException() {

@@ -52,13 +52,13 @@ public class CartController {
 	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private ICartService cartManager;
-
-	@Autowired
 	private IStoreService storeService;
 
 	@Autowired
 	private IProductService productService;
+
+	@Autowired
+	private ICartService cartManager;
 
 	@Autowired
 	private IAddressService addressService;

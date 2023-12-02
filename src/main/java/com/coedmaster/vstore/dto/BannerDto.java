@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class BannerDto {
+	
 	private Long id;
 
 	@NotEmpty
@@ -15,4 +16,5 @@ public class BannerDto {
 	private Short sortOrder;
 
 	private boolean enabled;
+	
 }

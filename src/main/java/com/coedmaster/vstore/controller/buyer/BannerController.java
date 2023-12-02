@@ -27,10 +27,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class BannerController {
 
 	@Autowired
-	private IBannerService bannerService;
+	private IStoreService storeService;
 
 	@Autowired
-	private IStoreService storeService;
+	private IBannerService bannerService;
 
 	@Autowired
 	private ModelMapper modelMapper;

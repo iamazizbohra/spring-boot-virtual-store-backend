@@ -41,10 +41,10 @@ public class CategoryController {
 	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private ICategoryService categoryService;
+	private IStoreService storeService;
 
 	@Autowired
-	private IStoreService storeService;
+	private ICategoryService categoryService;
 
 	@Autowired
 	private ModelMapper modelMapper;

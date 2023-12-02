@@ -25,4 +25,5 @@ public class UpdateUserDto {
 
 	@NotEmpty
 	private String gender;
+	
 }

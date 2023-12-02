@@ -42,10 +42,10 @@ public class BannerController {
 	private IAuthenticationService authenticationService;
 
 	@Autowired
-	private IBannerService bannerService;
+	private IStoreService storeService;
 
 	@Autowired
-	private IStoreService storeService;
+	private IBannerService bannerService;
 
 	@Autowired
 	private ModelMapper modelMapper;

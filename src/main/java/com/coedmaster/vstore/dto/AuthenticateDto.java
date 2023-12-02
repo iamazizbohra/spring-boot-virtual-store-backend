@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 public class AuthenticateDto {
+	
 	@NotEmpty
 	private String username;
 	
 	@NotEmpty
 	private String password;
+	
 }

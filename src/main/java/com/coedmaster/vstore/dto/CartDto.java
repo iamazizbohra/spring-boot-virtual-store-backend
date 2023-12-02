@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CartDto {
+	
 	private Long id;
 
 	private Long storeId;
@@ -21,4 +22,5 @@ public class CartDto {
 	private Integer total;
 
 	private AddressDto shippingAddress;
+	
 }

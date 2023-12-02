@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 public class StoreSpecs {
+	
 	public static Specification<Store> hasStoreId(Long storeId) {
 		return (Root<Store> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> builder.equal(root.get("id"),
 				storeId);

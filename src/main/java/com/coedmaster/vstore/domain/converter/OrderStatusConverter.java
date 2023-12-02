@@ -9,6 +9,7 @@ import jakarta.persistence.Converter;
 
 @Converter
 public class OrderStatusConverter implements AttributeConverter<OrderStatus, String> {
+	
 	@Override
 	public String convertToDatabaseColumn(OrderStatus attribute) {
 		if (attribute == null)
@@ -24,6 +25,5 @@ public class OrderStatusConverter implements AttributeConverter<OrderStatus, Str
 
 		return Stream.of(OrderStatus.values()).filter(e -> e.name().equals(dbData)).findFirst()
 				.orElseThrow(IllegalArgumentException::new);
-
 	}
 }

@@ -73,6 +73,11 @@ public class SecurityConfig {
 	}
 
 	@Bean
+	public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
+		return new JwtAuthenticationEntryPoint();
+	}
+
+	@Bean
 	public AccountStatusFilter accountStatusFilter() {
 		return new AccountStatusFilter();
 	}
@@ -90,11 +95,6 @@ public class SecurityConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-
-	@Bean
-	public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
-		return new JwtAuthenticationEntryPoint();
 	}
 
 }

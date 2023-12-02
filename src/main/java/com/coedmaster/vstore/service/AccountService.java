@@ -18,6 +18,7 @@ import com.coedmaster.vstore.exception.MobileVerificationCodeNotFoundException;
 import com.coedmaster.vstore.exception.PasswordMismatchException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
 import com.coedmaster.vstore.service.contract.IAccountService;
+import com.coedmaster.vstore.service.contract.IRoleService;
 import com.coedmaster.vstore.service.contract.IUserService;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class AccountService implements IAccountService {
 	private IUserService userService;
 
 	@Autowired
-	private RoleService roleService;
+	private IRoleService roleService;
 
 	@Autowired
 	private AuthenticationService authenticationService;

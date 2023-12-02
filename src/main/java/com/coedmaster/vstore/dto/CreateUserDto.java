@@ -29,4 +29,5 @@ public class CreateUserDto {
 
 	@NotEmpty
 	private String gender;
+	
 }

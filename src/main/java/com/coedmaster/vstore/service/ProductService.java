@@ -20,10 +20,10 @@ import com.coedmaster.vstore.service.contract.IProductService;
 public class ProductService implements IProductService {
 
 	@Autowired
-	private ProductRepository productRepository;
+	private CategoryService categoryService;
 
 	@Autowired
-	private CategoryService categoryService;
+	private ProductRepository productRepository;
 
 	@Override
 	public Product getProduct(Long productId, Store store) {

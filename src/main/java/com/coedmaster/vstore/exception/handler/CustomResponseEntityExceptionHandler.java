@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.coedmaster.vstore.domain.validation.Violation;
 import com.coedmaster.vstore.dto.response.ErrorResponseDto;
 import com.coedmaster.vstore.dto.response.ValidationErrorResponseDto;
 import com.coedmaster.vstore.exception.AccountInactiveException;
@@ -26,7 +27,6 @@ import com.coedmaster.vstore.exception.PasswordMismatchException;
 import com.coedmaster.vstore.exception.StoreCodeAlreadyTakenException;
 import com.coedmaster.vstore.exception.UnallowedOperationException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
-import com.coedmaster.vstore.validation.Violation;
 
 import jakarta.validation.ConstraintViolationException;
 
