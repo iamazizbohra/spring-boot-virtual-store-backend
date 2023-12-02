@@ -1,9 +1,11 @@
 package com.coedmaster.vstore.service;
 
+import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.time.Duration;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.context.JobContext;
 import org.jobrunr.scheduling.BackgroundJob;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.coedmaster.vstore.service.contract.IMobileVerificationService;
-import com.coedmaster.vstore.service.contract.IOtpService;
 
 @Service
 public class MobileVerificationService implements IMobileVerificationService {
@@ -19,28 +20,54 @@ public class MobileVerificationService implements IMobileVerificationService {
 	private final int EXPIRE_IN_SECONDS = 180;
 
 	@Autowired
-	private IOtpService otpService;
-
-	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 
 	@Override
 	public void initVerification(String mobile) {
-		String verificationCode = otpService.generateRandomPassword(4);
+		String code = generateCode(4);
 
-		String key = MessageFormat.format("user:mvc:{0}", mobile);
-		redisTemplate.opsForValue().append(key, verificationCode);
-		redisTemplate.expire(key, Duration.ofSeconds(EXPIRE_IN_SECONDS));
+		String key = generateCacheKey(mobile);
 
-		BackgroundJob.<SmsService>enqueue(
-				x -> x.sendMobileVerificationMessage(JobContext.Null, mobile, verificationCode));
+		storeCodeToCache(key, code);
+
+		sendCode(mobile, code);
 	}
 
 	@Override
-	public boolean verifyCode(String mobile, String verificationCode) {
+	public String generateCode(int length) {
+		SecureRandom rand = new SecureRandom();
+
+		int bound = (int) Math.pow(10, length);
+
+		return String.format("%04d", rand.nextInt(bound));
+	}
+
+	@Override
+	public String generateCacheKey(String mobile) {
 		String key = MessageFormat.format("user:mvc:{0}", mobile);
 
-		return StringUtils.equals(verificationCode, redisTemplate.opsForValue().get(key));
+		return key;
+	}
+
+	@Override
+	public void storeCodeToCache(String key, String code) {
+		redisTemplate.opsForValue().append(key, code);
+		redisTemplate.expire(key, Duration.ofSeconds(EXPIRE_IN_SECONDS));
+	}
+
+	@Override
+	public String sendCode(String mobile, String code) {
+		JobId jobId = BackgroundJob
+				.<SmsService>enqueue(x -> x.sendMobileVerificationMessage(JobContext.Null, mobile, code));
+
+		return jobId.toString();
+	}
+
+	@Override
+	public boolean verifyCode(String mobile, String code) {
+		String key = generateCacheKey(mobile);
+
+		return StringUtils.equals(code, redisTemplate.opsForValue().get(key));
 	}
 
 }
