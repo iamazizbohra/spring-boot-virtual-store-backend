@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.coedmaster.vstore.handler.CustomAccessDeniedHandler;
+import com.coedmaster.vstore.exception.handler.CustomAccessDeniedHandler;
 import com.coedmaster.vstore.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.coedmaster.vstore.security.filter.AccountStatusFilter;
 import com.coedmaster.vstore.security.filter.JwtAuthenticationFilter;

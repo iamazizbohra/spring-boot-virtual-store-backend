@@ -1,4 +1,4 @@
-package com.coedmaster.vstore.handler;
+package com.coedmaster.vstore.exception.handler;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
