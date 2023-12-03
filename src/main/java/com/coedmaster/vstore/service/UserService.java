@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.domain.Role;
-import com.coedmaster.vstore.domain.User;
-import com.coedmaster.vstore.domain.embeddable.FullName;
+import com.coedmaster.vstore.model.embeddable.FullName;
 import com.coedmaster.vstore.dto.CreateUserDto;
 import com.coedmaster.vstore.dto.UpdateUserDto;
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
 import com.coedmaster.vstore.exception.UsernameAlreadyTakenException;
+import com.coedmaster.vstore.model.Role;
+import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.respository.UserRepository;
 import com.coedmaster.vstore.service.contract.IUserService;
 

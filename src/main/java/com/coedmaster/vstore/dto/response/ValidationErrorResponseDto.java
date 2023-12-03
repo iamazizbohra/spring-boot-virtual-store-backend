@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-import com.coedmaster.vstore.domain.validation.Violation;
+import com.coedmaster.vstore.model.validation.Violation;
 
 import lombok.Builder;
 import lombok.Data;

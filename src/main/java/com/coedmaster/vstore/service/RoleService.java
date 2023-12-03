@@ -3,8 +3,8 @@ package com.coedmaster.vstore.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.domain.Role;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.model.Role;
 import com.coedmaster.vstore.respository.RoleRepository;
 import com.coedmaster.vstore.service.contract.IRoleService;
 

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import com.coedmaster.vstore.domain.Order;
+import com.coedmaster.vstore.model.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
 	Optional<Order> findByIdAndUserId(Long orderId, Long userId);

@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.coedmaster.vstore.domain.Order;
-import com.coedmaster.vstore.domain.OrderItem;
-import com.coedmaster.vstore.domain.Store;
-import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.enums.OrderStatus;
+import com.coedmaster.vstore.model.Order;
+import com.coedmaster.vstore.model.OrderItem;
+import com.coedmaster.vstore.model.Store;
+import com.coedmaster.vstore.model.User;
 
 public interface IOrderService {
 	Order getOrder(Long orderId, User user);

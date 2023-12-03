@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.coedmaster.vstore.domain.Cart;
+import com.coedmaster.vstore.model.Cart;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 	Optional<Cart> findByUserId(Long userId);

@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.domain.Address;
-import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AddressDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
+import com.coedmaster.vstore.model.Address;
+import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.service.contract.IAddressService;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;
 

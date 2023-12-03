@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.coedmaster.vstore.domain.contract.IUserDetails;
+import com.coedmaster.vstore.model.contract.IUserDetails;
 import com.coedmaster.vstore.exception.AccountInactiveException;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;
 

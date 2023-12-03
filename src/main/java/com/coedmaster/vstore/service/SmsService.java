@@ -5,8 +5,8 @@ import org.jobrunr.jobs.context.JobContext;
 import org.jobrunr.jobs.context.JobDashboardProgressBar;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.domain.contract.AbstractTextMessage;
-import com.coedmaster.vstore.domain.message.MobileVerificationMessage;
+import com.coedmaster.vstore.model.contract.AbstractTextMessage;
+import com.coedmaster.vstore.model.message.MobileVerificationMessage;
 import com.coedmaster.vstore.service.contract.ISmsService;
 
 @Service

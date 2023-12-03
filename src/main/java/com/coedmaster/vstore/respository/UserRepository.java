@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.coedmaster.vstore.domain.User;
+import com.coedmaster.vstore.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUuid(UUID uuid);

@@ -2,9 +2,9 @@ package com.coedmaster.vstore.service.contract;
 
 import java.util.List;
 
-import com.coedmaster.vstore.domain.Address;
-import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AddressDto;
+import com.coedmaster.vstore.model.Address;
+import com.coedmaster.vstore.model.User;
 
 public interface IAddressService {
 	Address getAddress(Long addressId, User user);

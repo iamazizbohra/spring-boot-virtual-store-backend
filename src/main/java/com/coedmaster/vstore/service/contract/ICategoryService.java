@@ -2,9 +2,9 @@ package com.coedmaster.vstore.service.contract;
 
 import java.util.List;
 
-import com.coedmaster.vstore.domain.Category;
-import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.dto.CategoryDto;
+import com.coedmaster.vstore.model.Category;
+import com.coedmaster.vstore.model.Store;
 
 public interface ICategoryService {
 	Category getCategory(Long categoryId, Store store);

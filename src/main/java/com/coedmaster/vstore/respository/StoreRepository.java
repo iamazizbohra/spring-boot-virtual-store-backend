@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import com.coedmaster.vstore.domain.Store;
+import com.coedmaster.vstore.model.Store;
 
 public interface StoreRepository extends JpaRepository<Store, Long>, JpaSpecificationExecutor<Store> {
 	Optional<Store> findByUserId(Long userId);

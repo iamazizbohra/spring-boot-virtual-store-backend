@@ -1,10 +1,10 @@
 package com.coedmaster.vstore.service.contract;
 
-import com.coedmaster.vstore.domain.Role;
-import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.CreateUserDto;
 import com.coedmaster.vstore.dto.UpdateUserDto;
 import com.coedmaster.vstore.enums.UserType;
+import com.coedmaster.vstore.model.Role;
+import com.coedmaster.vstore.model.User;
 
 public interface IUserService {
 	User getUser(Long userId);

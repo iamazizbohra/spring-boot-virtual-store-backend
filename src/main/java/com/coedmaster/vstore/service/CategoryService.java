@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.coedmaster.vstore.domain.Category;
-import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.dto.CategoryDto;
 import com.coedmaster.vstore.exception.EntityNotFoundException;
+import com.coedmaster.vstore.model.Category;
+import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.respository.CategoryRepository;
 import com.coedmaster.vstore.service.contract.ICategoryService;
 

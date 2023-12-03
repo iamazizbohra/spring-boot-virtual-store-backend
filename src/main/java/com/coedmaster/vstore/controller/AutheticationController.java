@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.domain.AuthAccessToken;
-import com.coedmaster.vstore.domain.User;
 import com.coedmaster.vstore.dto.AuthenticateDto;
 import com.coedmaster.vstore.dto.AccessTokenDto;
 import com.coedmaster.vstore.dto.ResetPasswordDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
 import com.coedmaster.vstore.exception.InvalidMobileVerificationCodeException;
 import com.coedmaster.vstore.exception.MobileVerificationCodeNotFoundException;
+import com.coedmaster.vstore.model.AuthAccessToken;
+import com.coedmaster.vstore.model.User;
 import com.coedmaster.vstore.service.MobileVerificationService;
 import com.coedmaster.vstore.service.UserService;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;

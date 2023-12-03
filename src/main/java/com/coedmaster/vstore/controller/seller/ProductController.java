@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coedmaster.vstore.domain.Category;
-import com.coedmaster.vstore.domain.Product;
-import com.coedmaster.vstore.domain.Store;
 import com.coedmaster.vstore.dto.ProductDto;
 import com.coedmaster.vstore.dto.UpdateStatusDto;
 import com.coedmaster.vstore.dto.response.SuccessResponseDto;
+import com.coedmaster.vstore.model.Category;
+import com.coedmaster.vstore.model.Product;
+import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.service.contract.IAuthenticationService;
 import com.coedmaster.vstore.service.contract.ICategoryService;
 import com.coedmaster.vstore.service.contract.IProductService;

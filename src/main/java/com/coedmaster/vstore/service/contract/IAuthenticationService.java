@@ -2,9 +2,9 @@ package com.coedmaster.vstore.service.contract;
 
 import org.springframework.security.core.Authentication;
 
-import com.coedmaster.vstore.domain.AuthAccessToken;
-import com.coedmaster.vstore.domain.User;
-import com.coedmaster.vstore.domain.contract.IUserDetails;
+import com.coedmaster.vstore.model.contract.IUserDetails;
+import com.coedmaster.vstore.model.AuthAccessToken;
+import com.coedmaster.vstore.model.User;
 
 public interface IAuthenticationService {
 
