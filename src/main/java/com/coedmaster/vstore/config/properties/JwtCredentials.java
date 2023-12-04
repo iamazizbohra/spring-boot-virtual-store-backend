@@ -9,7 +9,9 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "spring.security.jwt")
 @Data
 public class JwtCredentials {
+	
 	private String secret;
 
 	private Integer ttl;
+	
 }

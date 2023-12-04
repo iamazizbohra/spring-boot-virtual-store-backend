@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
-class RedisConfig {
+public class RedisConfig {
 
 	@Bean
 	public JedisConnectionFactory redisConnectionFactory() {
