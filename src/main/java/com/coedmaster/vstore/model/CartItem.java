@@ -1,14 +1,12 @@
 package com.coedmaster.vstore.model;
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import jakarta.persistence.Column;
+import com.coedmaster.vstore.model.audit.AuditSection;
+import com.coedmaster.vstore.model.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -26,12 +24,12 @@ import lombok.Setter;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "cart_items")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
-public class CartItem {
-	
+public class CartItem implements Auditable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -54,17 +52,8 @@ public class CartItem {
 
 	private Integer quantity;
 
-	@Column(updatable = false)
-	@CreatedBy
-	private String createdBy;
+	@Embedded
+	@JsonIgnore
+	private AuditSection auditSection = new AuditSection();
 
-	@Column(updatable = false)
-	@CreatedDate
-	private LocalDateTime createdDate;
-
-	@LastModifiedBy
-	private String lastModifiedBy;
-
-	@LastModifiedDate
-	private LocalDateTime lastModifiedDate;
 }

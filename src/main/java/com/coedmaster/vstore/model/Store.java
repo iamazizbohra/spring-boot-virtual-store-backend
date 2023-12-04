@@ -1,14 +1,13 @@
 package com.coedmaster.vstore.model;
 
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.coedmaster.vstore.model.audit.AuditSection;
+import com.coedmaster.vstore.model.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -25,11 +24,11 @@ import lombok.Setter;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "stores")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class Store {
+public class Store implements Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,17 +59,8 @@ public class Store {
 
 	private boolean enabled;
 
-	@Column(updatable = false)
-	@CreatedBy
-	private String createdBy;
+	@Embedded
+	@JsonIgnore
+	private AuditSection auditSection = new AuditSection();
 
-	@Column(updatable = false)
-	@CreatedDate
-	private LocalDateTime createdDate;
-
-	@LastModifiedBy
-	private String lastModifiedBy;
-
-	@LastModifiedDate
-	private LocalDateTime lastModifiedDate;
 }

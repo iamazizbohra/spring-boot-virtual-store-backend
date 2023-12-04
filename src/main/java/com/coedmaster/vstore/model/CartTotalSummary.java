@@ -12,4 +12,5 @@ public class CartTotalSummary {
 	private Integer shippingCharges;
 
 	private Integer total;
+	
 }

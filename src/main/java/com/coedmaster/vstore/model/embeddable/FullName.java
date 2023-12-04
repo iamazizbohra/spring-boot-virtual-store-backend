@@ -2,16 +2,19 @@ package com.coedmaster.vstore.model.embeddable;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Setter
+@Getter
 public class FullName {
-	
+
 	private String firstName;
 
 	private String lastName;
+	
 }
