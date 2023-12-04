@@ -12,7 +12,7 @@ public interface IAuthenticationService {
 
 	Authentication getAuthentication();
 
-	IUserDetails getAuthenticatedUserDetails(Authentication authentication);
+	IUserDetails getAuthenticationUserDetails(Authentication authentication);
 
 	User getAuthenticatedUser(Authentication authentication);
 

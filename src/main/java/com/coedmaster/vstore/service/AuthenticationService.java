@@ -73,13 +73,13 @@ public class AuthenticationService implements IAuthenticationService {
 	}
 
 	@Override
-	public IUserDetails getAuthenticatedUserDetails(Authentication authentication) {
+	public IUserDetails getAuthenticationUserDetails(Authentication authentication) {
 		return (IUserDetails) authentication.getPrincipal();
 	}
 
 	@Override
 	public User getAuthenticatedUser(Authentication authentication) {
-		IUserDetails userDetails = getAuthenticatedUserDetails(authentication);
+		IUserDetails userDetails = getAuthenticationUserDetails(authentication);
 
 		return userService.getUser(userDetails.getId());
 	}

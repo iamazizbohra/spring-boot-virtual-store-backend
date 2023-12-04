@@ -27,7 +27,7 @@ public class AccountStatusFilter extends OncePerRequestFilter {
 		Authentication authentication = authenticationService.getAuthentication();
 
 		if (authentication instanceof UsernamePasswordAuthenticationToken) {
-			IUserDetails userDetails = authenticationService.getAuthenticatedUserDetails(authentication);
+			IUserDetails userDetails = authenticationService.getAuthenticationUserDetails(authentication);
 
 			if (!userDetails.isEnabled()) {
 				throw new AccountInactiveException("Account is inactive");
