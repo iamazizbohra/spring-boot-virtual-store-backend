@@ -41,6 +41,7 @@ public class Store {
 
 	private String name;
 
+	@Column(unique = true)
 	private String code;
 
 	private String logo;
