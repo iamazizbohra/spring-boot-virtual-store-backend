@@ -141,8 +141,8 @@ public class StoreRepositoryTests {
 		assertAll(() -> assertThat(expectedStore).isNotNull(),
 				() -> assertThat(expectedStore.getName()).isEqualTo("Store 2"),
 				() -> assertThat(expectedStore.getCode()).isEqualTo("store2"),
-				() -> assertThat(expectedStore.getMobile()).isEqualTo(expectedStore.getMobile()),
-				() -> assertThat(expectedStore.isEnabled()).isEqualTo(expectedStore.isEnabled()));
+				() -> assertThat(expectedStore.getMobile()).isEqualTo(actualStore.getMobile()),
+				() -> assertThat(expectedStore.isEnabled()).isEqualTo(actualStore.isEnabled()));
 	}
 
 	@Test

@@ -2,8 +2,10 @@ package com.coedmaster.vstore.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
@@ -96,6 +98,35 @@ public class UserRepositoryTests {
 
 	@Test
 	@Order(2)
+	@DisplayName("Update user test")
+	public void givenUser_whenUpdate_thenReturnUser() {
+		// given
+		User actualUser = userRepository.save(user);
+
+		// when
+		FullName fullName = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		actualUser.setFullName(fullName);
+		actualUser.setMobile(faker.phoneNumber().phoneNumber());
+		actualUser.setPassword(faker.internet().password());
+		actualUser.setEmail(faker.internet().emailAddress());
+		actualUser.setGender(Gender.MALE);
+		actualUser.setRoles(new ArrayList<Role>(actualUser.getRoles()));
+		actualUser.setEnabled(true);
+		User expectedUser = userRepository.save(actualUser);
+
+		// then
+		assertTrue(true);
+		assertAll(() -> assertThat(expectedUser).isNotNull(),
+				() -> assertThat(expectedUser.getFullName().getFirstName())
+						.isEqualTo(actualUser.getFullName().getFirstName()),
+				() -> assertThat(expectedUser.getMobile()).isEqualTo(actualUser.getMobile()));
+	}
+
+	@Test
+	@Order(3)
 	@DisplayName("Find user by Id test")
 	public void givenId_whenFindById_thenReturnUser() {
 		// given
@@ -109,7 +140,7 @@ public class UserRepositoryTests {
 	}
 
 	@Test
-	@Order(3)
+	@Order(4)
 	@DisplayName("Find user by UUID test")
 	public void givenUuid_whenFindByUuid_thenReturnUser() {
 		// given
@@ -123,7 +154,7 @@ public class UserRepositoryTests {
 	}
 
 	@Test
-	@Order(4)
+	@Order(5)
 	@DisplayName("Find user by mobile test")
 	public void givenMobile_whenFindByMobile_thenReturnUser() {
 		// given
@@ -137,7 +168,7 @@ public class UserRepositoryTests {
 	}
 
 	@Test
-	@Order(5)
+	@Order(6)
 	@DisplayName("Delete user test")
 	public void givenUser_whenDelete_thenRemoveUser() {
 		// given
