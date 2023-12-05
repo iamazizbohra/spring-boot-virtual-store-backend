@@ -56,11 +56,6 @@ public class StoreService implements IStoreService {
 	}
 
 	@Override
-	public Page<Store> getStores(Pageable pageable) {
-		return storeRepository.findAll(pageable);
-	}
-
-	@Override
 	public Page<Store> getStores(boolean enabled, Pageable pageable) {
 		Specification<Store> specs = Specification.where(StoreSpecs.isEnabled(enabled));
 

@@ -18,8 +18,6 @@ public interface IStoreService {
 
 	Store getStore(String code, boolean enabled);
 
-	Page<Store> getStores(Pageable pageable);
-
 	Page<Store> getStores(boolean enabled, Pageable pageable);
 
 	Store createStore(User user, StoreDto payload);
