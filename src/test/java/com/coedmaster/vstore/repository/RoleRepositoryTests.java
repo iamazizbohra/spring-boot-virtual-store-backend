@@ -25,14 +25,18 @@ public class RoleRepositoryTests {
 	@DisplayName("Find role by name test")
 	public void givenName_whenFindByName_thenReturnRole() {
 		// given
-		String name = "ROLE_ADMIN";
+		String name = "ROLE_USER";
+
+		Role actualRole = new Role();
+		actualRole.setName(name);
+		actualRole = roleRepository.save(actualRole);
 
 		// when
-		Role role = roleRepository.findByName(name).orElseThrow(() -> fail("Role not found"));
+		Role expectedRole = roleRepository.findByName(name).orElseThrow(() -> fail("Role not found"));
 
 		// then
-		assertAll(() -> assertThat(role).isNotNull(), () -> assertThat(role.getId()).isGreaterThan(0),
-				() -> assertThat(role.getName()).isEqualTo(name));
+		assertAll(() -> assertThat(expectedRole).isNotNull(), () -> assertThat(expectedRole.getId()).isGreaterThan(0),
+				() -> assertThat(expectedRole.getName()).isEqualTo(name));
 	}
 
 }

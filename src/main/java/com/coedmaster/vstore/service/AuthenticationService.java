@@ -148,7 +148,7 @@ public class AuthenticationService implements IAuthenticationService {
 		List<AuthAccessToken> authAccessTokens = authAccessTokenRepository.findAllByUserId(user.getId());
 
 		for (AuthAccessToken authAccessToken : authAccessTokens) {
-			authAccessTokenRepository.deleteById(authAccessToken.getId());
+			authAccessTokenRepository.delete(authAccessToken);
 		}
 	}
 

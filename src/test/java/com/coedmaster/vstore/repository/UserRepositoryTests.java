@@ -8,19 +8,16 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
@@ -33,7 +30,6 @@ import com.github.javafaker.Faker;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserRepositoryTests {
 
@@ -43,23 +39,39 @@ public class UserRepositoryTests {
 	@Autowired
 	private RoleRepository roleRepository;
 
-	private static Faker faker;
+	private final Faker faker = new Faker();
 
-	private static User savedUser;
+	private Role role;
 
-	@BeforeAll
-	public static void beforeAllTests() {
-		faker = new Faker();
+	private User user;
+
+	@BeforeEach
+	public void beforeEach() {
+		role = new Role();
+		role.setName("ROLE_ADMIN");
+		role = roleRepository.save(role);
+
+		FullName fullName = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		user = new User();
+		user.setUuid(UUID.randomUUID());
+		user.setUserType(UserType.ADMIN);
+		user.setFullName(fullName);
+		user.setMobile(faker.phoneNumber().phoneNumber());
+		user.setPassword(faker.internet().password());
+		user.setEmail(faker.internet().emailAddress());
+		user.setGender(Gender.MALE);
+		user.setRoles(Collections.singletonList(role));
+		user.setEnabled(true);
 	}
 
 	@Test
 	@Order(1)
-	@Rollback(value = false)
 	@DisplayName("Save user test")
-	public void givenUserObject_whenSave_thenReturnSavedUser() {
+	public void givenUser_whenSave_thenReturnUser() {
 		// given
-		Role role = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> fail("Role not found"));
-
 		FullName fullName = new FullName();
 		fullName.setFirstName(faker.name().firstName());
 		fullName.setLastName(faker.name().fullName());
@@ -76,10 +88,10 @@ public class UserRepositoryTests {
 		user.setEnabled(true);
 
 		// when
-		savedUser = userRepository.save(user);
+		User expectedUser = userRepository.save(user);
 
 		// then
-		assertAll(() -> assertThat(savedUser).isNotNull(), () -> assertThat(savedUser.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
 	}
 
 	@Test
@@ -87,13 +99,13 @@ public class UserRepositoryTests {
 	@DisplayName("Find user by Id test")
 	public void givenId_whenFindById_thenReturnUser() {
 		// given
-		Long id = savedUser.getId();
+		user = userRepository.save(user);
 
 		// When
-		User user = userRepository.findById(id).orElseThrow(() -> fail("User not found"));
+		User expectedUser = userRepository.findById(user.getId()).orElseThrow(() -> fail("User not found"));
 
 		// then
-		assertAll(() -> assertThat(user).isNotNull(), () -> assertThat(user.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
 	}
 
 	@Test
@@ -101,13 +113,13 @@ public class UserRepositoryTests {
 	@DisplayName("Find user by UUID test")
 	public void givenUuid_whenFindByUuid_thenReturnUser() {
 		// given
-		UUID uuid = savedUser.getUuid();
+		user = userRepository.save(user);
 
 		// When
-		User user = userRepository.findByUuid(uuid).orElseThrow(() -> fail("User not found"));
+		User expectedUser = userRepository.findByUuid(user.getUuid()).orElseThrow(() -> fail("User not found"));
 
 		// then
-		assertAll(() -> assertThat(user).isNotNull(), () -> assertThat(user.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
 	}
 
 	@Test
@@ -115,32 +127,28 @@ public class UserRepositoryTests {
 	@DisplayName("Find user by mobile test")
 	public void givenMobile_whenFindByMobile_thenReturnUser() {
 		// given
-		String mobile = savedUser.getMobile();
+		user = userRepository.save(user);
 
 		// When
-		User user = userRepository.findByMobile(mobile).orElseThrow(() -> fail("User not found"));
+		User expectedUser = userRepository.findByMobile(user.getMobile()).orElseThrow(() -> fail("User not found"));
 
 		// then
-		assertAll(() -> assertThat(user).isNotNull(), () -> assertThat(user.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
 	}
 
 	@Test
 	@Order(5)
 	@DisplayName("Delete user test")
-	public void givenUser_whenDeleteUser_thenReturnVoid() {
+	public void givenUser_whenDelete_thenRemoveUser() {
 		// given
-		User user = savedUser;
+		user = userRepository.save(user);
 
 		// When
 		userRepository.delete(user);
-
-		User deletedUser = null;
 		Optional<User> userOptional = userRepository.findById(user.getId());
-		if (!userOptional.isEmpty())
-			deletedUser = userOptional.get();
 
 		// then
-		assertThat(deletedUser).isNull();
+		assertThat(userOptional).isEmpty();
 	}
 
 }
