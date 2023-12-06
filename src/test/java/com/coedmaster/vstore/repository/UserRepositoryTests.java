@@ -3,7 +3,6 @@ package com.coedmaster.vstore.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,43 +35,26 @@ import com.github.javafaker.Faker;
 public class UserRepositoryTests {
 
 	@Autowired
-	private UserRepository userRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private UserRepository userRepository;
 
 	private final Faker faker = new Faker();
 
 	private Role role;
 
-	private User user;
-
 	@BeforeEach
 	public void beforeEach() {
 		role = new Role();
-		role.setName("ROLE_ADMIN");
+		role.setName("ROLE_SELLER");
 		role = roleRepository.save(role);
-
-		FullName fullName = new FullName();
-		fullName.setFirstName(faker.name().firstName());
-		fullName.setLastName(faker.name().fullName());
-
-		user = new User();
-		user.setUuid(UUID.randomUUID());
-		user.setUserType(UserType.ADMIN);
-		user.setFullName(fullName);
-		user.setMobile(faker.phoneNumber().phoneNumber());
-		user.setPassword(faker.internet().password());
-		user.setEmail(faker.internet().emailAddress());
-		user.setGender(Gender.MALE);
-		user.setRoles(Collections.singletonList(role));
-		user.setEnabled(true);
 	}
 
 	@Test
 	@Order(1)
 	@DisplayName("Save user test")
-	public void givenUser_whenSave_thenReturnUser() {
+	public void givenUser_whenSave_thenReturnSavedUser() {
 		// given
 		FullName fullName = new FullName();
 		fullName.setFirstName(faker.name().firstName());
@@ -80,7 +62,7 @@ public class UserRepositoryTests {
 
 		User user = new User();
 		user.setUuid(UUID.randomUUID());
-		user.setUserType(UserType.ADMIN);
+		user.setUserType(UserType.SELLER);
 		user.setFullName(fullName);
 		user.setMobile(faker.phoneNumber().phoneNumber());
 		user.setPassword(faker.internet().password());
@@ -99,16 +81,30 @@ public class UserRepositoryTests {
 	@Test
 	@Order(2)
 	@DisplayName("Update user test")
-	public void givenUser_whenUpdate_thenReturnUser() {
+	public void givenUser_whenUpdate_thenReturnUpdatedUser() {
 		// given
-		User actualUser = userRepository.save(user);
-
-		// when
 		FullName fullName = new FullName();
 		fullName.setFirstName(faker.name().firstName());
 		fullName.setLastName(faker.name().fullName());
 
-		actualUser.setFullName(fullName);
+		User user = new User();
+		user.setUuid(UUID.randomUUID());
+		user.setUserType(UserType.SELLER);
+		user.setFullName(fullName);
+		user.setMobile(faker.phoneNumber().phoneNumber());
+		user.setPassword(faker.internet().password());
+		user.setEmail(faker.internet().emailAddress());
+		user.setGender(Gender.MALE);
+		user.setRoles(Collections.singletonList(role));
+		user.setEnabled(true);
+		User actualUser = userRepository.save(user);
+
+		// when
+		FullName fullName1 = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		actualUser.setFullName(fullName1);
 		actualUser.setMobile(faker.phoneNumber().phoneNumber());
 		actualUser.setPassword(faker.internet().password());
 		actualUser.setEmail(faker.internet().emailAddress());
@@ -130,13 +126,28 @@ public class UserRepositoryTests {
 	@DisplayName("Find user by Id test")
 	public void givenId_whenFindById_thenReturnUser() {
 		// given
-		user = userRepository.save(user);
+		FullName fullName = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		User user = new User();
+		user.setUuid(UUID.randomUUID());
+		user.setUserType(UserType.SELLER);
+		user.setFullName(fullName);
+		user.setMobile(faker.phoneNumber().phoneNumber());
+		user.setPassword(faker.internet().password());
+		user.setEmail(faker.internet().emailAddress());
+		user.setGender(Gender.MALE);
+		user.setRoles(Collections.singletonList(role));
+		user.setEnabled(true);
+		User actualUser = userRepository.save(user);
 
 		// When
-		User expectedUser = userRepository.findById(user.getId()).orElseThrow(() -> fail("User not found"));
+		Optional<User> expectedUser = userRepository.findById(actualUser.getId());
 
 		// then
-		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotEmpty(),
+				() -> assertThat(expectedUser.get().getId()).isGreaterThan(0));
 	}
 
 	@Test
@@ -144,13 +155,28 @@ public class UserRepositoryTests {
 	@DisplayName("Find user by UUID test")
 	public void givenUuid_whenFindByUuid_thenReturnUser() {
 		// given
-		user = userRepository.save(user);
+		FullName fullName = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		User user = new User();
+		user.setUuid(UUID.randomUUID());
+		user.setUserType(UserType.SELLER);
+		user.setFullName(fullName);
+		user.setMobile(faker.phoneNumber().phoneNumber());
+		user.setPassword(faker.internet().password());
+		user.setEmail(faker.internet().emailAddress());
+		user.setGender(Gender.MALE);
+		user.setRoles(Collections.singletonList(role));
+		user.setEnabled(true);
+		User actualUser = userRepository.save(user);
 
 		// When
-		User expectedUser = userRepository.findByUuid(user.getUuid()).orElseThrow(() -> fail("User not found"));
+		Optional<User> expectedUser = userRepository.findByUuid(actualUser.getUuid());
 
 		// then
-		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotEmpty(),
+				() -> assertThat(expectedUser.get().getId()).isGreaterThan(0));
 	}
 
 	@Test
@@ -158,13 +184,28 @@ public class UserRepositoryTests {
 	@DisplayName("Find user by mobile test")
 	public void givenMobile_whenFindByMobile_thenReturnUser() {
 		// given
-		user = userRepository.save(user);
+		FullName fullName = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		User user = new User();
+		user.setUuid(UUID.randomUUID());
+		user.setUserType(UserType.SELLER);
+		user.setFullName(fullName);
+		user.setMobile(faker.phoneNumber().phoneNumber());
+		user.setPassword(faker.internet().password());
+		user.setEmail(faker.internet().emailAddress());
+		user.setGender(Gender.MALE);
+		user.setRoles(Collections.singletonList(role));
+		user.setEnabled(true);
+		User actualUser = userRepository.save(user);
 
 		// When
-		User expectedUser = userRepository.findByMobile(user.getMobile()).orElseThrow(() -> fail("User not found"));
+		Optional<User> expectedUser = userRepository.findByMobile(actualUser.getMobile());
 
 		// then
-		assertAll(() -> assertThat(expectedUser).isNotNull(), () -> assertThat(expectedUser.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedUser).isNotEmpty(),
+				() -> assertThat(expectedUser.get().getId()).isGreaterThan(0));
 	}
 
 	@Test
@@ -172,14 +213,28 @@ public class UserRepositoryTests {
 	@DisplayName("Delete user test")
 	public void givenUser_whenDelete_thenRemoveUser() {
 		// given
-		user = userRepository.save(user);
+		FullName fullName = new FullName();
+		fullName.setFirstName(faker.name().firstName());
+		fullName.setLastName(faker.name().fullName());
+
+		User user = new User();
+		user.setUuid(UUID.randomUUID());
+		user.setUserType(UserType.SELLER);
+		user.setFullName(fullName);
+		user.setMobile(faker.phoneNumber().phoneNumber());
+		user.setPassword(faker.internet().password());
+		user.setEmail(faker.internet().emailAddress());
+		user.setGender(Gender.MALE);
+		user.setRoles(Collections.singletonList(role));
+		user.setEnabled(true);
+		User actualUser = userRepository.save(user);
 
 		// When
-		userRepository.delete(user);
-		Optional<User> userOptional = userRepository.findById(user.getId());
+		userRepository.delete(actualUser);
+		Optional<User> expectedUser = userRepository.findById(actualUser.getId());
 
 		// then
-		assertThat(userOptional).isEmpty();
+		assertThat(expectedUser).isEmpty();
 	}
 
 }
