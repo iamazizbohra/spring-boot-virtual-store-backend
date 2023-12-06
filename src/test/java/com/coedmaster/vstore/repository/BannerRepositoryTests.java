@@ -41,10 +41,10 @@ import com.github.javafaker.Faker;
 public class BannerRepositoryTests {
 
 	@Autowired
-	private UserRepository userRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private StoreRepository storeRepository;
@@ -149,7 +149,7 @@ public class BannerRepositoryTests {
 	@Test
 	@Order(3)
 	@DisplayName("Find all banners by storeId test")
-	public void givenBannerList_whenFindAllByStoreId_thenReturnListOfBanners() {
+	public void givenBannerList_whenFindAllByStoreId_thenReturnBannersOfStore() {
 		// given
 		Banner banner1 = new Banner();
 		banner1.setStore(stores.get(0));
@@ -165,7 +165,7 @@ public class BannerRepositoryTests {
 			banner.setTitle(faker.funnyName().name());
 			banner.setImage(faker.avatar().image());
 			banner.setSortOrder(Short.valueOf(String.valueOf(e)));
-			banner.setEnabled(true);
+			banner.setEnabled(e == 0 ? false : true);
 			bannerRepository.save(banner);
 		});
 
@@ -180,7 +180,7 @@ public class BannerRepositoryTests {
 	@Test
 	@Order(4)
 	@DisplayName("Find banner by Id and storeId test")
-	public void givenBannerList_whenFindByIdAndStoreId_thenReturnListOfBanners() {
+	public void givenBannerList_whenFindByIdAndStoreId_thenReturnBannerOfStore() {
 		// given
 		Banner banner1 = new Banner();
 		banner1.setStore(stores.get(0));
@@ -188,7 +188,7 @@ public class BannerRepositoryTests {
 		banner1.setImage(faker.avatar().image());
 		banner1.setSortOrder(Short.valueOf(String.valueOf(0)));
 		banner1.setEnabled(true);
-		banner1 = bannerRepository.save(banner1);
+		Banner actualBanner = bannerRepository.save(banner1);
 
 		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Banner banner = new Banner();
@@ -196,22 +196,23 @@ public class BannerRepositoryTests {
 			banner.setTitle(faker.funnyName().name());
 			banner.setImage(faker.avatar().image());
 			banner.setSortOrder(Short.valueOf(String.valueOf(e)));
-			banner.setEnabled(true);
+			banner.setEnabled(e == 0 ? false : true);
 			bannerRepository.save(banner);
 		});
 
 		// when
-		Optional<Banner> expectedBanner = bannerRepository.findByIdAndStoreId(banner1.getId(), stores.get(0).getId());
+		Optional<Banner> expectedBanner = bannerRepository.findByIdAndStoreId(actualBanner.getId(),
+				stores.get(0).getId());
 
 		// then
 		assertAll(() -> assertThat(expectedBanner).isNotEmpty(),
-				() -> assertThat(expectedBanner.get().getId()).isGreaterThan(0));
+				() -> assertThat(expectedBanner.get().getId()).isEqualTo(actualBanner.getId()));
 	}
 
 	@Test
 	@Order(5)
 	@DisplayName("Find all banners by storeId and enabled test")
-	public void givenBannerList_whenFindAllByStoreIdAndEnabled_thenReturnListOfBanners() {
+	public void givenBannerList_whenFindAllByStoreIdAndEnabled_thenReturnEnabledBannersOfStore() {
 		// given
 		Banner banner1 = new Banner();
 		banner1.setStore(stores.get(0));
@@ -219,7 +220,7 @@ public class BannerRepositoryTests {
 		banner1.setImage(faker.avatar().image());
 		banner1.setSortOrder(Short.valueOf(String.valueOf(0)));
 		banner1.setEnabled(true);
-		banner1 = bannerRepository.save(banner1);
+		bannerRepository.save(banner1);
 
 		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Banner banner = new Banner();
@@ -227,7 +228,7 @@ public class BannerRepositoryTests {
 			banner.setTitle(faker.funnyName().name());
 			banner.setImage(faker.avatar().image());
 			banner.setSortOrder(Short.valueOf(String.valueOf(e)));
-			banner.setEnabled(true);
+			banner.setEnabled(e == 0 ? false : true);
 			bannerRepository.save(banner);
 		});
 
@@ -236,7 +237,7 @@ public class BannerRepositoryTests {
 				Sort.by(Sort.Direction.DESC, "sortOrder"));
 
 		// then
-		assertThat(expectedBanners.size()).isEqualTo(3);
+		assertThat(expectedBanners.size()).isEqualTo(2);
 	}
 
 }

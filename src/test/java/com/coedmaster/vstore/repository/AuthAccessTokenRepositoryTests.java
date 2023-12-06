@@ -102,7 +102,7 @@ public class AuthAccessTokenRepositoryTests {
 	@Test
 	@Order(2)
 	@DisplayName("Find all tokens by userId test")
-	public void givenUser_whenFindAllByUserId_thenReturnListOfTokens() {
+	public void givenUser_whenFindAllByUserId_thenReturnTokensOfUser() {
 		// given
 		AuthAccessToken token1 = new AuthAccessToken();
 		token1.setUser(users.get(0));

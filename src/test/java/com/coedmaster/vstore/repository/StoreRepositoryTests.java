@@ -164,7 +164,7 @@ public class StoreRepositoryTests {
 			store.setLatitude(faker.address().latitude());
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
-			store.setEnabled(true);
+			store.setEnabled(e == 0 ? false : true);
 			stores.add(storeRepository.save(store));
 		});
 
@@ -179,7 +179,7 @@ public class StoreRepositoryTests {
 	@Test
 	@Order(4)
 	@DisplayName("Find store by userId test")
-	public void givenUser_whenFindByUserId_thenReturnStore() {
+	public void givenUser_whenFindByUserId_thenReturnStoreOfUser() {
 		// given
 		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Store store = new Store();
@@ -192,7 +192,7 @@ public class StoreRepositoryTests {
 			store.setLatitude(faker.address().latitude());
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
-			store.setEnabled(true);
+			store.setEnabled(e == 0 ? false : true);
 			stores.add(storeRepository.save(store));
 		});
 
@@ -220,7 +220,7 @@ public class StoreRepositoryTests {
 			store.setLatitude(faker.address().latitude());
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
-			store.setEnabled(true);
+			store.setEnabled(e == 0 ? false : true);
 			stores.add(storeRepository.save(store));
 		});
 
@@ -234,8 +234,8 @@ public class StoreRepositoryTests {
 
 	@Test
 	@Order(6)
-	@DisplayName("Find all store by specs and pageable test")
-	public void givenStoreList_whenFindAll_thenReturnPageOfStore() {
+	@DisplayName("Find all stores by enabled test")
+	public void givenStoreList_whenFindAllByEnabled_thenReturnEnabledStores() {
 		// given
 		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Store store = new Store();
@@ -248,7 +248,7 @@ public class StoreRepositoryTests {
 			store.setLatitude(faker.address().latitude());
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
-			store.setEnabled(true);
+			store.setEnabled(e == 0 ? false : true);
 			stores.add(storeRepository.save(store));
 		});
 
@@ -258,13 +258,13 @@ public class StoreRepositoryTests {
 		Page<Store> storePage = storeRepository.findAll(specs, pageable);
 
 		// then
-		assertThat(storePage.getContent().size()).isEqualTo(3);
+		assertThat(storePage.getContent().size()).isEqualTo(2);
 	}
 
 	@Test
 	@Order(7)
-	@DisplayName("Find store by specs test")
-	public void givenStoreList_whenFindOne_thenReturnStore() {
+	@DisplayName("Find store by code and enabled test")
+	public void givenStoreList_whenFindByCodeAndEnabled_thenReturnEnabledStore() {
 		// given
 		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Store store = new Store();
@@ -277,18 +277,18 @@ public class StoreRepositoryTests {
 			store.setLatitude(faker.address().latitude());
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
-			store.setEnabled(true);
+			store.setEnabled(e == 0 ? false : true);
 			stores.add(storeRepository.save(store));
 		});
 
 		// when
-		Specification<Store> specs = Specification.where(StoreSpecs.hasCode(stores.get(0).getCode()))
+		Specification<Store> specs = Specification.where(StoreSpecs.hasCode(stores.get(1).getCode()))
 				.and(StoreSpecs.isEnabled(true));
 		Optional<Store> expectedStore = storeRepository.findOne(specs);
 
 		// then
 		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
-				() -> assertThat(expectedStore.get().getId()).isEqualTo(stores.get(0).getId()));
+				() -> assertThat(expectedStore.get().getId()).isEqualTo(stores.get(1).getId()));
 	}
 
 }
