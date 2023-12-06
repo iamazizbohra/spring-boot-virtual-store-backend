@@ -25,6 +25,7 @@ import org.springframework.data.domain.Sort;
 
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
+import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Role;
 import com.coedmaster.vstore.model.Store;
@@ -294,6 +295,26 @@ public class CategoryRepositoryTests {
 
 		// then
 		assertThat(expectedCategories.size()).isEqualTo(2);
+	}
+
+	@Test
+	@Order(8)
+	@DisplayName("Delete category test")
+	public void givenCategory_whenDelete_thenRemoveCategory() {
+		// given
+		Category category = new Category();
+		category.setStore(stores.get(0));
+		category.setName(faker.name().firstName());
+		category.setImage(faker.avatar().image());
+		category.setEnabled(true);
+		Category actualCategory = categoryRepository.save(category);
+
+		// When
+		categoryRepository.delete(actualCategory);
+		Optional<Category> expectedCategory = categoryRepository.findById(actualCategory.getId());
+
+		// then
+		assertThat(expectedCategory).isEmpty();
 	}
 
 }

@@ -240,4 +240,25 @@ public class BannerRepositoryTests {
 		assertThat(expectedBanners.size()).isEqualTo(2);
 	}
 
+	@Test
+	@Order(6)
+	@DisplayName("Delete banner test")
+	public void givenBanner_whenDelete_thenRemoveBanner() {
+		// given
+		Banner banner = new Banner();
+		banner.setStore(stores.get(0));
+		banner.setTitle(faker.funnyName().name());
+		banner.setImage(faker.avatar().image());
+		banner.setSortOrder(Short.valueOf(String.valueOf(0)));
+		banner.setEnabled(true);
+		Banner actualBanner = bannerRepository.save(banner);
+
+		// When
+		bannerRepository.delete(banner);
+		Optional<Banner> expectedBanner = bannerRepository.findById(actualBanner.getId());
+
+		// then
+		assertThat(expectedBanner).isEmpty();
+	}
+
 }

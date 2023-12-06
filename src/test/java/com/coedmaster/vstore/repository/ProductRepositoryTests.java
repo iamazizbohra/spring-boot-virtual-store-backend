@@ -391,4 +391,32 @@ public class ProductRepositoryTests {
 		assertThat(expectedProduct.getContent().size()).isEqualTo(3);
 	}
 
+	@Test
+	@Order(9)
+	@DisplayName("Delete product test")
+	public void givenProduct_whenDelete_thenRemoveProduct() {
+		// given
+		Store store = stores.get(0);
+		Category category = storeCategories.get(store).get(0);
+
+		Product product = new Product();
+		product.setStore(store);
+		product.setCategory(category);
+		product.setName(faker.commerce().productName());
+		product.setDescription(faker.lorem().sentence());
+		product.setImage(faker.avatar().image());
+		product.setPrice(100);
+		product.setOldPrice(80);
+		product.setQuantity(10);
+		product.setEnabled(true);
+		Product actualProduct = productRepository.save(product);
+
+		// When
+		productRepository.delete(actualProduct);
+		Optional<Product> expectedProduct = productRepository.findById(actualProduct.getId());
+
+		// then
+		assertThat(expectedProduct).isEmpty();
+	}
+
 }
