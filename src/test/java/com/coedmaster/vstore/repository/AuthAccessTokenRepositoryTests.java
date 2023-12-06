@@ -166,14 +166,14 @@ public class AuthAccessTokenRepositoryTests {
 		token.setName("Access Token");
 		token.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
 		token.setExpiresAt(LocalDateTime.now().plusDays(1));
-		token = tokenRepository.save(token);
+		AuthAccessToken actualToken = tokenRepository.save(token);
 
 		// When
-		tokenRepository.delete(token);
-		Optional<AuthAccessToken> tokenOptional = tokenRepository.findById(token.getId());
+		tokenRepository.delete(actualToken);
+		Optional<AuthAccessToken> expectedToken = tokenRepository.findById(actualToken.getId());
 
 		// then
-		assertThat(tokenOptional).isEmpty();
+		assertThat(expectedToken).isEmpty();
 	}
 
 }

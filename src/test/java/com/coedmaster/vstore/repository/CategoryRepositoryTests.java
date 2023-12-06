@@ -131,11 +131,10 @@ public class CategoryRepositoryTests {
 		category.setEnabled(true);
 		Category actualCategory = categoryRepository.save(category);
 
+		// when
 		actualCategory.setName(faker.name().firstName());
 		actualCategory.setImage(faker.avatar().image());
 		actualCategory.setEnabled(false);
-
-		// when
 		Category expectedCategory = categoryRepository.save(actualCategory);
 
 		// then
@@ -147,7 +146,7 @@ public class CategoryRepositoryTests {
 
 	@Test
 	@Order(3)
-	@DisplayName("Find all by storeId test")
+	@DisplayName("Find all categories by storeId test")
 	public void givenCategoryList_whenFindAllByStoreId_thenReturnCategoriesOfStore() {
 		// given
 		Category category1 = new Category();
@@ -175,7 +174,7 @@ public class CategoryRepositoryTests {
 
 	@Test
 	@Order(4)
-	@DisplayName("Find all by storeId and enabled test")
+	@DisplayName("Find all categories by storeId and enabled test")
 	public void givenCategoryList_whenFindAllByStoreIdAndEnabled_thenReturnEnabledCategoriesOfStore() {
 		// given
 		Category category1 = new Category();
@@ -204,7 +203,7 @@ public class CategoryRepositoryTests {
 
 	@Test
 	@Order(5)
-	@DisplayName("Find by Id and storeId test")
+	@DisplayName("Find category by Id and storeId test")
 	public void givenCategoryList_whenFindByIdAndStoreId_thenReturnCategoryOfStore() {
 		// given
 		Category category1 = new Category();
@@ -234,7 +233,7 @@ public class CategoryRepositoryTests {
 
 	@Test
 	@Order(6)
-	@DisplayName("Find all by Id In and storeId test")
+	@DisplayName("Find all categories by Id In and storeId test")
 	public void givenCategoryList_whenFindAllByIdInAndStoreId_thenReturnCategoriesOfStore() {
 		// given
 		Category category1 = new Category();
@@ -266,7 +265,7 @@ public class CategoryRepositoryTests {
 
 	@Test
 	@Order(7)
-	@DisplayName("Find all by Id In and storeId and enabled test")
+	@DisplayName("Find all categories by Id In and storeId and enabled test")
 	public void givenCategoryList_whenFindAllByIdInAndStoreIdAndEnabled_thenReturnEnabledCategoriesOfStore() {
 		// given
 		Category category1 = new Category();

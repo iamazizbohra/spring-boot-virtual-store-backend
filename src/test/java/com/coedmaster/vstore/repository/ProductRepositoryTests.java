@@ -117,8 +117,7 @@ public class ProductRepositoryTests {
 				category.setEnabled(e1 == 0 ? false : true);
 				category = categoryRepository.save(category);
 
-				LinkedList<Category> categories = storeCategories.get(stores.get((int) e));
-				categories.add(category);
+				storeCategories.get(stores.get((int) e)).add(category);
 
 				Product product = new Product();
 				product.setStore(stores.get((int) e));
@@ -363,7 +362,7 @@ public class ProductRepositoryTests {
 	@Test
 	@Order(8)
 	@DisplayName("Find all products by storeId and categoryId and enabled In test")
-	public void givenProductList_whenFindAllByStoreIdAndCategoryIdInAndEnabled_thenReturnProductsOfStore() {
+	public void givenProductList_whenFindAllByStoreIdAndCategoryIdInAndEnabled_thenReturnEnabledProductsOfStore() {
 		// given
 		Store store = stores.get(0);
 		Category category = storeCategories.get(store).get(0);

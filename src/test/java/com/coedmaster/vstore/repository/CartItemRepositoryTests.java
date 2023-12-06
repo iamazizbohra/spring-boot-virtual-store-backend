@@ -159,8 +159,7 @@ public class CartItemRepositoryTests {
 				product.setEnabled(true);
 				product = productRepository.save(product);
 
-				LinkedList<Product> products = storeProducts.get(stores.get((int) e));
-				products.add(product);
+				storeProducts.get(stores.get((int) e)).add(product);
 			});
 
 			Cart cart = new Cart();

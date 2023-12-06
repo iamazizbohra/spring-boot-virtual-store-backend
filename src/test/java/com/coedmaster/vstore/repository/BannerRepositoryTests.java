@@ -254,7 +254,7 @@ public class BannerRepositoryTests {
 		Banner actualBanner = bannerRepository.save(banner);
 
 		// When
-		bannerRepository.delete(banner);
+		bannerRepository.delete(actualBanner);
 		Optional<Banner> expectedBanner = bannerRepository.findById(actualBanner.getId());
 
 		// then

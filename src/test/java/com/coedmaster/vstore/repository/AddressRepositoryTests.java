@@ -74,7 +74,6 @@ public class AddressRepositoryTests {
 			user.setRoles(Collections.singletonList(role));
 			user.setEnabled(true);
 			users.add(userRepository.save(user));
-
 		});
 	}
 
