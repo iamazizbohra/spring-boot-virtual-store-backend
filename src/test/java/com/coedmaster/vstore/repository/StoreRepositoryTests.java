@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -42,10 +44,10 @@ import com.github.javafaker.Faker;
 public class StoreRepositoryTests {
 
 	@Autowired
-	private UserRepository userRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private StoreRepository storeRepository;
@@ -54,9 +56,9 @@ public class StoreRepositoryTests {
 
 	private Role role;
 
-	private User user;
+	private List<User> users = new LinkedList<User>();
 
-	private Store store;
+	private List<Store> stores = new LinkedList<Store>();
 
 	@BeforeEach
 	public void beforeEach() {
@@ -64,42 +66,32 @@ public class StoreRepositoryTests {
 		role.setName("ROLE_SELLER");
 		role = roleRepository.save(role);
 
-		FullName fullName = new FullName();
-		fullName.setFirstName(faker.name().firstName());
-		fullName.setLastName(faker.name().fullName());
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
+			FullName fullName = new FullName();
+			fullName.setFirstName(faker.name().firstName());
+			fullName.setLastName(faker.name().fullName());
 
-		user = new User();
-		user.setUuid(UUID.randomUUID());
-		user.setUserType(UserType.SELLER);
-		user.setFullName(fullName);
-		user.setMobile(faker.phoneNumber().phoneNumber());
-		user.setPassword(faker.internet().password());
-		user.setEmail(faker.internet().emailAddress());
-		user.setGender(Gender.MALE);
-		user.setRoles(Collections.singletonList(role));
-		user.setEnabled(true);
-		user = userRepository.save(user);
-
-		store = new Store();
-		store.setUser(user);
-		store.setName("Store 1");
-		store.setCode("store1");
-		store.setMobile(faker.phoneNumber().phoneNumber());
-		store.setWhatsapp(faker.phoneNumber().phoneNumber());
-		store.setEmail(faker.internet().emailAddress());
-		store.setLatitude(faker.address().latitude());
-		store.setLongitude(faker.address().longitude());
-		store.setAddress(faker.address().fullAddress());
-		store.setEnabled(true);
+			User user = new User();
+			user.setUuid(UUID.randomUUID());
+			user.setUserType(UserType.SELLER);
+			user.setFullName(fullName);
+			user.setMobile(faker.phoneNumber().phoneNumber());
+			user.setPassword(faker.internet().password());
+			user.setEmail(faker.internet().emailAddress());
+			user.setGender(Gender.MALE);
+			user.setRoles(Collections.singletonList(role));
+			user.setEnabled(true);
+			users.add(userRepository.save(user));
+		});
 	}
 
 	@Test
 	@Order(1)
 	@DisplayName("Save store test")
-	public void givenStore_whenSave_thenReturnStore() {
+	public void givenStore_whenSave_thenReturnSavedStore() {
 		// given
 		Store store = new Store();
-		store.setUser(user);
+		store.setUser(users.get(0));
 		store.setName("Store 1");
 		store.setCode("store1");
 		store.setMobile(faker.phoneNumber().phoneNumber());
@@ -123,6 +115,17 @@ public class StoreRepositoryTests {
 	@DisplayName("Update store test")
 	public void givenStore_whenUpdate_thenReturnStore() {
 		// given
+		Store store = new Store();
+		store.setUser(users.get(0));
+		store.setName("Store 1");
+		store.setCode("store1");
+		store.setMobile(faker.phoneNumber().phoneNumber());
+		store.setWhatsapp(faker.phoneNumber().phoneNumber());
+		store.setEmail(faker.internet().emailAddress());
+		store.setLatitude(faker.address().latitude());
+		store.setLongitude(faker.address().longitude());
+		store.setAddress(faker.address().fullAddress());
+		store.setEnabled(true);
 		Store actualStore = storeRepository.save(store);
 
 		// when
@@ -139,8 +142,8 @@ public class StoreRepositoryTests {
 
 		// then
 		assertAll(() -> assertThat(expectedStore).isNotNull(),
-				() -> assertThat(expectedStore.getName()).isEqualTo("Store 2"),
-				() -> assertThat(expectedStore.getCode()).isEqualTo("store2"),
+				() -> assertThat(expectedStore.getName()).isEqualTo(actualStore.getName()),
+				() -> assertThat(expectedStore.getCode()).isEqualTo(actualStore.getCode()),
 				() -> assertThat(expectedStore.getMobile()).isEqualTo(actualStore.getMobile()),
 				() -> assertThat(expectedStore.isEnabled()).isEqualTo(actualStore.isEnabled()));
 	}
@@ -150,70 +153,9 @@ public class StoreRepositoryTests {
 	@DisplayName("Find store by Id test")
 	public void givenStore_whenFindById_thenReturnStore() {
 		// given
-		Store actualStore = storeRepository.save(store);
-
-		// when
-		Optional<Store> expectedStore = storeRepository.findById(actualStore.getId());
-
-		// then
-		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
-				() -> assertThat(expectedStore.get().getId()).isGreaterThan(0));
-	}
-
-	@Test
-	@Order(4)
-	@DisplayName("Find store by userId test")
-	public void givenUser_whenFindByUserId_thenReturnStore() {
-		// given
-		Store actualStore = storeRepository.save(store);
-
-		// when
-		Optional<Store> expectedStore = storeRepository.findByUserId(actualStore.getUser().getId());
-
-		// then
-		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
-				() -> assertThat(expectedStore.get().getId()).isGreaterThan(0));
-	}
-
-	@Test
-	@Order(5)
-	@DisplayName("Find store by code test")
-	public void givenStore_whenFindByCode_thenReturnStore() {
-		// given
-		Store actualStore = storeRepository.save(store);
-
-		// when
-		Optional<Store> expectedStore = storeRepository.findByCode(actualStore.getCode());
-
-		// then
-		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
-				() -> assertThat(expectedStore.get().getId()).isGreaterThan(0));
-	}
-
-	@Test
-	@Order(6)
-	@DisplayName("Find all store by specs and pageable test")
-	public void givenStoreList_whenFindAll_thenReturnPageOfStore() {
-		// given
-		IntStream.range(10, 13).mapToLong(Long::valueOf).forEach((e) -> {
-			FullName fullName = new FullName();
-			fullName.setFirstName(faker.name().firstName());
-			fullName.setLastName(faker.name().fullName());
-
-			User user = new User();
-			user.setUuid(UUID.randomUUID());
-			user.setUserType(UserType.SELLER);
-			user.setFullName(fullName);
-			user.setMobile(faker.phoneNumber().phoneNumber());
-			user.setPassword(faker.internet().password());
-			user.setEmail(faker.internet().emailAddress());
-			user.setGender(Gender.MALE);
-			user.setRoles(Collections.singletonList(role));
-			user.setEnabled(true);
-			user = userRepository.save(user);
-
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Store store = new Store();
-			store.setUser(user);
+			store.setUser(users.get((int) e));
 			store.setName("Store " + e);
 			store.setCode("store" + e);
 			store.setMobile(faker.phoneNumber().phoneNumber());
@@ -223,7 +165,91 @@ public class StoreRepositoryTests {
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
 			store.setEnabled(true);
-			storeRepository.save(store);
+			stores.add(storeRepository.save(store));
+		});
+
+		// when
+		Optional<Store> expectedStore = storeRepository.findById(stores.get(0).getId());
+
+		// then
+		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
+				() -> assertThat(expectedStore.get().getId()).isEqualTo(stores.get(0).getId()));
+	}
+
+	@Test
+	@Order(4)
+	@DisplayName("Find store by userId test")
+	public void givenUser_whenFindByUserId_thenReturnStore() {
+		// given
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
+			Store store = new Store();
+			store.setUser(users.get((int) e));
+			store.setName("Store " + e);
+			store.setCode("store" + e);
+			store.setMobile(faker.phoneNumber().phoneNumber());
+			store.setWhatsapp(faker.phoneNumber().phoneNumber());
+			store.setEmail(faker.internet().emailAddress());
+			store.setLatitude(faker.address().latitude());
+			store.setLongitude(faker.address().longitude());
+			store.setAddress(faker.address().fullAddress());
+			store.setEnabled(true);
+			stores.add(storeRepository.save(store));
+		});
+
+		// when
+		Optional<Store> expectedStore = storeRepository.findByUserId(users.get(0).getId());
+
+		// then
+		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
+				() -> assertThat(expectedStore.get().getId()).isEqualTo(stores.get(0).getId()));
+	}
+
+	@Test
+	@Order(5)
+	@DisplayName("Find store by code test")
+	public void givenStore_whenFindByCode_thenReturnStore() {
+		// given
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
+			Store store = new Store();
+			store.setUser(users.get((int) e));
+			store.setName("Store " + e);
+			store.setCode("store" + e);
+			store.setMobile(faker.phoneNumber().phoneNumber());
+			store.setWhatsapp(faker.phoneNumber().phoneNumber());
+			store.setEmail(faker.internet().emailAddress());
+			store.setLatitude(faker.address().latitude());
+			store.setLongitude(faker.address().longitude());
+			store.setAddress(faker.address().fullAddress());
+			store.setEnabled(true);
+			stores.add(storeRepository.save(store));
+		});
+
+		// when
+		Optional<Store> expectedStore = storeRepository.findByCode(stores.get(0).getCode());
+
+		// then
+		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
+				() -> assertThat(expectedStore.get().getId()).isEqualTo(stores.get(0).getId()));
+	}
+
+	@Test
+	@Order(6)
+	@DisplayName("Find all store by specs and pageable test")
+	public void givenStoreList_whenFindAll_thenReturnPageOfStore() {
+		// given
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
+			Store store = new Store();
+			store.setUser(users.get((int) e));
+			store.setName("Store " + e);
+			store.setCode("store" + e);
+			store.setMobile(faker.phoneNumber().phoneNumber());
+			store.setWhatsapp(faker.phoneNumber().phoneNumber());
+			store.setEmail(faker.internet().emailAddress());
+			store.setLatitude(faker.address().latitude());
+			store.setLongitude(faker.address().longitude());
+			store.setAddress(faker.address().fullAddress());
+			store.setEnabled(true);
+			stores.add(storeRepository.save(store));
 		});
 
 		// when
@@ -232,7 +258,7 @@ public class StoreRepositoryTests {
 		Page<Store> storePage = storeRepository.findAll(specs, pageable);
 
 		// then
-		assertThat(storePage.getContent().size()).isGreaterThan(0);
+		assertThat(storePage.getContent().size()).isEqualTo(3);
 	}
 
 	@Test
@@ -240,25 +266,9 @@ public class StoreRepositoryTests {
 	@DisplayName("Find store by specs test")
 	public void givenStoreList_whenFindOne_thenReturnStore() {
 		// given
-		IntStream.range(10, 13).mapToLong(Long::valueOf).forEach((e) -> {
-			FullName fullName = new FullName();
-			fullName.setFirstName(faker.name().firstName());
-			fullName.setLastName(faker.name().fullName());
-
-			User user = new User();
-			user.setUuid(UUID.randomUUID());
-			user.setUserType(UserType.SELLER);
-			user.setFullName(fullName);
-			user.setMobile(faker.phoneNumber().phoneNumber());
-			user.setPassword(faker.internet().password());
-			user.setEmail(faker.internet().emailAddress());
-			user.setGender(Gender.MALE);
-			user.setRoles(Collections.singletonList(role));
-			user.setEnabled(true);
-			user = userRepository.save(user);
-
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
 			Store store = new Store();
-			store.setUser(user);
+			store.setUser(users.get((int) e));
 			store.setName("Store " + e);
 			store.setCode("store" + e);
 			store.setMobile(faker.phoneNumber().phoneNumber());
@@ -268,16 +278,17 @@ public class StoreRepositoryTests {
 			store.setLongitude(faker.address().longitude());
 			store.setAddress(faker.address().fullAddress());
 			store.setEnabled(true);
-			storeRepository.save(store);
+			stores.add(storeRepository.save(store));
 		});
 
 		// when
-		Specification<Store> specs = Specification.where(StoreSpecs.hasCode("store10")).and(StoreSpecs.isEnabled(true));
+		Specification<Store> specs = Specification.where(StoreSpecs.hasCode(stores.get(0).getCode()))
+				.and(StoreSpecs.isEnabled(true));
 		Optional<Store> expectedStore = storeRepository.findOne(specs);
 
 		// then
 		assertAll(() -> assertThat(expectedStore).isNotEmpty(),
-				() -> assertThat(expectedStore.get().getId()).isGreaterThan(0));
+				() -> assertThat(expectedStore.get().getId()).isEqualTo(stores.get(0).getId()));
 	}
 
 }
