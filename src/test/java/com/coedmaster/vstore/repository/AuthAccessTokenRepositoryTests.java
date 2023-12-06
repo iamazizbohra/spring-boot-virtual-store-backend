@@ -2,7 +2,6 @@ package com.coedmaster.vstore.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,125 +46,134 @@ public class AuthAccessTokenRepositoryTests {
 	private UserRepository userRepository;
 
 	@Autowired
-	private AuthAccessTokenRepository authAccessTokenRepository;
+	private AuthAccessTokenRepository tokenRepository;
 
 	private final Faker faker = new Faker();
 
 	private Role role;
 
-	private User user;
-
-	private List<AuthAccessToken> authAccessTokens = new ArrayList<AuthAccessToken>();
+	private List<User> users = new ArrayList<User>();
 
 	@BeforeEach
 	public void beforeEach() {
 		role = new Role();
-		role.setName("ROLE_ADMIN");
+		role.setName("ROLE_SELLER");
 		role = roleRepository.save(role);
 
-		FullName fullName = new FullName();
-		fullName.setFirstName(faker.name().firstName());
-		fullName.setLastName(faker.name().fullName());
+		IntStream.range(0, 2).mapToLong(Long::valueOf).forEach((e) -> {
+			FullName fullName = new FullName();
+			fullName.setFirstName(faker.name().firstName());
+			fullName.setLastName(faker.name().fullName());
 
-		user = new User();
-		user.setUuid(UUID.randomUUID());
-		user.setUserType(UserType.ADMIN);
-		user.setFullName(fullName);
-		user.setMobile(faker.phoneNumber().phoneNumber());
-		user.setPassword(faker.internet().password());
-		user.setEmail(faker.internet().emailAddress());
-		user.setGender(Gender.MALE);
-		user.setRoles(Collections.singletonList(role));
-		user.setEnabled(true);
-		user = userRepository.save(user);
-
-		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
-			AuthAccessToken authAccessToken = new AuthAccessToken();
-			authAccessToken.setUser(user);
-			authAccessToken.setName("Auth Access Token");
-			authAccessToken.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
-			authAccessToken.setExpiresAt(LocalDateTime.now().plusDays(1));
-			authAccessTokens.add(authAccessToken);
+			User user = new User();
+			user.setUuid(UUID.randomUUID());
+			user.setUserType(UserType.SELLER);
+			user.setFullName(fullName);
+			user.setMobile(faker.phoneNumber().phoneNumber());
+			user.setPassword(faker.internet().password());
+			user.setEmail(faker.internet().emailAddress());
+			user.setGender(Gender.MALE);
+			user.setRoles(Collections.singletonList(role));
+			user.setEnabled(true);
+			users.add(userRepository.save(user));
 		});
+
 	}
 
 	@Test
 	@Order(1)
-	@DisplayName("Save authAccessToken test")
-	public void givenAuthAccessToken_whenSave_thenReturnAuthAccessToken() {
+	@DisplayName("Save token test")
+	public void givenToken_whenSave_thenReturnSavedToken() {
 		// given
-		AuthAccessToken authAccessToken = new AuthAccessToken();
-		authAccessToken.setUser(user);
-		authAccessToken.setName("Auth Access Token");
-		authAccessToken.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
-		authAccessToken.setExpiresAt(LocalDateTime.now().plusDays(1));
+		AuthAccessToken token = new AuthAccessToken();
+		token.setUser(users.get(0));
+		token.setName("Access Token");
+		token.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
+		token.setExpiresAt(LocalDateTime.now().plusDays(1));
 
 		// when
-		AuthAccessToken expectedAuthAccessToken = authAccessTokenRepository.save(authAccessToken);
+		AuthAccessToken expectedToken = tokenRepository.save(token);
 
 		// then
-		assertAll(() -> assertThat(expectedAuthAccessToken).isNotNull(),
-				() -> assertThat(expectedAuthAccessToken.getId()).isGreaterThan(0),
-				() -> assertThat(expectedAuthAccessToken.getName()).isEqualTo("Auth Access Token"));
+		assertAll(() -> assertThat(expectedToken).isNotNull(), () -> assertThat(expectedToken.getId()).isGreaterThan(0),
+				() -> assertThat(expectedToken.getName()).isEqualTo("Access Token"));
 	}
 
 	@Test
 	@Order(2)
-	@DisplayName("Find all authAccessTokens by userId test")
-	public void givenUser_whenFindAllByUserId_thenReturnListOfAuthAccessTokens() {
+	@DisplayName("Find all tokens by userId test")
+	public void givenUser_whenFindAllByUserId_thenReturnListOfTokens() {
 		// given
-		for (AuthAccessToken authAccessToken : authAccessTokens) {
-			authAccessTokenRepository.save(authAccessToken);
-		}
+		AuthAccessToken token1 = new AuthAccessToken();
+		token1.setUser(users.get(0));
+		token1.setName("Access Token");
+		token1.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
+		token1.setExpiresAt(LocalDateTime.now().plusDays(1));
+		tokenRepository.save(token1);
+
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
+			AuthAccessToken token = new AuthAccessToken();
+			token.setUser(users.get(1));
+			token.setName("Access Token");
+			token.setToken(Base64.getEncoder().encodeToString("access_token_".concat(String.valueOf(e)).getBytes()));
+			token.setExpiresAt(LocalDateTime.now().plusDays(1));
+			tokenRepository.save(token);
+		});
 
 		// when
-		List<AuthAccessToken> expectedAuthAccessTokens = authAccessTokenRepository.findAllByUserId(user.getId());
+		List<AuthAccessToken> expectedTokens = tokenRepository.findAllByUserId(users.get(1).getId());
 
 		// then
-		assertThat(expectedAuthAccessTokens.size()).isGreaterThan(0);
+		assertThat(expectedTokens.size()).isEqualTo(3);
 	}
 
 	@Test
 	@Order(3)
-	@DisplayName("Find authAccessToken by token test")
-	public void givenToken_whenFindByToken_thenReturnAuthAccessToken() {
+	@DisplayName("Find token by token test")
+	public void givenToken_whenFindByToken_thenReturnToken() {
 		// given
-		String token = Base64.getEncoder().encodeToString("access_token".getBytes());
+		AuthAccessToken token1 = new AuthAccessToken();
+		token1.setUser(users.get(0));
+		token1.setName("Access Token");
+		token1.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
+		token1.setExpiresAt(LocalDateTime.now().plusDays(1));
+		tokenRepository.save(token1);
 
-		AuthAccessToken authAccessToken = new AuthAccessToken();
-		authAccessToken.setUser(user);
-		authAccessToken.setName("Auth Access Token");
-		authAccessToken.setToken(token);
-		authAccessToken.setExpiresAt(LocalDateTime.now().plusDays(1));
-		authAccessTokenRepository.save(authAccessToken);
+		IntStream.range(0, 3).mapToLong(Long::valueOf).forEach((e) -> {
+			AuthAccessToken token = new AuthAccessToken();
+			token.setUser(users.get(1));
+			token.setName("Access Token");
+			token.setToken(Base64.getEncoder().encodeToString("access_token_".concat(String.valueOf(e)).getBytes()));
+			token.setExpiresAt(LocalDateTime.now().plusDays(1));
+			tokenRepository.save(token);
+		});
 
 		// when
-		AuthAccessToken expectedAuthAccessToken = authAccessTokenRepository.findByToken(token)
-				.orElseThrow(() -> fail("Token not found"));
+		Optional<AuthAccessToken> expectedToken = tokenRepository.findByToken(token1.getToken());
 
 		// then
-		assertAll(() -> assertThat(expectedAuthAccessToken).isNotNull(),
-				() -> assertThat(expectedAuthAccessToken.getId()).isGreaterThan(0));
+		assertAll(() -> assertThat(expectedToken).isNotEmpty(),
+				() -> assertThat(expectedToken.get().getId()).isGreaterThan(0));
 	}
 
 	@Test
 	@Order(4)
-	@DisplayName("Delete authAccessToken test")
-	public void givenAuthAccessToken_whenDelete_thenRemoveAuthAccessToken() {
+	@DisplayName("Delete token test")
+	public void givenToken_whenDelete_thenRemoveToken() {
 		// given
-		AuthAccessToken authAccessToken = new AuthAccessToken();
-		authAccessToken.setUser(user);
-		authAccessToken.setName("Auth Access Token");
-		authAccessToken.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
-		authAccessToken.setExpiresAt(LocalDateTime.now().plusDays(1));
-		authAccessToken = authAccessTokenRepository.save(authAccessToken);
+		AuthAccessToken token = new AuthAccessToken();
+		token.setUser(users.get(0));
+		token.setName("Access Token");
+		token.setToken(Base64.getEncoder().encodeToString("access_token".getBytes()));
+		token.setExpiresAt(LocalDateTime.now().plusDays(1));
+		token = tokenRepository.save(token);
 
 		// When
-		authAccessTokenRepository.delete(authAccessToken);
-		Optional<AuthAccessToken> authAccessTokenOptional = authAccessTokenRepository.findById(authAccessToken.getId());
+		tokenRepository.delete(token);
+		Optional<AuthAccessToken> tokenOptional = tokenRepository.findById(token.getId());
 
 		// then
-		assertThat(authAccessTokenOptional).isEmpty();
+		assertThat(tokenOptional).isEmpty();
 	}
 
 }
