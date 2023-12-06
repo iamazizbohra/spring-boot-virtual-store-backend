@@ -71,15 +71,15 @@ public class ProductController {
 			@RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection) {
 		Store store = storeService.getStore(storeId);
 
-		PageRequest paging = PageRequest.of(pageNumber, pageSize,
+		PageRequest pageable = PageRequest.of(pageNumber, pageSize,
 				Sort.by(Sort.Direction.valueOf(sortDirection), sortBy));
 
 		Page<Product> productsPage;
 		if (categoryIds.size() == 0) {
-			productsPage = productService.getProducts(store, true, paging);
+			productsPage = productService.getProducts(store, true, pageable);
 		} else {
 			List<Category> categories = categoryService.getCategories(categoryIds, store, true);
-			productsPage = productService.getProducts(store, categories, true, paging);
+			productsPage = productService.getProducts(store, categories, true, pageable);
 		}
 
 		List<ProductDto> productDtos = productsPage.getContent().stream().map(e -> modelMapper.map(e, ProductDto.class))

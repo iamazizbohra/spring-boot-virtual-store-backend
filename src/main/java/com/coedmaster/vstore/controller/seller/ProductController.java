@@ -89,15 +89,15 @@ public class ProductController {
 		Store store = storeService
 				.getStore(authenticationService.getAuthenticatedUser(authenticationService.getAuthentication()));
 
-		PageRequest paging = PageRequest.of(pageNumber, pageSize,
+		PageRequest pageable = PageRequest.of(pageNumber, pageSize,
 				Sort.by(Sort.Direction.valueOf(sortDirection), sortBy));
 
 		Page<Product> productsPage;
 		if (categoryIds.size() == 0) {
-			productsPage = productService.getProducts(store, paging);
+			productsPage = productService.getProducts(store, pageable);
 		} else {
 			List<Category> categories = categoryService.getCategories(categoryIds, store);
-			productsPage = productService.getProducts(store, categories, paging);
+			productsPage = productService.getProducts(store, categories, pageable);
 		}
 
 		List<ProductDto> productDtos = productsPage.getContent().stream().map(e -> modelMapper.map(e, ProductDto.class))
