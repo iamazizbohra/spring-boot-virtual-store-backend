@@ -2,7 +2,8 @@ package com.coedmaster.vstore.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,14 +30,15 @@ public class RoleRepositoryTests {
 
 		Role actualRole = new Role();
 		actualRole.setName(name);
-		actualRole = roleRepository.save(actualRole);
+		roleRepository.save(actualRole);
 
 		// when
-		Role expectedRole = roleRepository.findByName(name).orElseThrow(() -> fail("Role not found"));
+		Optional<Role> expectedRole = roleRepository.findByName(name);
 
 		// then
-		assertAll(() -> assertThat(expectedRole).isNotNull(), () -> assertThat(expectedRole.getId()).isGreaterThan(0),
-				() -> assertThat(expectedRole.getName()).isEqualTo(name));
+		assertAll(() -> assertThat(expectedRole).isNotEmpty(),
+				() -> assertThat(expectedRole.get().getId()).isGreaterThan(0),
+				() -> assertThat(expectedRole.get().getName()).isEqualTo(name));
 	}
 
 }
