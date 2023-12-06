@@ -134,7 +134,7 @@ public class CartManager implements ICartService {
 
 	@Override
 	public void deleteCart(Cart cart) {
-		cartRepository.deleteById(cart.getId());
+		cartRepository.delete(cart);
 	}
 
 	private Optional<Cart> getCart(User user) {
