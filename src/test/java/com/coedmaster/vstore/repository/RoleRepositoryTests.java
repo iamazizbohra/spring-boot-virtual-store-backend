@@ -25,17 +25,17 @@ public class RoleRepositoryTests {
 	@Test
 	@DisplayName("Find role by name test")
 	public void givenName_whenFindByName_thenReturnRole() {
-		// given
+		// Given: Setup object or precondition
 		String name = "ROLE_USER";
 
 		Role actualRole = new Role();
 		actualRole.setName(name);
 		roleRepository.save(actualRole);
 
-		// when
+		// When: Action or behavior that we are going to test
 		Optional<Role> expectedRole = roleRepository.findByName(name);
 
-		// then
+		// Then: Verify the output or expected result
 		assertAll(() -> assertThat(expectedRole).isNotEmpty(),
 				() -> assertThat(expectedRole.get().getId()).isGreaterThan(0),
 				() -> assertThat(expectedRole.get().getName()).isEqualTo(name));
