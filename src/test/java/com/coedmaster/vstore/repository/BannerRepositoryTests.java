@@ -3,8 +3,8 @@ package com.coedmaster.vstore.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,9 +56,9 @@ public class BannerRepositoryTests {
 
 	private Role role;
 
-	private List<User> users = new ArrayList<User>();
+	private List<User> users = new LinkedList<User>();
 
-	private List<Store> stores = new ArrayList<Store>();
+	private List<Store> stores = new LinkedList<Store>();
 
 	@BeforeEach
 	public void beforeEach() {

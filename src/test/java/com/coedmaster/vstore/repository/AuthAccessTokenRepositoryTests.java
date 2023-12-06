@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -52,7 +52,7 @@ public class AuthAccessTokenRepositoryTests {
 
 	private Role role;
 
-	private List<User> users = new ArrayList<User>();
+	private List<User> users = new LinkedList<User>();
 
 	@BeforeEach
 	public void beforeEach() {
