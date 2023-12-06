@@ -13,9 +13,9 @@ import com.coedmaster.vstore.model.Order;
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
 	Optional<Order> findByIdAndUserId(Long orderId, Long userId);
 
-	Page<Order> findAllByUserId(Long userId, Pageable pageable);
-
 	Optional<Order> findByIdAndStoreId(Long orderId, Long storeId);
+
+	Page<Order> findAllByUserId(Long userId, Pageable pageable);
 
 	Page<Order> findAllByStoreId(Long storeId, Pageable pageable);
 

@@ -10,8 +10,8 @@ CREATE TABLE orders (
 	state varchar(50) NOT NULL,
 	city varchar(50) NOT NULL,
 	pincode varchar(50) NOT NULL,
-	line1 varchar(50) NOT NULL,
-	line2 varchar(50),
+	line1 varchar(100) NOT NULL,
+	line2 varchar(100),
 	landmark varchar(50),
 	
 	sub_total INT NOT NULL,
