@@ -104,7 +104,7 @@ public class CartRepositoryTests {
 			addresses.add(addressRepository.save(address));
 
 			Store store = new Store();
-			store.setUser(user);
+			store.setUser(users.get((int) e));
 			store.setName("Store " + e);
 			store.setCode("store" + e);
 			store.setMobile(faker.phoneNumber().phoneNumber());

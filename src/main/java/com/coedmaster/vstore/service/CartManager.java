@@ -178,6 +178,6 @@ public class CartManager implements ICartService {
 	}
 
 	private void deleteCartItem(CartItem cartItem) {
-		cartItemRepository.deleteById(cartItem.getId());
+		cartItemRepository.delete(cartItem);
 	}
 }
