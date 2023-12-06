@@ -61,7 +61,7 @@ public class BannerService implements IBannerService {
 	public void deleteBanner(Long bannerId, Store store) {
 		Banner banner = getBanner(bannerId, store);
 
-		bannerRepository.deleteById(banner.getId());
+		bannerRepository.delete(banner);
 	}
 
 	@Override
