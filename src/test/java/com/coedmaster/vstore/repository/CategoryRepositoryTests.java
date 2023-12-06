@@ -25,7 +25,6 @@ import org.springframework.data.domain.Sort;
 
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
-import com.coedmaster.vstore.model.Banner;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Role;
 import com.coedmaster.vstore.model.Store;
