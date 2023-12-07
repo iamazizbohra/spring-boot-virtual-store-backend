@@ -74,6 +74,7 @@ public class AddressService implements IAddressService {
 		List<Address> addresses = getAddresses(user);
 		addresses.stream().forEach((address) -> {
 			address.setDefault(false);
+
 			addressRepository.save(address);
 		});
 
@@ -91,7 +92,7 @@ public class AddressService implements IAddressService {
 			throw new UnallowedOperationException("Can not delete default address");
 		}
 
-		addressRepository.deleteById(address.getId());
+		addressRepository.delete(address);
 	}
 
 }

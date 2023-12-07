@@ -2,7 +2,7 @@ package com.coedmaster.vstore.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
@@ -43,6 +43,7 @@ public class RoleServiceTests {
 		// then
 		assertThat(expectedRole).isNotNull();
 		assertThrows(EntityNotFoundException.class, () -> roleService.getRoleByName("ROLE_USER"));
+		verify(roleRepository, times(2)).findByName(anyString());
 	}
 
 }
