@@ -38,7 +38,7 @@ Verify Installation
 ```shell
 java --version
 ```
-```shell
+```text
 openjdk 19.0.1 2022-10-18
 OpenJDK Runtime Environment (build 19.0.1+10-21)
 OpenJDK 64-Bit Server VM (build 19.0.1+10-21, mixed mode, sharing)
