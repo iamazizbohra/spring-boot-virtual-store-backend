@@ -110,7 +110,7 @@ spring.datasource.password=[password]
 ```
 Default Port: 5432 <br>
 Database Name: vstore <br>
-Replace username and password with your database specific values
+**Note: Replace username and password with your database specific values**
 
 Redis
 ```shell
@@ -119,3 +119,17 @@ spring.data.redis.port=6379
 ```
 Default Port: 6379 <br>
 Host: localhost <br>
+
+---
+
+### Postman Collection
+
+[Click here to download](https://github.com/iamazizbohra/spring-boot-virtual-store-backend/blob/master/Virtual-Store.postman_collection.json)
+
+---
+
+### JobRunr Dashboard
+
+[Click here to access](http://localhost:8000/)
+
+---
