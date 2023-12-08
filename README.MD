@@ -31,11 +31,11 @@ Built Using Spring Boot (v3.1.5)
 
 On MacBook run
 
-```shell
+```text
 brew install openjdk
 ```
 Verify Installation
-```shell
+```text
 java --version
 ```
 ```text
@@ -49,14 +49,14 @@ OpenJDK 64-Bit Server VM (build 19.0.1+10-21, mixed mode, sharing)
 
 On MacBook run
 
-```shell
+```text
 brew install Maven
 ```
 Verify Installation
-```shell
+```text
 mvn -v
 ```
-```shell
+```text
 Apache Maven 3.9.5 (57804ffe001d7215b5e7bcb531cf83df38f93546)
 Maven home: /opt/homebrew/Cellar/maven/3.9.5/libexec
 Java version: 21, vendor: Homebrew, runtime: /opt/homebrew/Cellar/openjdk/21/libexec/openjdk.jdk/Contents/Home
@@ -70,7 +70,7 @@ OS name: "mac os x", version: "14.1.2", arch: "aarch64", family: "mac"
 
 On MacBook run
 
-```shell
+```text
 brew install --cask eclipse-java
 ```
 [For windows click here](https://www.eclipse.org/downloads/)
@@ -81,22 +81,22 @@ brew install --cask eclipse-java
 
 On MacBook run
 
-```shell
+```text
 brew install postgresql@14
 ```
 Verify Installation
-```shell
+```text
 postgres --version
 ```
-```shell
+```text
 postgres (PostgreSQL) 14.9 (Homebrew)
 ```
 Run PostgreSQL Server
-```shell
+```text
 brew services run postgresql@14
 ```
 Stop PostgreSQL Server
-```shell
+```text
 brew services stop postgresql@14
 ```
 [For windows click here](https://www.postgresql.org/download/)
@@ -106,7 +106,7 @@ brew services stop postgresql@14
 
 On MacBook run
 
-```shell
+```text
 brew install --cask pgadmin4
 ```
 [For windows click here](https://www.pgadmin.org/download/pgadmin-4-windows/)
@@ -115,22 +115,22 @@ brew install --cask pgadmin4
 
 On MacBook run
 
-```shell
+```text
 brew install redis
 ```
 Verify Installation
-```shell
+```text
 redis-server --version
 ```
-```shell
+```text
 Redis server v=7.2.3 sha=00000000:0 malloc=libc bits=64 build=96f23777753ded6c
 ```
 Run Redis Server
-```shell
+```text
 brew services run redis
 ```
 Stop Redis Server
-```shell
+```text
 brew services stop redis
 ```
 [For windows click here](https://redis.io/docs/install/install-redis/install-redis-on-windows/)
@@ -138,7 +138,7 @@ brew services stop redis
 ### Configure Application Properties
 
 Datasource
-```shell
+```text
 spring.datasource.url=jdbc:postgresql://localhost:5432/vstore 
 spring.datasource.username=[username]
 spring.datasource.password=[password]
@@ -148,7 +148,7 @@ Database Name: vstore <br>
 **Note: Replace username and password with your database specific values**
 
 Redis
-```shell
+```text
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
 ```
