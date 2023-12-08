@@ -43,7 +43,7 @@ public class RoleServiceTests {
 		// then
 		assertThat(expectedRole).isNotNull();
 		assertThrows(EntityNotFoundException.class, () -> roleService.getRoleByName("ROLE_USER"));
-		verify(roleRepository, times(2)).findByName(anyString());
+		then(roleRepository).should(times(2)).findByName(anyString());
 	}
 
 }

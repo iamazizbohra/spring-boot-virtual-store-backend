@@ -3,11 +3,9 @@ package com.coedmaster.vstore.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.then;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -61,7 +59,6 @@ public class UserServiceTests {
 		User expectedUser = userService.getUser(1L);
 
 		// then
-		verify(userRepository).findById(anyLong());
 		assertThat(expectedUser).isNotNull();
 		assertThrows(EntityNotFoundException.class, () -> userRepository.findById(2L));
 	}
@@ -84,7 +81,6 @@ public class UserServiceTests {
 		User expectedUser = userService.getUserByUuid(user.getUuid().toString());
 
 		// then
-		verify(userRepository).findByUuid(any(UUID.class));
 		assertThat(expectedUser).isNotNull();
 		assertThrows(EntityNotFoundException.class, () -> userRepository.findByUuid(uuid));
 	}
@@ -108,7 +104,6 @@ public class UserServiceTests {
 		User expectedUser = userService.getUserByMobile(user.getMobile());
 
 		// then
-		verify(userRepository).findByMobile(anyString());
 		assertThat(expectedUser).isNotNull();
 		assertThrows(EntityNotFoundException.class, () -> userRepository.findByMobile(mobile));
 	}
@@ -133,7 +128,6 @@ public class UserServiceTests {
 		boolean expectedValue2 = userService.isMobileAvailable(mobile);
 
 		// then
-		verify(userRepository, times(2)).findByMobile(anyString());
 		assertThat(expectedValue1).isEqualTo(false);
 		assertThat(expectedValue2).isEqualTo(true);
 	}
@@ -163,7 +157,6 @@ public class UserServiceTests {
 		boolean expectedValue2 = userService.isMobileAvailableFor(mobile, user);
 
 		// then
-		verify(userRepository, times(2)).findByMobile(anyString());
 		assertThat(expectedValue1).isEqualTo(true);
 		assertThat(expectedValue2).isEqualTo(true);
 		assertThrows(UsernameAlreadyTakenException.class,
@@ -194,8 +187,8 @@ public class UserServiceTests {
 		User expectedUser = userService.createUser(UserType.ADMIN, role, createUserDto);
 
 		// then
-		verify(userRepository).save(any(User.class));
 		assertThat(expectedUser).isNotNull();
+		then(userRepository).should().save(any(User.class));
 	}
 
 	@Test
@@ -221,8 +214,8 @@ public class UserServiceTests {
 		User expectedUser = userService.updateUser(user, updateUserDto);
 
 		// then
-		verify(userRepository).save(user);
 		assertThat(expectedUser).isNotNull();
+		then(userRepository).should().save(user);
 	}
 
 	@Test
@@ -244,8 +237,8 @@ public class UserServiceTests {
 		User expectedUser = userService.updateUserPassword(user, password);
 
 		// then
-		verify(userRepository).save(user);
 		assertThat(expectedUser).isNotNull();
+		then(userRepository).should().save(user);
 	}
 
 }

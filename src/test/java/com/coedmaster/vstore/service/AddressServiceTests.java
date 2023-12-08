@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
@@ -143,7 +143,7 @@ public class AddressServiceTests {
 		// when
 		assertThat(expectedAddress1).isNotNull();
 		assertThat(expectedAddress2).isNotNull();
-		verify(addressRepository, times(2)).save(argThat(address -> {
+		then(addressRepository).should(times(2)).save(argThat(address -> {
 			if (address.getUser().getId() == 1L && address.isDefault() == true) {
 				return true;
 			} else if (address.getUser().getId() == 2L && address.isDefault() == false) {
@@ -187,7 +187,7 @@ public class AddressServiceTests {
 
 		// then
 		assertThat(expectedAddress).isNotNull();
-		verify(addressRepository, times(1)).save(any(Address.class));
+		then(addressRepository).should(times(1)).save(any(Address.class));
 	}
 
 	@Test
@@ -220,7 +220,7 @@ public class AddressServiceTests {
 
 		// then
 		assertThat(expectedAddress).isNotNull();
-		verify(addressRepository, times(3)).save(any(Address.class));
+		then(addressRepository).should(times(3)).save(any(Address.class));
 	}
 
 	@Test
@@ -253,7 +253,7 @@ public class AddressServiceTests {
 
 		// then
 		assertThrows(UnallowedOperationException.class, () -> addressService.deleteAddress(address1.getId(), user));
-		verify(addressRepository).delete(address2);
+		then(addressRepository).should().delete(address2);
 	}
 
 }
