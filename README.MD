@@ -12,8 +12,9 @@ Built Using Spring Boot (v3.1.5)
 * spring-boot-starter-data-redis
 * jedis
 * spring-boot-starter-validation
+* spring-boot-starter-actuator
 * spring-boot-starter-test
-* spring-boot-starter-test
+* spring-boot-devtools
 * postgresql
 * lombok
 * modelmapper
@@ -125,6 +126,11 @@ Host: localhost <br>
 ### Postman Collection
 
 [Click here to download](https://github.com/iamazizbohra/spring-boot-virtual-store-backend/blob/master/Virtual-Store.postman_collection.json)
+
+---
+
+### Actuator Endpoints
+[Click here to access](http://localhost:8080/api/v1/actuator)
 
 ---
 

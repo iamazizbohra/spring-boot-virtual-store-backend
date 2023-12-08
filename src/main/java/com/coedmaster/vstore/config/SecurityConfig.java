@@ -31,6 +31,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.securityMatcher("/**").authorizeHttpRequests(authorize -> {
 			authorize.requestMatchers("/static/**").permitAll();
+			authorize.requestMatchers("/actuator/**").permitAll();
 			authorize.requestMatchers(HttpMethod.POST, "/admin/account").permitAll();
 			authorize.requestMatchers(HttpMethod.POST, "/buyer/account").permitAll();
 			authorize.requestMatchers(HttpMethod.POST, "/seller/account").permitAll();
