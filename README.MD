@@ -34,6 +34,15 @@ On MacBook run
 ```shell
 brew install openjdk
 ```
+Verify Installation
+```shell
+java --version
+```
+```shell
+openjdk 19.0.1 2022-10-18
+OpenJDK Runtime Environment (build 19.0.1+10-21)
+OpenJDK 64-Bit Server VM (build 19.0.1+10-21, mixed mode, sharing)
+```
 [For windows click here](https://phoenixnap.com/kb/install-java-windows)
 
 ### Install Maven
@@ -42,6 +51,17 @@ On MacBook run
 
 ```shell
 brew install Maven
+```
+Verify Installation
+```shell
+mvn -v
+```
+```shell
+Apache Maven 3.9.5 (57804ffe001d7215b5e7bcb531cf83df38f93546)
+Maven home: /opt/homebrew/Cellar/maven/3.9.5/libexec
+Java version: 21, vendor: Homebrew, runtime: /opt/homebrew/Cellar/openjdk/21/libexec/openjdk.jdk/Contents/Home
+Default locale: en_IN, platform encoding: UTF-8
+OS name: "mac os x", version: "14.1.2", arch: "aarch64", family: "mac"
 ```
 [For windows click here](https://phoenixnap.com/kb/install-maven-windows)
 
@@ -63,6 +83,13 @@ On MacBook run
 
 ```shell
 brew install postgresql@14
+```
+Verify Installation
+```shell
+postgres --version
+```
+```shell
+postgres (PostgreSQL) 14.9 (Homebrew)
 ```
 Run PostgreSQL Server
 ```shell
@@ -90,6 +117,13 @@ On MacBook run
 
 ```shell
 brew install redis
+```
+Verify Installation
+```shell
+redis-server --version
+```
+```shell
+Redis server v=7.2.3 sha=00000000:0 malloc=libc bits=64 build=96f23777753ded6c
 ```
 Run Redis Server
 ```shell
