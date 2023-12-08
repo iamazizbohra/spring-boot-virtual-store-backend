@@ -30,7 +30,7 @@ Built Using Spring Boot (v3.1.5)
 
 On MacBook run
 
-```console
+```shell
 brew install openjdk
 ```
 [For windows click here](https://phoenixnap.com/kb/install-java-windows)
