@@ -56,18 +56,18 @@ brew install --cask eclipse-java
 
 **Note: Configure installed JDK with Eclipse IDE**
 
-### Install PosgreSQL
+### Install PostgreSQL
 
 On MacBook run
 
 ```shell
 brew install postgresql@14
 ```
-Run PosgreSQL Server
+Run PostgreSQL Server
 ```shell
 brew services run postgresql@14
 ```
-Stop PosgreSQL Server
+Stop PostgreSQL Server
 ```shell
 brew services stop postgresql@14
 ```
