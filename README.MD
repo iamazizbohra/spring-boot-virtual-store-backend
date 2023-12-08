@@ -26,7 +26,7 @@ Built Using Spring Boot (v3.1.5)
 
 ### Steps to setup project on local machine
 
-### Intall JDK
+### Install JDK
 
 On MacBook run
 
