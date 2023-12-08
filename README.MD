@@ -39,7 +39,7 @@ brew install openjdk
 
 On MacBook run
 
-```console
+```shell
 brew install Maven
 ```
 [For windows click here](https://phoenixnap.com/kb/install-maven-windows)
@@ -49,7 +49,7 @@ brew install Maven
 
 On MacBook run
 
-```console
+```shell
 brew install --cask eclipse-java
 ```
 [For windows click here](https://www.eclipse.org/downloads/)
@@ -60,15 +60,15 @@ brew install --cask eclipse-java
 
 On MacBook run
 
-```console
+```shell
 brew install postgresql@14
 ```
 Run PosgreSQL Server
-```console
+```shell
 brew services run postgresql@14
 ```
 Stop PosgreSQL Server
-```console
+```shell
 brew services stop postgresql@14
 ```
 [For windows click here](https://www.postgresql.org/download/)
@@ -78,7 +78,7 @@ brew services stop postgresql@14
 
 On MacBook run
 
-```console
+```shell
 brew install --cask pgadmin4
 ```
 [For windows click here](https://www.pgadmin.org/download/pgadmin-4-windows/)
@@ -87,15 +87,15 @@ brew install --cask pgadmin4
 
 On MacBook run
 
-```console
+```shell
 brew install redis
 ```
 Run Redis Server
-```console
+```shell
 brew services run redis
 ```
 Stop Redis Server
-```console
+```shell
 brew services stop redis
 ```
 [For windows click here](https://redis.io/docs/install/install-redis/install-redis-on-windows/)
@@ -103,7 +103,7 @@ brew services stop redis
 ### Configure Application Properties
 
 Datasource
-```console
+```shell
 spring.datasource.url=jdbc:postgresql://localhost:5432/vstore 
 spring.datasource.username=[username]
 spring.datasource.password=[password]
@@ -113,7 +113,7 @@ Database Name: vstore <br>
 Replace username and password with your database specific values
 
 Redis
-```console
+```shell
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
 ```
