@@ -103,7 +103,7 @@ public class ProductController {
 		List<ProductDto> productDtos = productsPage.getContent().stream().map(e -> modelMapper.map(e, ProductDto.class))
 				.collect(Collectors.toList());
 
-		Map<String, Object> pageDetails = new HashMap<>();
+		Map<String, Object> pageDetails = new HashMap<String, Object>();
 		pageDetails.put("products", productDtos);
 		pageDetails.put("currentPage", productsPage.getNumber());
 		pageDetails.put("totalItems", productsPage.getTotalElements());

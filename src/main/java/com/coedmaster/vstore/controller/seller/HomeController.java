@@ -15,4 +15,5 @@ public class HomeController {
 	public String index(@AuthenticationPrincipal IUserDetails userDetails) {
 		return "Hello " + userDetails.getFirstName() + " from Seller Home";
 	}
+
 }

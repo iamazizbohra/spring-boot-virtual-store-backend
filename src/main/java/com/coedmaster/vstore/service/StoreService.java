@@ -64,8 +64,10 @@ public class StoreService implements IStoreService {
 
 	@Override
 	public Store createStore(User user, StoreDto payload) {
-		storeRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new EntityAlreadyExistsException("Store already exists with your account"));
+		Optional<Store> storeOptional = storeRepository.findByUserId(user.getId());
+		if (!storeOptional.isEmpty()) {
+			throw new EntityAlreadyExistsException("Store already exists with your account");
+		}
 
 		if (!isStoreCodeAvailable(payload.getCode()))
 			throw new StoreCodeAlreadyTakenException("Store code is already taken");

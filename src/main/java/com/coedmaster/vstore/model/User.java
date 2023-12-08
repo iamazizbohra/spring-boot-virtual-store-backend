@@ -1,14 +1,17 @@
 package com.coedmaster.vstore.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.coedmaster.vstore.enums.Gender;
 import com.coedmaster.vstore.enums.UserType;
-import com.coedmaster.vstore.model.audit.AuditSection;
-import com.coedmaster.vstore.model.audit.Auditable;
 import com.coedmaster.vstore.model.converter.GenderConverter;
 import com.coedmaster.vstore.model.converter.UserTypeConverter;
 import com.coedmaster.vstore.model.embeddable.FullName;
@@ -40,7 +43,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class User implements Auditable {
+public class User {
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -72,8 +75,18 @@ public class User implements Auditable {
 
 	private boolean enabled;
 
-	@Embedded
-	@JsonIgnore
-	private AuditSection auditSection = new AuditSection();
+	@Column(updatable = false)
+	@CreatedBy
+	private String createdBy;
+
+	@Column(updatable = false)
+	@CreatedDate
+	private LocalDateTime createdDate;
+
+	@LastModifiedBy
+	private String lastModifiedBy;
+
+	@LastModifiedDate
+	private LocalDateTime lastModifiedDate;
 
 }
