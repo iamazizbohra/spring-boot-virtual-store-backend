@@ -10,9 +10,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = HomeController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -25,11 +26,14 @@ public class HomeControllerTests {
 	@Test
 	@DisplayName("Index test")
 	public void givenHomeURI_whenIndex_thenResponseOk() throws Exception {
-		RequestBuilder request = MockMvcRequestBuilders.get("/seller/home");
+		// given
 
+		// when
+		RequestBuilder request = get("/seller/home");
 		ResultActions response = mockMvc.perform(request);
 
-		response.andDo(MockMvcResultHandlers.log()).andExpect(MockMvcResultMatchers.status().isOk());
+		// then
+		response.andDo(log()).andExpect(status().isOk()).andExpect(jsonPath("$").isNotEmpty());
 	}
 
 }
