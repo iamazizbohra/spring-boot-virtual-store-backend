@@ -201,6 +201,25 @@ On MacBook run
 ```text
 brew install --cask postman
 ```
+Verify Installation
+```text
+brew info postman
+```
+```text
+==> postman: 10.20.0 (auto_updates)
+https://www.postman.com/
+/opt/homebrew/Caskroom/postman/10.20.0 (121B)
+From: https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/p/postman.rb
+==> Name
+Postman
+==> Description
+Collaboration platform for API development
+==> Artifacts
+Postman.app (App)
+==> Analytics
+install: 9,790 (30 days), 33,057 (90 days), 91,105 (365 days)
+```
+
 [For windows click here](https://www.postman.com/downloads/)
 
 ### Postman Collection
