@@ -88,7 +88,7 @@ Verify Installation
 postgres --version
 ```
 ```text
-postgres (PostgreSQL) 14.9 (Homebrew)
+postgres (PostgreSQL) 14.10 (Homebrew)
 ```
 Run PostgreSQL Server
 ```text
@@ -97,6 +97,14 @@ brew services run postgresql@14
 Interact via Command Line Interface
 ```text
 psql
+```
+Create a Database with owner without password
+```text
+CREATE DATABASE vstore OWNER [NAME_OF_OWNER];
+```
+Verify Database Creation
+```text
+\l
 ```
 Stop PostgreSQL Server
 ```text
