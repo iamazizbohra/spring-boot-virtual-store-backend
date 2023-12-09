@@ -139,13 +139,13 @@ redis-server --version
 ```text
 Redis server v=7.2.3 sha=00000000:0 malloc=libc bits=64 build=96f23777753ded6c
 ```
-Interact via Command Line Interface
-```text
-redis-cli
-```
 Run Redis Server
 ```text
 brew services run redis
+```
+Interact via Command Line Interface
+```text
+redis-cli
 ```
 Stop Redis Server
 ```text
@@ -188,16 +188,17 @@ spring.data.redis.port=6379
 Default Port: 6379 <br>
 Host: localhost <br>
 
-
-### Run Project
-```text
-mvn spring-boot:run
-```
+--- 
 
 ### Run Tests
 ```text
 mvn clean
 mvn test
+```
+
+### Run Project
+```text
+mvn spring-boot:run
 ```
 
 ---
