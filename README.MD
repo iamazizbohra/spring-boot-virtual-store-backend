@@ -301,6 +301,11 @@ mvn test
 mvn spring-boot:run
 ```
 
+### Package Project
+```text
+mvn clean package spring-boot:repackage
+```
+
 ---
 
 ### Actuator Endpoints

@@ -1887,7 +1887,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"firstName\": \"Super\",\n    \"lastName\": \"Seller\",\n    \"mobile\": \"9999999999\",\n    \"verificationCode\": \"3122\",\n    \"password\": {{password}},\n    \"email\": \"seller@gmail.com\",\n    \"gender\": \"MALE\"\n}",
+									"raw": "{\n    \"firstName\": \"Super\",\n    \"lastName\": \"Seller\",\n    \"mobile\": \"9999999999\",\n    \"verificationCode\": \"\",\n    \"password\": {{password}},\n    \"email\": \"seller@gmail.com\",\n    \"gender\": \"MALE\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
