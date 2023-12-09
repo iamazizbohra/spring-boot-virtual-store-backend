@@ -106,6 +106,19 @@ Verify Database Creation
 ```text
 \l
 ```
+```text
+                         List of databases
+   Name    | Owner | Encoding | Collate | Ctype | Access privileges
+-----------+-------+----------+---------+-------+-------------------
+ aziz      | aziz  | UTF8     | C       | C     |
+ postgres  | aziz  | UTF8     | C       | C     |
+ template0 | aziz  | UTF8     | C       | C     | =c/aziz          +
+           |       |          |         |       | aziz=CTc/aziz
+ template1 | aziz  | UTF8     | C       | C     | =c/aziz          +
+           |       |          |         |       | aziz=CTc/aziz
+ vstore    | aziz  | UTF8     | C       | C     |
+(5 rows)
+```
 Stop PostgreSQL Server
 ```text
 brew services stop postgresql@14
