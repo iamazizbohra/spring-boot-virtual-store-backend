@@ -144,6 +144,8 @@ brew services stop redis
 ```
 [For windows click here](https://redis.io/docs/install/install-redis/install-redis-on-windows/)
 
+---
+
 ### Configure Application Properties
 
 Datasource
@@ -163,6 +165,18 @@ spring.data.redis.port=6379
 ```
 Default Port: 6379 <br>
 Host: localhost <br>
+
+
+### Run Project
+```text
+mvn spring-boot:run
+```
+
+### Run Tests
+```text
+mvn clean
+mvn test
+```
 
 ---
 
