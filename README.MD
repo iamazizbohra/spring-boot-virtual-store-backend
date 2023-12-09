@@ -49,9 +49,9 @@ Verify Installation
 java --version
 ```
 ```text
-openjdk 19.0.1 2022-10-18
-OpenJDK Runtime Environment (build 19.0.1+10-21)
-OpenJDK 64-Bit Server VM (build 19.0.1+10-21, mixed mode, sharing)
+openjdk 21 2023-09-19
+OpenJDK Runtime Environment Homebrew (build 21)
+OpenJDK 64-Bit Server VM Homebrew (build 21, mixed mode, sharing)
 ```
 [For windows click here](https://phoenixnap.com/kb/install-java-windows)
 
