@@ -256,6 +256,16 @@ install: 616 (30 days), 2,171 (90 days), 6,540 (365 days)
 
 **Note: Configure installed JDK with Eclipse IDE**
 
+### Intall Lombok into Eclipse IDE
+
+1. Download lombok.jar from https://projectlombok.org/download
+
+2. Navigate to lombok.jar location  and run java -jar lombok.jar
+
+3. This starts the eclipse installer which will find eclipse (and eclipse variants as listed above), and offers to install lombok into these eclipse installations. The same tool can also uninstall lombok.
+
+[https://projectlombok.org/setup/eclipse](https://projectlombok.org/setup/eclipse)
+
 ---
 
 ### Configure Application Properties
