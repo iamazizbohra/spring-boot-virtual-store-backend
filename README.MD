@@ -254,7 +254,7 @@ Eclipse.app -> Eclipse Java.app (App)
 install: 616 (30 days), 2,171 (90 days), 6,540 (365 days)
 ```
 
-**Note: Configure installed JDK with Eclipse IDE**
+**Note: Make sure to configure installed JDK with Eclipse IDE**
 
 ### Install Lombok into Eclipse IDE
 
