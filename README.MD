@@ -14,6 +14,7 @@ Built Using Spring Boot (v3.1.5)
 * spring-boot-starter-validation
 * spring-boot-starter-actuator
 * spring-boot-starter-test
+* jacoco-maven-plugin
 * spring-boot-devtools
 * postgresql
 * lombok
