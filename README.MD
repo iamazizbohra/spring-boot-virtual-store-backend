@@ -25,6 +25,15 @@ Built Using Spring Boot (v3.1.5)
 
 ---
 
+### Requires
+
+* JDK (Java 17+ )
+* Maven
+* PostgreSQL
+* Redis
+
+---
+
 ### Steps to setup project on local machine
 
 ### Install JDK
