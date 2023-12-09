@@ -133,6 +133,24 @@ On MacBook run
 ```text
 brew install --cask pgadmin4
 ```
+Verify Installation
+```text
+brew info pgadmin4
+```
+```text
+==> pgadmin4: 8.0
+https://www.pgadmin.org/
+/opt/homebrew/Caskroom/pgadmin4/8.0 (123B)
+From: https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/p/pgadmin4.rb
+==> Name
+pgAdmin4
+==> Description
+Administration and development platform for PostgreSQL
+==> Artifacts
+pgAdmin 4.app (App)
+==> Analytics
+install: 3,447 (30 days), 10,351 (90 days), 26,894 (365 days)
+```
 [For windows click here](https://www.pgadmin.org/download/pgadmin-4-windows/)
 
 ### Install Redis
@@ -153,6 +171,10 @@ Run Redis Server
 ```text
 brew services run redis
 ```
+Run in Foreground
+```text
+redis-server
+```
 Interact via Command Line Interface
 ```text
 redis-cli
@@ -163,6 +185,15 @@ brew services stop redis
 ```
 [For windows click here](https://redis.io/docs/install/install-redis/install-redis-on-windows/)
 
+Verify PostgreSQL and Redis server is running
+```text
+brew services list
+```
+```text
+Name          Status  User File
+postgresql@14 started      /opt/homebrew/opt/postgresql@14/homebrew.mxcl.postgresql@14.plist
+redis         started      /opt/homebrew/opt/redis/homebrew.mxcl.redis.plist
+```
 
 ### Install Postman
 
