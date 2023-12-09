@@ -1,5 +1,7 @@
 package com.coedmaster.vstore.controller.buyer;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
@@ -15,21 +17,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.coedmaster.vstore.config.DtoConfig;
 import com.coedmaster.vstore.model.Category;
 import com.coedmaster.vstore.model.Store;
 import com.coedmaster.vstore.service.CategoryService;
 import com.coedmaster.vstore.service.StoreService;
 
 @WebMvcTest(controllers = CategoryController.class)
+@Import(DtoConfig.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
 public class CategoryControllerTests {
@@ -42,9 +46,6 @@ public class CategoryControllerTests {
 
 	@MockBean
 	private CategoryService categoryService;
-
-	@MockBean
-	private ModelMapper modelMapper;
 
 	@Test
 	@DisplayName("Get categories test")
@@ -71,7 +72,8 @@ public class CategoryControllerTests {
 		ResultActions response = mockMvc.perform(request);
 
 		// then
-		response.andDo(log()).andExpect(status().isOk()).andExpect(jsonPath("$.data.length()").value(2));
+		response.andDo(log()).andExpect(status().isOk()).andExpect(jsonPath("$.data", is(notNullValue())))
+				.andExpect(jsonPath("$.data.length()").value(2));
 	}
 
 }
