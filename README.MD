@@ -76,17 +76,6 @@ OS name: "mac os x", version: "14.1.2", arch: "aarch64", family: "mac"
 [For windows click here](https://phoenixnap.com/kb/install-maven-windows)
 
 
-### Install Eclipse IDE
-
-On MacBook run
-
-```text
-brew install --cask eclipse-java
-```
-[For windows click here](https://www.eclipse.org/downloads/)
-
-**Note: Configure installed JDK with Eclipse IDE**
-
 ### Install PostgreSQL
 
 On MacBook run
@@ -165,6 +154,36 @@ brew install --cask postman
 ### Postman Collection
 
 [Click here to download](https://github.com/iamazizbohra/spring-boot-virtual-store-backend/blob/master/Virtual-Store.postman_collection.json)
+
+### Install Eclipse IDE
+
+On MacBook run
+
+```text
+brew install --cask eclipse-java
+```
+[For windows click here](https://www.eclipse.org/downloads/)
+
+Verify Installation
+```text
+brew brew info eclipse-java
+```
+```text
+==> eclipse-java: 4.30.0,2023-12
+https://eclipse.org/
+/opt/homebrew/Caskroom/eclipse-java/4.30.0,2023-12 (126B)
+From: https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/e/eclipse-java.rb
+==> Name
+Eclipse IDE for Java Developers
+==> Description
+Eclipse IDE for Java developers
+==> Artifacts
+Eclipse.app -> Eclipse Java.app (App)
+==> Analytics
+install: 616 (30 days), 2,171 (90 days), 6,540 (365 days)
+```
+
+**Note: Configure installed JDK with Eclipse IDE**
 
 ---
 
