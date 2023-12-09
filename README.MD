@@ -105,7 +105,7 @@ Run PostgreSQL Server
 ```text
 brew services run postgresql@14
 ```
-Interact via Command Line
+Interact via Command Line Interface
 ```text
 psql
 ```
@@ -139,6 +139,10 @@ redis-server --version
 ```text
 Redis server v=7.2.3 sha=00000000:0 malloc=libc bits=64 build=96f23777753ded6c
 ```
+Interact via Command Line Interface
+```text
+redis-cli
+```
 Run Redis Server
 ```text
 brew services run redis
@@ -148,6 +152,19 @@ Stop Redis Server
 brew services stop redis
 ```
 [For windows click here](https://redis.io/docs/install/install-redis/install-redis-on-windows/)
+
+
+### Install Postman
+
+On MacBook run
+```text
+brew install --cask postman
+```
+[For windows click here](https://www.postman.com/downloads/)
+
+### Postman Collection
+
+[Click here to download](https://github.com/iamazizbohra/spring-boot-virtual-store-backend/blob/master/Virtual-Store.postman_collection.json)
 
 ---
 
@@ -182,12 +199,6 @@ mvn spring-boot:run
 mvn clean
 mvn test
 ```
-
----
-
-### Postman Collection
-
-[Click here to download](https://github.com/iamazizbohra/spring-boot-virtual-store-backend/blob/master/Virtual-Store.postman_collection.json)
 
 ---
 
