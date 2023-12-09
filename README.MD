@@ -237,7 +237,7 @@ brew install --cask eclipse-java
 
 Verify Installation
 ```text
-brew brew info eclipse-java
+brew info eclipse-java
 ```
 ```text
 ==> eclipse-java: 4.30.0,2023-12
