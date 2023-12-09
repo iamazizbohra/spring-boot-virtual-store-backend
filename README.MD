@@ -105,6 +105,10 @@ Run PostgreSQL Server
 ```text
 brew services run postgresql@14
 ```
+Interact via Command Line
+```text
+psql
+```
 Stop PostgreSQL Server
 ```text
 brew services stop postgresql@14
