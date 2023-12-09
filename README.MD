@@ -295,6 +295,7 @@ Host: localhost <br>
 mvn clean
 mvn test
 ```
+**Note: Make sure database is empty**
 
 ### Run Project
 ```text
