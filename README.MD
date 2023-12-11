@@ -190,7 +190,7 @@ Verify PostgreSQL and Redis server is running
 brew services list
 ```
 ```text
-Name          Status  User File
+Name          Status       User File
 postgresql@14 started      /opt/homebrew/opt/postgresql@14/homebrew.mxcl.postgresql@14.plist
 redis         started      /opt/homebrew/opt/redis/homebrew.mxcl.redis.plist
 ```
