@@ -1,8 +1,11 @@
 package com.coedmaster.vstore.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.*;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 
 import java.util.Optional;
 
@@ -39,10 +42,11 @@ public class RoleServiceTests {
 
 		// when
 		Role expectedRole = roleService.getRoleByName("ROLE_ADMIN");
+		Throwable thrown = catchThrowable(() -> roleService.getRoleByName("ROLE_USER"));
 
 		// then
 		assertThat(expectedRole).isNotNull();
-		assertThrows(EntityNotFoundException.class, () -> roleService.getRoleByName("ROLE_USER"));
+		assertThat(thrown).isInstanceOf(EntityNotFoundException.class);
 		then(roleRepository).should(times(2)).findByName(anyString());
 	}
 

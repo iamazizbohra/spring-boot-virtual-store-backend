@@ -1,7 +1,7 @@
 package com.coedmaster.vstore.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -57,10 +57,11 @@ public class UserServiceTests {
 
 		// when
 		User expectedUser = userService.getUser(1L);
+		Throwable thrown = catchThrowable(() -> userRepository.findById(2L));
 
 		// then
 		assertThat(expectedUser).isNotNull();
-		assertThrows(EntityNotFoundException.class, () -> userRepository.findById(2L));
+		assertThat(thrown).isInstanceOf(EntityNotFoundException.class);
 	}
 
 	@Test
@@ -79,10 +80,11 @@ public class UserServiceTests {
 
 		// when
 		User expectedUser = userService.getUserByUuid(user.getUuid().toString());
+		Throwable thrown = catchThrowable(() -> userRepository.findByUuid(uuid));
 
 		// then
 		assertThat(expectedUser).isNotNull();
-		assertThrows(EntityNotFoundException.class, () -> userRepository.findByUuid(uuid));
+		assertThat(thrown).isInstanceOf(EntityNotFoundException.class);
 	}
 
 	@Test
@@ -102,10 +104,11 @@ public class UserServiceTests {
 
 		// when
 		User expectedUser = userService.getUserByMobile(user.getMobile());
+		Throwable thrown = catchThrowable(() -> userRepository.findByMobile(mobile));
 
 		// then
 		assertThat(expectedUser).isNotNull();
-		assertThrows(EntityNotFoundException.class, () -> userRepository.findByMobile(mobile));
+		assertThat(thrown).isInstanceOf(EntityNotFoundException.class);
 	}
 
 	@Test
@@ -155,12 +158,12 @@ public class UserServiceTests {
 		// when
 		boolean expectedValue1 = userService.isMobileAvailableFor(user.getMobile(), user);
 		boolean expectedValue2 = userService.isMobileAvailableFor(mobile, user);
+		Throwable thrown = catchThrowable(() -> userService.isMobileAvailableFor(user.getMobile(), user1));
 
 		// then
 		assertThat(expectedValue1).isEqualTo(true);
 		assertThat(expectedValue2).isEqualTo(true);
-		assertThrows(UsernameAlreadyTakenException.class,
-				() -> userService.isMobileAvailableFor(user.getMobile(), user1));
+		assertThat(thrown).isInstanceOf(UsernameAlreadyTakenException.class);
 	}
 
 	@Test

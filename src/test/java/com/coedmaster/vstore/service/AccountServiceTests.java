@@ -1,7 +1,7 @@
 package com.coedmaster.vstore.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -99,45 +99,38 @@ public class AccountServiceTests {
 		User expectedUser2 = accountService.createBuyerAccount(validCreateAccountDto);
 		User expectedUser3 = accountService.createSellerAccount(validCreateAccountDto);
 
+		Throwable thrown1 = catchThrowable(() -> accountService.createAdminAccount(createAccountDto));
+		Throwable thrown2 = catchThrowable(() -> accountService.createBuyerAccount(createAccountDto));
+		Throwable thrown3 = catchThrowable(() -> accountService.createSellerAccount(createAccountDto));
+
+		createAccountDto.setMobile("9999999999");
+		createAccountDto.setVerificationCode("");
+		Throwable thrown4 = catchThrowable(() -> accountService.createAdminAccount(createAccountDto));
+		Throwable thrown5 = catchThrowable(() -> accountService.createBuyerAccount(createAccountDto));
+		Throwable thrown6 = catchThrowable(() -> accountService.createSellerAccount(createAccountDto));
+
+		createAccountDto.setMobile("9999999999");
+		createAccountDto.setVerificationCode("1234");
+		Throwable thrown7 = catchThrowable(() -> accountService.createAdminAccount(createAccountDto));
+		Throwable thrown8 = catchThrowable(() -> accountService.createBuyerAccount(createAccountDto));
+		Throwable thrown9 = catchThrowable(() -> accountService.createSellerAccount(createAccountDto));
+
 		// then
 		assertThat(expectedUser1).isNotNull();
-		assertThrows(UsernameAlreadyTakenException.class, () -> accountService.createAdminAccount(createAccountDto));
-
 		assertThat(expectedUser2).isNotNull();
-		assertThrows(UsernameAlreadyTakenException.class, () -> accountService.createBuyerAccount(createAccountDto));
-
 		assertThat(expectedUser3).isNotNull();
-		assertThrows(UsernameAlreadyTakenException.class, () -> accountService.createSellerAccount(createAccountDto));
 
-		createAccountDto.setMobile("9999999999");
-		createAccountDto.setVerificationCode("");
-		assertThrows(MobileVerificationCodeNotFoundException.class,
-				() -> accountService.createAdminAccount(createAccountDto));
+		assertThat(thrown1).isInstanceOf(UsernameAlreadyTakenException.class);
+		assertThat(thrown2).isInstanceOf(UsernameAlreadyTakenException.class);
+		assertThat(thrown3).isInstanceOf(UsernameAlreadyTakenException.class);
 
-		createAccountDto.setMobile("9999999999");
-		createAccountDto.setVerificationCode("");
-		assertThrows(MobileVerificationCodeNotFoundException.class,
-				() -> accountService.createBuyerAccount(createAccountDto));
+		assertThat(thrown4).isInstanceOf(MobileVerificationCodeNotFoundException.class);
+		assertThat(thrown5).isInstanceOf(MobileVerificationCodeNotFoundException.class);
+		assertThat(thrown6).isInstanceOf(MobileVerificationCodeNotFoundException.class);
 
-		createAccountDto.setMobile("9999999999");
-		createAccountDto.setVerificationCode("");
-		assertThrows(MobileVerificationCodeNotFoundException.class,
-				() -> accountService.createSellerAccount(createAccountDto));
-
-		createAccountDto.setMobile("9999999999");
-		createAccountDto.setVerificationCode("1234");
-		assertThrows(InvalidMobileVerificationCodeException.class,
-				() -> accountService.createAdminAccount(createAccountDto));
-
-		createAccountDto.setMobile("9999999999");
-		createAccountDto.setVerificationCode("1234");
-		assertThrows(InvalidMobileVerificationCodeException.class,
-				() -> accountService.createBuyerAccount(createAccountDto));
-
-		createAccountDto.setMobile("9999999999");
-		createAccountDto.setVerificationCode("1234");
-		assertThrows(InvalidMobileVerificationCodeException.class,
-				() -> accountService.createSellerAccount(createAccountDto));
+		assertThat(thrown7).isInstanceOf(InvalidMobileVerificationCodeException.class);
+		assertThat(thrown8).isInstanceOf(InvalidMobileVerificationCodeException.class);
+		assertThat(thrown9).isInstanceOf(InvalidMobileVerificationCodeException.class);
 
 		then(userService).should(times(3)).createUser(any(UserType.class), any(Role.class),
 				any(CreateAccountDto.class));
@@ -177,20 +170,27 @@ public class AccountServiceTests {
 
 		// when
 		User expectedUser = accountService.updateAccount(user1, validUpdateAccountDto);
-
-		// then
-		assertThat(expectedUser).isNotNull();
-		assertThrows(UsernameAlreadyTakenException.class, () -> accountService.updateAccount(user1, updateAccountDto));
+		Throwable thrown1 = catchThrowable(() -> accountService.updateAccount(user1, updateAccountDto));
 
 		updateAccountDto.setMobile("3333333333");
 		updateAccountDto.setVerificationCode("");
-		assertThrows(MobileVerificationCodeNotFoundException.class,
-				() -> accountService.updateAccount(user1, updateAccountDto));
+		Throwable thrown2 = catchThrowable(() -> accountService.updateAccount(user1, updateAccountDto));
 
 		updateAccountDto.setMobile("3333333333");
 		updateAccountDto.setVerificationCode("1234");
-		assertThrows(InvalidMobileVerificationCodeException.class,
-				() -> accountService.updateAccount(user1, updateAccountDto));
+		Throwable thrown3 = catchThrowable(() -> accountService.updateAccount(user1, updateAccountDto));
+
+		// then
+		assertThat(expectedUser).isNotNull();
+		assertThat(thrown1).isInstanceOf(UsernameAlreadyTakenException.class);
+
+		updateAccountDto.setMobile("3333333333");
+		updateAccountDto.setVerificationCode("");
+		assertThat(thrown2).isInstanceOf(MobileVerificationCodeNotFoundException.class);
+
+		updateAccountDto.setMobile("3333333333");
+		updateAccountDto.setVerificationCode("1234");
+		assertThat(thrown3).isInstanceOf(InvalidMobileVerificationCodeException.class);
 
 		then(userService).should().updateUser(any(User.class), any(UpdateAccountDto.class));
 	}
@@ -213,10 +213,10 @@ public class AccountServiceTests {
 		given(authenticationService.verifyPassword(user1, "00000000")).willReturn(false);
 
 		// when
+		Throwable thrown = catchThrowable(() -> accountService.updatePassword(user1, updatePasswordDto));
 
 		// then
-		assertThrows(PasswordMismatchException.class, () -> accountService.updatePassword(user1, updatePasswordDto));
-
+		assertThat(thrown).isInstanceOf(PasswordMismatchException.class);
 		then(userService).should(never()).updateUserPassword(any(User.class), anyString());
 		then(authenticationService).should(never()).deleteAllTokens(any(User.class));
 		then(authenticationService).should(never()).generateToken(any(User.class));

@@ -1,7 +1,7 @@
 package com.coedmaster.vstore.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
@@ -62,10 +62,11 @@ public class AddressServiceTests {
 
 		// when
 		Address expectedAddress = addressService.getAddress(1L, user);
+		Throwable thrown = catchThrowable(() -> addressService.getAddress(2L, user));
 
 		// then
 		assertThat(expectedAddress).isNotNull();
-		assertThrows(EntityNotFoundException.class, () -> addressService.getAddress(2L, user));
+		assertThat(thrown).isInstanceOf(EntityNotFoundException.class);
 	}
 
 	@Test
@@ -250,9 +251,10 @@ public class AddressServiceTests {
 
 		// when
 		addressService.deleteAddress(address2.getId(), user);
+		Throwable thrown = catchThrowable(() -> addressService.deleteAddress(address1.getId(), user));
 
 		// then
-		assertThrows(UnallowedOperationException.class, () -> addressService.deleteAddress(address1.getId(), user));
+		assertThat(thrown).isInstanceOf(UnallowedOperationException.class);
 		then(addressRepository).should().delete(address2);
 	}
 
